@@ -22,6 +22,7 @@ import javafx.scene.shape.Circle;
 import Interfaz.Programa;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 /**
  *
@@ -36,7 +37,19 @@ public class InterfazAdministrador {
        Button _gestionMenu;
        Button _reporteVentas;
        Button _adminSalir; 
-       
+       Stage ventanaMesa;
+       VBox rootMesa;
+       Label _nuevaMesa;
+        HBox _capacidad;
+        HBox _numero;
+        Label _capa;
+        TextField _Tcapa;
+        Label _num;
+        TextField _Tnum;
+        Button _aceptar;
+        Scene sc2;
+        Button borrarMesa;
+     
        public InterfazAdministrador(){
            crearMenu();
        }
@@ -108,27 +121,60 @@ public class InterfazAdministrador {
        
           public void manejoDisenoPlano(){
              
-               
-               //Scene sc2= new Scene();
+               Label cocina= new Label("Cocina");
+               Rectangle rect = new Rectangle(10, 200); 
+               rect.setLayoutX(400);
+               rect.setLayoutY(5);
+               cocina.setLayoutX(410);
+               cocina.setLayoutY(35);
+               _seccionPlanos.getChildren().addAll(cocina, rect);
                _rootA.getChildren().add(_seccionPlanos);
-                      //helppppp;
+                      
                    
         
-              Programa.sc.setOnMouseClicked((MouseEvent e)->{
-                  
-                    Stage ventanaMesa= new Stage();
-                    VBox rootMesa= new VBox();
-                    Label _nuevaMesa= new Label("Nueva Mesa");
-                    HBox _capacidad= new HBox();
-                    HBox _numero= new HBox();
-                    Label _capa= new Label("Capacidad");
-                    TextField _Tcapa= new TextField();
-                    Label _num= new Label("Numero");
-                    TextField _Tnum= new TextField();
-                    Button _aceptar= new Button("Aceptar");
-                    Scene sc2= new Scene(rootMesa, 300,300);
+              Programa.sc.setOnMouseClicked((MouseEvent e)->{     
+                   crearVentana();//se inicializa la ventana
                     ventanaMesa.setScene(sc2);
-
+                    _aceptar.setOnMouseClicked((MouseEvent e2)->{
+                        //Programa.sc.
+                        int mesa_capacidad=Integer.parseInt(_Tcapa.getText());
+                        String mesa_numero= _Tnum.getText();
+                        ventanaMesa.close(); //cierro la ventana
+                        Mesa m= new Mesa(mesa_capacidad*2,e.getSceneX(),e.getSceneY());
+                        Circle c=m.getCircle();
+                        Label _numeMesa= new Label(mesa_numero);
+                        System.out.println(e.getSceneX());
+                        System.out.println(e.getSceneY());
+                        
+                        c.setCenterX(e.getSceneX());
+                        c.setCenterY(e.getSceneY());
+                      
+                        _numeMesa.setLayoutX(e.getSceneX());
+                        _numeMesa.setLayoutY(e.getSceneY());
+                      
+                        _seccionPlanos.getChildren().addAll(c,_numeMesa);
+                        borrarMesa= new Button("Borrar Mesa"); 
+                        
+                        
+                       
+                        c.setOnMouseDragged((MouseEvent e3)->{
+                            
+                            c.setCenterX(e3.getSceneX());
+                            c.setCenterY(e3.getSceneY());
+                            _numeMesa.setLayoutX(e3.getSceneX());
+                            _numeMesa.setLayoutY(e3.getSceneY());
+                        });
+                       c.setOnMouseClicked((MouseEvent e4)->{
+                           _rootA.getChildren().add(borrarMesa);
+                           borrarMesa.setOnMouseClicked((MouseEvent e5)->{
+                           _seccionPlanos.getChildren().removeAll(c,_numeMesa);
+                           _rootA.getChildren().remove(borrarMesa);
+                               
+                           });
+                           
+                       });
+                    });
+                    
                      _capacidad.getChildren().addAll(_capa,_Tcapa);
                      _numero.getChildren().addAll(_num,_Tnum);
                      rootMesa.getChildren().addAll(_nuevaMesa,_capacidad,_numero,_aceptar);
@@ -159,6 +205,21 @@ public class InterfazAdministrador {
          }
            
            
-          
+          public void crearVentana(){
+            ventanaMesa= new Stage();
+            rootMesa= new VBox();
+            _nuevaMesa= new Label("Nueva Mesa");
+            _capacidad= new HBox();
+            _numero= new HBox();
+            _capa= new Label("Capacidad");
+            _Tcapa= new TextField();
+            _num= new Label("Numero");
+            _Tnum= new TextField();
+            _aceptar= new Button("Aceptar");
+            sc2= new Scene(rootMesa, 300,300); 
+          }
+         
+                  
+                  
 }
 

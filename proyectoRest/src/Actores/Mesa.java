@@ -7,6 +7,7 @@ package Actores;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
@@ -14,14 +15,42 @@ import javafx.scene.shape.Circle;
  * @author Eddy Santibañez J
  */
 public class Mesa implements Observable{
-    String color;
+    Color color;
+    private int radio;
+    private double centrox;
+    private double centroy; 
+    private int numero;
+    private Circle circle;
+        
     
-    
-    public Mesa(){
-     Circle circle = new Circle(40);
-
+    public Mesa(int radio, double centrox, double centroy){
+   
+     this.radio= radio;
+     this.centrox= centrox;
+     this.centroy= centroy;
+     
+     this.circle = new Circle(radio);
+  
+     circle.setFill(Color.YELLOW);
     }
 
+    public Circle getCircle() {
+        return circle;
+    }
+
+    public void setCircle(Circle circle) {
+        this.circle = circle;
+    }
+    
+    
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+    
     @Override
     public void addListener(InvalidationListener listener) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
