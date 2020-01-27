@@ -5,6 +5,7 @@
  */
 package Actores;
 
+import java.util.Objects;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.paint.Color;
@@ -14,26 +15,61 @@ import javafx.scene.shape.Circle;
  *
  * @author Eddy Santibañez J
  */
-public class Mesa implements Observable{
+public class Mesa  {
     Color color;
     private int radio;
     private double centrox;
     private double centroy; 
-    private int numero;
+    private String numero;
     private Circle circle;
         
     
-    public Mesa(int radio, double centrox, double centroy){
-   
+    public Mesa(int radio, String numero, double centrox, double centroy){
+     
+     this.numero= numero;
      this.radio= radio;
      this.centrox= centrox;
      this.centroy= centroy;
      
      this.circle = new Circle(radio);
+     circle.setCenterX(centroy);
+     circle.setCenterY(centroy);
   
      circle.setFill(Color.YELLOW);
     }
 
+    public int getRadio() {
+        return radio;
+    }
+
+    public void setRadio(int radio) {
+        this.radio = radio;
+    }
+
+    public double getCentrox() {
+        return centrox;
+    }
+
+    public void setCentrox(double centrox) {
+        this.centrox = centrox;
+    }
+
+    public double getCentroy() {
+        return centroy;
+    }
+
+    public void setCentroy(double centroy) {
+        this.centroy = centroy;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+    
     public Circle getCircle() {
         return circle;
     }
@@ -50,15 +86,42 @@ public class Mesa implements Observable{
     public void setColor(Color color) {
         this.color = color;
     }
-    
+
     @Override
-    public void addListener(InvalidationListener listener) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String toString() {
+        return ""+numero;
     }
 
     @Override
-    public void removeListener(InvalidationListener listener) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int hashCode() {
+        int hash = 3;
+        return hash;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Mesa other = (Mesa) obj;
+        if (Double.doubleToLongBits(this.centrox) != Double.doubleToLongBits(other.centrox)) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.centroy) != Double.doubleToLongBits(other.centroy)) {
+            return false;
+        }
+        if (!Objects.equals(this.numero, other.numero)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
     
 }

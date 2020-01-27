@@ -63,6 +63,7 @@ public class VistaPrograma {
                if (p_dentro==null){
                    root.getChildren().clear();
                    Label _noValido= new Label("Credenciales Incorrectas. Vuelva a inetntarlo ");
+                   System.out.println("nooo");
                    //mejorarrr******************************
                    //indicar que no se existee
                }

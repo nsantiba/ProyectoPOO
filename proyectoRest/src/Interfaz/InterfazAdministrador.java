@@ -20,6 +20,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import Interfaz.Programa;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.SortedMap;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Rectangle;
@@ -29,9 +33,13 @@ import javafx.stage.Stage;
  * @author Eddy Santibañez J
  */
 public class InterfazAdministrador {
+       private ArrayList<Mesa> mesas= new ArrayList<>();
+       private ArrayList<Mesa> mesas2;
        VBox _rootA;
        HBox _menu; 
-       Pane _seccionPlanos; 
+       Pane _seccionPlanos= new Pane();
+       Pane _planos;
+       Pane _seccionMonitoreo= new Pane();
        Button _monitoreo; 
        Button _disenoPlano;
        Button _gestionMenu;
@@ -48,19 +56,35 @@ public class InterfazAdministrador {
         TextField _Tnum;
         Button _aceptar;
         Scene sc2;
-        Button borrarMesa;
+        Button borrarMesa=  new Button("Borrar Mesa"); 
+        VBox _infoMesa= new VBox();
+        Label cocina;
+        Label cocina2;
+        Rectangle rect = new Rectangle(10, 250); 
+        Rectangle rect2= new Rectangle(10, 250);
+        Label estadoMesa= new Label();
+          boolean continuar= true;
+         
+        
      
        public InterfazAdministrador(){
            crearMenu();
+           crearSeccionPlanosyMonitoreo();
+           manejoMonitoreo();
+           manejoDisenoPlano();
+           MonitoreoPlano monitoreoPlano= new MonitoreoPlano();
+           Thread t1= new Thread(monitoreoPlano);
+           t1.start();
+           
+          
+          
        }
 
          public VBox getRootA() {
             return _rootA;
         }
 
-    public Pane getSeccionPlanos() {
-        return _seccionPlanos;
-    }
+    
        
        
        public void crearMenu(){
@@ -71,30 +95,39 @@ public class InterfazAdministrador {
            _gestionMenu= new Button("Gestión Menú");
            _reporteVentas= new Button("ReporteVentas");
            _adminSalir= new Button("Salir"); 
+           _planos= new Pane();
            
            _menu.getChildren().addAll(_monitoreo,_disenoPlano,_gestionMenu,_reporteVentas,_adminSalir);
-           _rootA.getChildren().add(_menu);
+           _rootA.getChildren().addAll(_menu,_planos);
           
            
            EventHandler<MouseEvent> ev= new EventHandler<MouseEvent>(){
            @Override
            public void handle(MouseEvent ev) {
-               _seccionPlanos= new Pane();
+               
+               
+                  
 
                if(ev.getSource()==_monitoreo){
-                manejoMonitoreo();
+                    _planos.getChildren().clear();
+                    _planos.getChildren().add(_seccionMonitoreo);
+                    
                }
                 if(ev.getSource()==_disenoPlano){
-                manejoDisenoPlano();
-                
+                    _planos.getChildren().clear();///
+                    _planos.getChildren().add(_seccionPlanos);
+                    
                }
                 if(ev.getSource()==_gestionMenu){
-               manejoGestionMenu();
+                     _planos.getChildren().clear();
+                     manejoGestionMenu();
                }
                 if(ev.getSource()==_reporteVentas){
-                manejoReporteVentas();
+                     _planos.getChildren().clear();
+                     manejoReporteVentas();
                }
                 if(ev.getSource()==_adminSalir){
+                    
                 manejoAdminSalir();
                }
                
@@ -110,69 +143,60 @@ public class InterfazAdministrador {
        
         //DEBO CAMBIAR ESTO CON COMO MANEJARE LOS EVENTOS****
          public void manejoMonitoreo(){
-           ///aqui ni idea que va pero va el plano
-           Label l= new Label("manejar el evento en el flowPane");
-           _seccionPlanos.getChildren().add(l);
-          // _seccionPlanos.SetOnAction((AcitonEvent e))
-           _rootA.getChildren().add(_seccionPlanos);
+             
+          
            
          
          }       
        
           public void manejoDisenoPlano(){
-             
-               Label cocina= new Label("Cocina");
-               Rectangle rect = new Rectangle(10, 200); 
-               rect.setLayoutX(400);
-               rect.setLayoutY(5);
-               cocina.setLayoutX(410);
-               cocina.setLayoutY(35);
-               _seccionPlanos.getChildren().addAll(cocina, rect);
-               _rootA.getChildren().add(_seccionPlanos);
-                      
                    
-        
-              Programa.sc.setOnMouseClicked((MouseEvent e)->{     
-                   crearVentana();//se inicializa la ventana
-                    ventanaMesa.setScene(sc2);
-                    _aceptar.setOnMouseClicked((MouseEvent e2)->{
+            _seccionPlanos.setOnMouseClicked((MouseEvent e)->{     
+                crearVentana();//se inicializa la ventana
+                ventanaMesa.setScene(sc2);
+                _aceptar.setOnMouseClicked((MouseEvent e2)->{
+                     
                         //Programa.sc.
-                        int mesa_capacidad=Integer.parseInt(_Tcapa.getText());
-                        String mesa_numero= _Tnum.getText();
-                        ventanaMesa.close(); //cierro la ventana
-                        Mesa m= new Mesa(mesa_capacidad*2,e.getSceneX(),e.getSceneY());
-                        Circle c=m.getCircle();
-                        Label _numeMesa= new Label(mesa_numero);
-                        System.out.println(e.getSceneX());
-                        System.out.println(e.getSceneY());
+                    int mesa_capacidad=Integer.parseInt(_Tcapa.getText());
+                    String mesa_numero= _Tnum.getText();
+                    ventanaMesa.close(); //cierro la ventana
+                    Mesa m= new Mesa(mesa_capacidad,mesa_numero,e.getSceneX(),e.getSceneY());
+                    mesas.add(m);//agregp cada mesa a mesas 
+                    System.out.println("se agregó");
+                    Circle c=m.getCircle();
+                    Label _numeMesa= new Label(mesa_numero);
+                    c.setCenterX(e.getSceneX());
+                    c.setCenterY(e.getSceneY());
+                    _numeMesa.setLayoutX(e.getSceneX());
+                    _numeMesa.setLayoutY(e.getSceneY());
+
+                    _seccionPlanos.getChildren().addAll(c,_numeMesa);
+                    c.setOnMouseDragged((MouseEvent e3)->{
+                        c.setCenterX(e3.getSceneX());
+                        c.setCenterY(e3.getSceneY());
+                        m.setCentrox(e3.getSceneX());
+                        m.setCentroy(e3.getSceneX());
+                        _numeMesa.setLayoutX(e3.getSceneX());
+                        _numeMesa.setLayoutY(e3.getSceneY());
                         
-                        c.setCenterX(e.getSceneX());
-                        c.setCenterY(e.getSceneY());
-                      
-                        _numeMesa.setLayoutX(e.getSceneX());
-                        _numeMesa.setLayoutY(e.getSceneY());
-                      
-                        _seccionPlanos.getChildren().addAll(c,_numeMesa);
-                        borrarMesa= new Button("Borrar Mesa"); 
+                    });
                         
-                        
-                       
-                        c.setOnMouseDragged((MouseEvent e3)->{
-                            
-                            c.setCenterX(e3.getSceneX());
-                            c.setCenterY(e3.getSceneY());
-                            _numeMesa.setLayoutX(e3.getSceneX());
-                            _numeMesa.setLayoutY(e3.getSceneY());
-                        });
-                       c.setOnMouseClicked((MouseEvent e4)->{
-                           _rootA.getChildren().add(borrarMesa);
-                           borrarMesa.setOnMouseClicked((MouseEvent e5)->{
-                           _seccionPlanos.getChildren().removeAll(c,_numeMesa);
-                           _rootA.getChildren().remove(borrarMesa);
-                               
-                           });
+                    c.setOnMouseClicked((MouseEvent e4)->{
+                    //_planos.getChildren().add(borrarMesa);
+                        //borrarMesa.setOnMouseClicked((MouseEvent e5)->{
+
+                    _seccionPlanos.getChildren().remove(_numeMesa);
+                    _seccionPlanos.getChildren().remove(c);
+                    mesas.remove(m);
+
+                    _planos.getChildren().remove(borrarMesa);
+
+
+                    //});
                            
-                       });
+                    });
+                   
+       
                     });
                     
                      _capacidad.getChildren().addAll(_capa,_Tcapa);
@@ -180,28 +204,29 @@ public class InterfazAdministrador {
                      rootMesa.getChildren().addAll(_nuevaMesa,_capacidad,_numero,_aceptar);
                      ventanaMesa.show();
 
-               }) ;     
-              
+                    }) ;     
+                         
+                          
            
           }
           
            public void manejoGestionMenu(){
             Label l= new Label("manejar el evento en el flowPane");
-           _seccionPlanos.getChildren().add(l);
-           _rootA.getChildren().add(_seccionPlanos);  
+           _planos.getChildren().add(l);
+           //_rootA.getChildren().add(_seccionPlanos);  
                
          }
           public void manejoReporteVentas(){
            Label l= new Label("manejar el evento en el flowPane");
-           _seccionPlanos.getChildren().add(l);
-           _rootA.getChildren().add(_seccionPlanos);
+           _planos.getChildren().add(l);
+           //_rootA.getChildren().add(_seccionPlanos);
               
          }
           public void manejoAdminSalir(){
               
            Label l= new Label("manejar el evento en el flowPane");
-           _seccionPlanos.getChildren().add(l);
-           _rootA.getChildren().add(_seccionPlanos);
+           _planos.getChildren().add(l);
+           //_rootA.getChildren().add(_seccionPlanos);
          }
            
            
@@ -219,7 +244,105 @@ public class InterfazAdministrador {
             sc2= new Scene(rootMesa, 300,300); 
           }
          
-                  
-                  
+          public void crearSeccionPlanosyMonitoreo(){
+            cocina= new Label("Cocina");
+            cocina2= new Label("Cocina");
+            rect.setLayoutX(400);
+            rect.setLayoutY(5);
+            cocina.setLayoutX(410);
+            cocina.setLayoutY(35);
+            
+            rect2.setLayoutX(400);
+            rect2.setLayoutY(5);
+            cocina2.setLayoutX(410);
+            cocina2.setLayoutY(35);
+            
+            Mesa m= new Mesa(10,"1",50.0,50.0);
+            Circle c= m.getCircle();
+            c.setLayoutX(50.0);
+            c.setLayoutY(50.0);
+            Label _numeMesa= new Label("1");
+            _numeMesa.setLayoutX(50.0);
+            _numeMesa.setLayoutY(50.0);
+            _seccionPlanos.getChildren().addAll(cocina, rect,c,_numeMesa);
+            _seccionMonitoreo.getChildren().addAll(cocina2, rect2);
+            mesas.add(m);
+            c.setOnMouseDragged((MouseEvent e3)->{
+                c.setCenterX(e3.getSceneX());
+                c.setCenterY(e3.getSceneY());
+                _numeMesa.setLayoutX(e3.getSceneX());
+                _numeMesa.setLayoutY(e3.getSceneY());
+            });
+                        
+            c.setOnMouseClicked((MouseEvent e4)->{
+                //_planos.getChildren().add(borrarMesa);
+                //borrarMesa.setOnMouseClicked((MouseEvent e5)->{
+                _seccionPlanos.getChildren().remove(_numeMesa);
+                _seccionPlanos.getChildren().remove(c);
+               // _planos.getChildren().remove(borrarMesa);
+
+
+             // });
+
+          });
+         
 }
+             
+          private class MonitoreoPlano implements Runnable{
+            
+          
+            private MonitoreoPlano() {
+
+            }
+
+            @Override
+            public void run() {
+                continuar= true;
+                try{
+                    while(continuar==true){
+                        System.out.println("hilloo");
+                        
+                        
+                        Platform.runLater(()->{
+                               _seccionMonitoreo.getChildren().clear();
+                               _seccionMonitoreo.getChildren().addAll(rect2,cocina2);});
+                               //_seccionMonitoreo.getChildren().addAll(_seccionPlanos.getChildren());});
+                               
+                        mesas2=(ArrayList<Mesa>) mesas.clone();
+                        
+                    
+                  for (Mesa m: mesas2){
+                      
+                      Mesa m2= new Mesa(m.getRadio(),m.getNumero(),m.getCentrox(),m.getCentroy());   
+                      Label nume_mesa=  new Label(m.getNumero());
+                      Circle c1= m2.getCircle();  
+                       //if(_seccionMonitoreo.getChildren().contains(c1)==false){
+                           Platform.runLater(()->{
+                               _seccionMonitoreo.getChildren().addAll(c1,nume_mesa);
+                               c1.setLayoutX(m.getCentrox());
+                               c1.setLayoutY(m.getCentroy());
+                               nume_mesa.setLayoutX(m.getCentrox());
+                               nume_mesa.setLayoutY(m.getCentroy());
+                            });
+                           c1.setOnMouseMoved((MouseEvent e)->{
+                               estadoMesa.setText(m.toString());
+                               System.out.println("manejo evento");
+                           
+                           });
+                           
+                       //}
+                  }
+                }Thread.sleep(700000000);
+ 
+                }catch(InterruptedException ex){
+                    System.out.println("aaa");
+                    System.out.println(ex.getMessage());
+                }
+                  
+                //definir condicion de terminar
+                 
+
+            }}}
+
+
 
