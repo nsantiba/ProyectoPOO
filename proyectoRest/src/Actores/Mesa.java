@@ -85,6 +85,7 @@ public class Mesa  {
 
     public void setColor(Color color) {
         this.color = color;
+        circle.setFill(color);
     }
 
     @Override

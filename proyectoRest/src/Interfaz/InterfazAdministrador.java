@@ -34,7 +34,7 @@ import javafx.stage.Stage;
  */
 public class InterfazAdministrador {
        private ArrayList<Mesa> mesas= new ArrayList<>();
-       private ArrayList<Mesa> mesas2;
+       //private ArrayList<Mesa> mesas2;
        VBox _rootA;
        HBox _menu; 
        Pane _seccionPlanos= new Pane();
@@ -64,17 +64,22 @@ public class InterfazAdministrador {
         Rectangle rect2= new Rectangle(10, 250);
         Label estadoMesa= new Label();
           boolean continuar= true;
+        VBox infoMesa;
+        String estado= " ";
+         String mesero=" ";
+         String valorfac;
          
         
      
        public InterfazAdministrador(){
            crearMenu();
            crearSeccionPlanosyMonitoreo();
+          
            manejoMonitoreo();
            manejoDisenoPlano();
-           MonitoreoPlano monitoreoPlano= new MonitoreoPlano();
-           Thread t1= new Thread(monitoreoPlano);
-           t1.start();
+           //MonitoreoPlano monitoreoPlano= new MonitoreoPlano();
+           //Thread t1= new Thread(monitoreoPlano);
+           //t1.start();
            
           
           
@@ -104,19 +109,19 @@ public class InterfazAdministrador {
            EventHandler<MouseEvent> ev= new EventHandler<MouseEvent>(){
            @Override
            public void handle(MouseEvent ev) {
-               
-               
-                  
-
+    
                if(ev.getSource()==_monitoreo){
                     _planos.getChildren().clear();
                     _planos.getChildren().add(_seccionMonitoreo);
+                    _planos.getChildren().add(infoMesa);
+                    //_rootA.getChildren().add(infoMesa);
+                    
                     
                }
                 if(ev.getSource()==_disenoPlano){
                     _planos.getChildren().clear();///
                     _planos.getChildren().add(_seccionPlanos);
-                    
+       
                }
                 if(ev.getSource()==_gestionMenu){
                      _planos.getChildren().clear();
@@ -141,18 +146,25 @@ public class InterfazAdministrador {
           }
        
        
-        //DEBO CAMBIAR ESTO CON COMO MANEJARE LOS EVENTOS****
+  
          public void manejoMonitoreo(){
+         
+             infoMesa= new VBox(); 
+             Label l_valor= new Label("Valor facturado"+valorfac);
+             Label l_estado= new Label("Estado: "+estado);
+             Label MeseroMesa= new Label("Mesero: "+mesero);        
+             infoMesa.getChildren().addAll(l_estado,MeseroMesa,l_valor);
              
-          
-           
          
          }       
        
           public void manejoDisenoPlano(){
                    
-            _seccionPlanos.setOnMouseClicked((MouseEvent e)->{     
-                crearVentana();//se inicializa la ventana
+            _seccionPlanos.setOnMouseClicked((MouseEvent e)->{  
+                crearVentana();
+                //se inicializa la ventana
+                
+                 
                 ventanaMesa.setScene(sc2);
                 _aceptar.setOnMouseClicked((MouseEvent e2)->{
                      
@@ -160,25 +172,46 @@ public class InterfazAdministrador {
                     int mesa_capacidad=Integer.parseInt(_Tcapa.getText());
                     String mesa_numero= _Tnum.getText();
                     ventanaMesa.close(); //cierro la ventana
-                    Mesa m= new Mesa(mesa_capacidad,mesa_numero,e.getSceneX(),e.getSceneY());
+                    double posx= e.getSceneX();
+                    double posy= e.getSceneY();
+                    Mesa m= new Mesa(mesa_capacidad,mesa_numero,posx,posy);
+                    Mesa m2= new Mesa(mesa_capacidad,mesa_numero,posx,posy);
                     mesas.add(m);//agregp cada mesa a mesas 
                     System.out.println("se agregó");
                     Circle c=m.getCircle();
+                    Circle c2= m2.getCircle();
                     Label _numeMesa= new Label(mesa_numero);
-                    c.setCenterX(e.getSceneX());
-                    c.setCenterY(e.getSceneY());
-                    _numeMesa.setLayoutX(e.getSceneX());
-                    _numeMesa.setLayoutY(e.getSceneY());
+                    Label _numeMesa2= new Label(mesa_numero);
+                    c.setCenterX(posx);
+                    c.setCenterY(posy);
+                    c2.setCenterX(posx);
+                    c2.setCenterY(posy);
+                    _numeMesa.setLayoutX(posx);
+                    _numeMesa.setLayoutY(posy);
+                    _numeMesa2.setLayoutX(posx);
+                    _numeMesa2.setLayoutY(posy);
 
                     _seccionPlanos.getChildren().addAll(c,_numeMesa);
+                    _seccionMonitoreo.getChildren().addAll(c2,_numeMesa2);
                     c.setOnMouseDragged((MouseEvent e3)->{
-                        c.setCenterX(e3.getSceneX());
-                        c.setCenterY(e3.getSceneY());
-                        m.setCentrox(e3.getSceneX());
-                        m.setCentroy(e3.getSceneX());
-                        _numeMesa.setLayoutX(e3.getSceneX());
-                        _numeMesa.setLayoutY(e3.getSceneY());
+                        double posx2=e3.getSceneX();
+                        double posy2=e3.getSceneY();
                         
+                        c.setCenterX(posx2);
+                        c.setCenterY(posy2);
+                        m.setCentrox(posx2);
+                        m.setCentroy(posy2);
+                        _numeMesa.setLayoutX(posx2);
+                        _numeMesa.setLayoutY(posy2);
+                        c2.setCenterX(posx2);
+                        c2.setCenterY(posy2);
+                        m2.setCentrox(posx2);
+                        m2.setCentroy(posy2);
+                        _numeMesa2.setLayoutX(posx2);
+                        _numeMesa2.setLayoutY(posy2);
+                        
+                
+                
                     });
                         
                     c.setOnMouseClicked((MouseEvent e4)->{
@@ -188,22 +221,30 @@ public class InterfazAdministrador {
                     _seccionPlanos.getChildren().remove(_numeMesa);
                     _seccionPlanos.getChildren().remove(c);
                     mesas.remove(m);
+                    _seccionMonitoreo.getChildren().remove(_numeMesa2);
+                    _seccionMonitoreo.getChildren().remove(c2);
+                    
 
-                    _planos.getChildren().remove(borrarMesa);
+                    //_planos.getChildren().remove(borrarMesa);
 
 
                     //});
                            
                     });
-                   
+                     c2.setOnMouseMoved((MouseEvent e6)->{
+                               System.out.println("ooo");
+                              
+                               
+                           
+                           });
+                     
        
                     });
-                    
                      _capacidad.getChildren().addAll(_capa,_Tcapa);
                      _numero.getChildren().addAll(_num,_Tnum);
                      rootMesa.getChildren().addAll(_nuevaMesa,_capacidad,_numero,_aceptar);
                      ventanaMesa.show();
-
+              
                     }) ;     
                          
                           
@@ -258,20 +299,35 @@ public class InterfazAdministrador {
             cocina2.setLayoutY(35);
             
             Mesa m= new Mesa(10,"1",50.0,50.0);
+            Mesa m2= new Mesa(10,"1",50.0,50.0);
             Circle c= m.getCircle();
-            c.setLayoutX(50.0);
-            c.setLayoutY(50.0);
+            Circle c2= m2.getCircle();
+            c.setCenterX(50.0);
+            c.setCenterY(50.0);
             Label _numeMesa= new Label("1");
             _numeMesa.setLayoutX(50.0);
             _numeMesa.setLayoutY(50.0);
+            c2.setCenterX(50.0);
+            c2.setCenterY(50.0);
+            Label _numeMesa2= new Label("1");
+            _numeMesa2.setLayoutX(50.0);
+            _numeMesa2.setLayoutY(50.0);
             _seccionPlanos.getChildren().addAll(cocina, rect,c,_numeMesa);
-            _seccionMonitoreo.getChildren().addAll(cocina2, rect2);
+            _seccionMonitoreo.getChildren().addAll(cocina2, rect2,c2,_numeMesa2);
             mesas.add(m);
             c.setOnMouseDragged((MouseEvent e3)->{
                 c.setCenterX(e3.getSceneX());
                 c.setCenterY(e3.getSceneY());
                 _numeMesa.setLayoutX(e3.getSceneX());
                 _numeMesa.setLayoutY(e3.getSceneY());
+                m.setCentrox(e3.getSceneX());
+                m.setCentroy(e3.getSceneY());
+                c2.setCenterX(e3.getSceneX());
+                c2.setCenterY(e3.getSceneY());
+                _numeMesa2.setLayoutX(e3.getSceneX());
+                _numeMesa2.setLayoutY(e3.getSceneY());
+                m2.setCentrox(e3.getSceneX());
+                m2.setCentroy(e3.getSceneY());
             });
                         
             c.setOnMouseClicked((MouseEvent e4)->{
@@ -284,11 +340,15 @@ public class InterfazAdministrador {
 
              // });
 
-          });
+            });
+             c2.setOnMouseMoved((MouseEvent e6)->{
+                System.out.println("ooo");
+          
+            });
          
 }
              
-          private class MonitoreoPlano implements Runnable{
+          /*private class MonitoreoPlano implements Runnable{
             
           
             private MonitoreoPlano() {
@@ -301,14 +361,13 @@ public class InterfazAdministrador {
                 try{
                     while(continuar==true){
                         System.out.println("hilloo");
-                        
+                        mesas2=(ArrayList<Mesa>) mesas.clone();
                         
                         Platform.runLater(()->{
                                _seccionMonitoreo.getChildren().clear();
                                _seccionMonitoreo.getChildren().addAll(rect2,cocina2);});
                                //_seccionMonitoreo.getChildren().addAll(_seccionPlanos.getChildren());});
                                
-                        mesas2=(ArrayList<Mesa>) mesas.clone();
                         
                     
                   for (Mesa m: mesas2){
@@ -316,19 +375,25 @@ public class InterfazAdministrador {
                       Mesa m2= new Mesa(m.getRadio(),m.getNumero(),m.getCentrox(),m.getCentroy());   
                       Label nume_mesa=  new Label(m.getNumero());
                       Circle c1= m2.getCircle();  
+                       c1.setOnMouseMoved((MouseEvent e)->{
+                               System.out.println("ooo");
+                               _rootA.getChildren().add(new Label("AAA"));
+                               
+                           
+                           });
                        //if(_seccionMonitoreo.getChildren().contains(c1)==false){
                            Platform.runLater(()->{
                                _seccionMonitoreo.getChildren().addAll(c1,nume_mesa);
-                               c1.setLayoutX(m.getCentrox());
-                               c1.setLayoutY(m.getCentroy());
+                               double posx3=m.getCentrox();
+                               double posy3=m.getCentroy();
+                               c1.setCenterX(posx3);
+                               c1.setCenterY(posy3);
+                               //c1.setLayoutX(m.getCentrox());
+                               //c1.setLayoutY(m.getCentroy());
                                nume_mesa.setLayoutX(m.getCentrox());
                                nume_mesa.setLayoutY(m.getCentroy());
                             });
-                           c1.setOnMouseMoved((MouseEvent e)->{
-                               estadoMesa.setText(m.toString());
-                               System.out.println("manejo evento");
-                           
-                           });
+                          
                            
                        //}
                   }
@@ -337,12 +402,13 @@ public class InterfazAdministrador {
                 }catch(InterruptedException ex){
                     System.out.println("aaa");
                     System.out.println(ex.getMessage());
+                    
                 }
                   
                 //definir condicion de terminar
                  
 
-            }}}
+            }}*/}
 
 
 
