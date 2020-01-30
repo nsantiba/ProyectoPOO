@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Interfaz;
 
 import Actores.Administrador;
@@ -34,12 +29,17 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import Interfaz.Programa;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 /**
  *
  * @author Eddy Santibañez J
@@ -283,48 +283,126 @@ public class InterfazAdministrador {
            
           }
           
-           public void manejoGestionMenu() throws FileNotFoundException{
-            postres = new Button ( "Postres ", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/postres.png" ) ) ) );
-            bebidas = new Button ( "Bebidas", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/bebidas.png" ) ) ) );
-            salados = new Button ( "Salados",  new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/salados.png" ) ) ) );
-            opcionesMenu= new HBox();
-            productosMenu= new FlowPane();
-            opcionesMenu.getChildren().addAll(postres,bebidas,salados);
-            _SeccionMenu.getChildren().addAll(opcionesMenu,productosMenu);
-            //_planos.getChildren().add(_SeccionMenu);
-             EventHandler<MouseEvent> ev2= new EventHandler<MouseEvent>(){
-                @Override
-                public void handle(MouseEvent ev2) {
-                    try{
-                        productosMenu.getChildren().clear();
-                        if(ev2.getSource()==postres){
-                            System.out.println("Dentro");
+    public void manejoGestionMenu() throws FileNotFoundException
+    {
+        postres = new Button ( "Postres ", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/postres.png" ) ) ) );
+        bebidas = new Button ( "Bebidas", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/bebidas.png" ) ) ) );
+        salados = new Button ( "Salados",  new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/salados.png" ) ) ) );
+        Button btn_agregar = new Button ( "Agregar",  new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/agregar_plato.png" ) ) ) ); 
+        opcionesMenu = new HBox();
+        productosMenu = new FlowPane();
+        opcionesMenu.getChildren ( ).addAll ( postres, bebidas, salados, btn_agregar ) ;
+        _SeccionMenu.getChildren ( ).addAll ( opcionesMenu, productosMenu );
+        //_planos.getChildren().add(_SeccionMenu);
+            
+        EventHandler < MouseEvent > ev2 = new EventHandler < MouseEvent > ( )
+        {
+            @Override
+            public void handle ( MouseEvent ev2 )
+            {
+                try
+                {
+                    productosMenu.getChildren ( ).clear ( );
+
+                    if ( ev2.getSource ( ) == postres )
+                    {
+                        System.out.println("Dentro");
                         mostrarPorductos("Postre");
                     }
-                     if(ev2.getSource()==bebidas){
-                           System.out.println("Dentro1");
-                        mostrarPorductos("Bebida");
-                    
-                    }
-                      if(ev2.getSource()==salados){
-                            System.out.println("Dentro3");
-                       mostrarPorductos("Salado");
 
-                    
+                    if ( ev2.getSource ( ) == bebidas )
+                    {
+                        System.out.println("Dentro1");
+                        mostrarPorductos("Bebida");
                     }
-                    } catch (FileNotFoundException ex) {
-                        System.out.println(ex.getMessage());                    }
-                    
-                   
-                 
-             }};
-             postres.setOnMouseClicked(ev2);
-             bebidas.setOnMouseClicked(ev2);
-             salados.setOnMouseClicked(ev2);
-             }
-            
-            
-            
+
+                    if ( ev2.getSource ( ) == salados )
+                    {
+                        System.out.println ( "Dentro3" );
+                        mostrarPorductos ( "Salado" );
+                    }
+
+                    if ( ev2.getSource ( ) == btn_agregar )
+                    {
+                        System.out.println ( "Dentro de Agregar Plato" );
+                        GridPane grilla = new GridPane ( );
+                        grilla.add ( new Label ( "Plato:" ), 0, 0 );
+                        grilla.add ( new TextField (  ), 1, 0 );
+                        grilla.add ( new Label ( "Precio:" ), 0, 1 );
+                        grilla.add ( new TextField (  ), 1, 1 );
+                        grilla.add ( new Label ( "Ruta:" ), 0, 2 );
+                        grilla.add ( new TextField (  ), 1, 2 );
+                        FileChooser fch = new FileChooser ( );
+                        ImageView imgV_seleccionada = new ImageView ( );
+                        imgV_seleccionada.setFitHeight ( 250 );
+                        imgV_seleccionada.setFitWidth ( 250 );
+                        Button btn_explorar = new Button ( "Explorar" );
+                        btn_explorar.setOnAction
+                        ( 
+                            new EventHandler < ActionEvent > ( )
+                            {
+                                @Override
+                                public void handle ( ActionEvent t )
+                                {
+                                    try
+                                    {
+                                        File archivo = fch.showOpenDialog ( ventanaMesa );
+                                        if ( archivo.isFile() && ( archivo.getName ( ).contains ( ".jpg" ) || archivo.getName ( ).contains ( ".png" ) || 
+                                                                   archivo.getName ( ).contains ( ".bmp" ) || archivo.getName ( ).contains ( ".gif" ) ) )
+                                        {
+                                            String ruta = archivo.toURI ( ).toURL ( ).toString ( );
+                                            Image img = new Image ( ruta );
+                                            imgV_seleccionada.setImage ( img );
+                                        }
+                                    }
+                                    catch ( Exception e )
+                                    {
+                                        System.out.println ( "Error" );
+                                    }
+                                }
+                            }
+                        );
+                        grilla.add ( btn_explorar, 2, 2 );
+                        grilla.add ( imgV_seleccionada,  1, 5 );
+                        grilla.setHgap ( 5 );
+                        grilla.setVgap ( 5 );
+                        grilla.setPadding ( new Insets ( 5 ) );
+                        productosMenu.getChildren ( ).add ( grilla );
+                    }
+                }
+                catch ( FileNotFoundException ex )
+                {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        }; 
+        postres.setOnMouseClicked ( ev2 );
+        bebidas.setOnMouseClicked ( ev2 );
+        salados.setOnMouseClicked ( ev2 );
+        btn_agregar.setOnMouseClicked ( ev2 );
+    }
+    
+    public void mostrarPorductos ( String tipo ) throws FileNotFoundException
+    {
+        for ( Producto p: Programa.productos )
+        {
+            if ( p.getTipo ( ).equals ( tipo ) )
+            {
+                VBox infoProducto = new VBox();
+                String s = "src/recursos/" + p.getN_imagen();
+                FileInputStream inputstream = new FileInputStream(s); 
+                Image img = new Image(inputstream);
+                ImageView imgview = new ImageView(img);
+                imgview.setFitHeight(100);
+                imgview.setFitWidth(100);
+                Label l1= new Label(p.getNombreProducto());
+                Label l2= new Label(String.valueOf(p.getPrecio()));
+                infoProducto.getChildren().addAll(imgview,l1,l2);
+                productosMenu.getChildren().add(infoProducto);
+            }
+        }
+    }
+    
            //_planos.getChildren().add(l);
            
            //_rootA.getChildren().add(_seccionPlanos);  
@@ -435,34 +513,4 @@ public class InterfazAdministrador {
             });
          
         }
-          
-       public void mostrarPorductos(String tipo) throws FileNotFoundException{
-        
-                for(Producto p: Programa.productos){
-                    if(p.getTipo().equals(tipo)){
-                        VBox infoProducto= new VBox();
-    
-                    String s= "src/recursos/"+p.getN_imagen();
-                    FileInputStream inputstream = new FileInputStream(s); 
-                    Image img= new Image(inputstream);
-                    ImageView imgview= new ImageView(img);
-                    imgview.setFitHeight(100);
-                    imgview.setFitWidth(100);
-                    Label l1= new Label(p.getNombreProducto());
-                    Label l2= new Label(String.valueOf(p.getPrecio()));
-                    infoProducto.getChildren().addAll(imgview,l1,l2);
-                    productosMenu.getChildren().add(infoProducto);
-                    
-                                
-                }
-              }
-           
-               
-           
-           
-        }
-          
-  }
-
-
-
+}

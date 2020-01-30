@@ -9,6 +9,7 @@ import Actores.Administrador;
 import Actores.Mesero;
 import Actores.Persona;
 import static Interfaz.Programa.restaurante;
+import java.io.FileNotFoundException;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -80,8 +81,6 @@ public class VistaPrograma {
        _continuar.setOnMouseClicked(ev);
 
   }
-     
-   
    
    public Persona buscarPersona(String correo, String contrasena){
          for (Persona p:  restaurante.getPersonas() ){
@@ -93,15 +92,19 @@ public class VistaPrograma {
         return null;
 
 }
-   
-   public void crearInterfazAdmin(){
-       InterfazAdministrador Interfaz_admin= new InterfazAdministrador();
-       VBox adminInterf= Interfaz_admin.getRootA();
-       root.getChildren().add(adminInterf);
-   }
-   
-   
-  
-}
-
     
+    public void crearInterfazAdmin ( )
+    {
+        try
+        {
+            InterfazAdministrador Interfaz_admin = new InterfazAdministrador ( );
+            VBox adminInterf= Interfaz_admin.getRootA();
+            root.getChildren().add(adminInterf); 
+        }
+        catch ( FileNotFoundException e )
+        {
+            System.out.println ( "Archivo no encontrado" );
+        }
+        
+    }
+}
