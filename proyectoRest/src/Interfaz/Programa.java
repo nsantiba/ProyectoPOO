@@ -31,7 +31,7 @@ public class Programa extends Application {
         //lo de los meseros usuarios tambien es en un archivo
         restaurante= new Restaurante(); 
         Mesero m1= new Mesero("mesero1@gmail.com","mesero1");
-        Administrador a1= new Administrador("admin1@gmail.com","admin1");
+        Administrador a1= new Administrador("admin","admin");
         restaurante.getPersonas().add(a1);
         restaurante.getPersonas().add(m1);
         
@@ -58,8 +58,8 @@ public class Programa extends Application {
     }
     @Override
     public void start(Stage primaryStage)  {
-       VistaPrograma p= new VistaPrograma();
-        sc = new Scene(p.getRoot(),600,600);
+       VistaPrograma p = new VistaPrograma();
+        sc = new Scene(p.getRoot(),675,600);
        primaryStage.setScene(sc);
        primaryStage.show();
     }

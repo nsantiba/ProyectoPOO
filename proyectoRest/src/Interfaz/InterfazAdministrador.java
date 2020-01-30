@@ -100,7 +100,7 @@ public class InterfazAdministrador {
         Button salados; 
         
      
-       public InterfazAdministrador(){
+       public InterfazAdministrador() throws FileNotFoundException{
            crearMenu();
            crearSeccionPlanosyMonitoreo();
           
@@ -122,14 +122,14 @@ public class InterfazAdministrador {
     
        
        
-       public void crearMenu(){
+       public void crearMenu() throws FileNotFoundException{
            _rootA= new VBox();
-           _menu= new HBox(); 
-           _monitoreo= new Button("Monitoreo");
-           _disenoPlano= new Button("Diseño Plano");
-           _gestionMenu= new Button("Gestión Menú");
-           _reporteVentas= new Button("ReporteVentas");
-           _adminSalir= new Button("Salir"); 
+           _menu= new HBox();
+           _monitoreo = new Button ( "Monitoreo", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/monitoreo.png" ) ) ) );
+           _disenoPlano = new Button ( "Diseño Plano", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/plano.png" ) ) )  );
+           _gestionMenu = new Button ( "Gestión Menú", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/menu.png" ) ) ) );
+           _reporteVentas = new Button ( "ReporteVentas", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/reporte.png" ) ) ) );           
+           _adminSalir = new Button ( "Salir", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/salir.png" ) ) ) ); 
            _planos= new Pane();
            
            _menu.getChildren().addAll(_monitoreo,_disenoPlano,_gestionMenu,_reporteVentas,_adminSalir);
@@ -283,10 +283,10 @@ public class InterfazAdministrador {
            
           }
           
-           public void manejoGestionMenu(){
-            postres= new Button("Postres");
-            bebidas= new Button("Bebidas");
-            salados= new Button("Salados");
+           public void manejoGestionMenu() throws FileNotFoundException{
+            postres = new Button ( "Postres ", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/postres.png" ) ) ) );
+            bebidas = new Button ( "Bebidas", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/bebidas.png" ) ) ) );
+            salados = new Button ( "Salados",  new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/salados.png" ) ) ) );
             opcionesMenu= new HBox();
             productosMenu= new FlowPane();
             opcionesMenu.getChildren().addAll(postres,bebidas,salados);
@@ -347,7 +347,7 @@ public class InterfazAdministrador {
             c_Total = new TableColumn("Total");
    
           table.getColumns().addAll(c_Fecha, c_Mesa, c_Mesero,c_Cuenta,c_Cliente,c_Total);
-           
+          _planos.getChildren().add(table);
            //_rootA.getChildren().add(_seccionPlanos);
               
          }
