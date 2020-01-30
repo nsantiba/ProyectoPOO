@@ -5,23 +5,32 @@
  */
 package Actores;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
  *
  * @author Eddy Santibañez J
  */
-public class Producto {
+public class Producto implements Serializable  {
     private String NombreProducto; 
     private double precio; 
     private String n_imagen;
-    private String Tipo;
+    private String tipo;
+    
 
-    public Producto(String NombreProducto, double precio, String n_imagen, String Tipo) {
+    public Producto(String NombreProducto, double precio, String n_imagen,String tipo) {
         this.NombreProducto = NombreProducto;
         this.precio = precio;
         this.n_imagen = n_imagen;
-        this.Tipo = Tipo;
+        this.tipo = tipo;
+
+        
     }
 
     @Override
@@ -30,7 +39,7 @@ public class Producto {
         hash = 23 * hash + Objects.hashCode(this.NombreProducto);
         hash = 23 * hash + (int) (Double.doubleToLongBits(this.precio) ^ (Double.doubleToLongBits(this.precio) >>> 32));
         hash = 23 * hash + Objects.hashCode(this.n_imagen);
-        hash = 23 * hash + Objects.hashCode(this.Tipo);
+    
         return hash;
     }
 
@@ -55,15 +64,24 @@ public class Producto {
         if (!Objects.equals(this.n_imagen, other.n_imagen)) {
             return false;
         }
-        if (!Objects.equals(this.Tipo, other.Tipo)) {
+        if (!Objects.equals(this.tipo, other.tipo)) {
             return false;
         }
+       
         return true;
     }
 
     @Override
     public String toString() {
-        return "Producto{" + "NombreProducto=" + NombreProducto + ", Tipo=" + Tipo + '}';
+        return NombreProducto;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
     
     public String getNombreProducto() {
@@ -89,15 +107,9 @@ public class Producto {
     public void setN_imagen(String n_imagen) {
         this.n_imagen = n_imagen;
     }
-
-    public String getTipo() {
-        return Tipo;
-    }
-
-    public void setTipo(String Tipo) {
-        this.Tipo = Tipo;
-    }
     
-    
+     
+ 
     
 }
+  

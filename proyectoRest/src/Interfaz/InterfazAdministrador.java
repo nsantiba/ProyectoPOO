@@ -9,6 +9,7 @@ import Actores.Administrador;
 import Actores.Mesa;
 import Actores.Mesero;
 import Actores.Persona;
+import Actores.Producto;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,21 +26,35 @@ import java.util.Iterator;
 import java.util.SortedMap;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
+import Interfaz.Programa;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 /**
  *
  * @author Eddy Santibañez J
  */
 public class InterfazAdministrador {
        private ArrayList<Mesa> mesas= new ArrayList<>();
-       //private ArrayList<Mesa> mesas2;
+       
        VBox _rootA;
        HBox _menu; 
        Pane _seccionPlanos= new Pane();
        Pane _planos;
        Pane _seccionMonitoreo= new Pane();
+       VBox _SeccionMenu= new VBox();
+       HBox opcionesMenu; 
+       FlowPane productosMenu;
        Button _monitoreo; 
        Button _disenoPlano;
        Button _gestionMenu;
@@ -63,12 +78,26 @@ public class InterfazAdministrador {
         Rectangle rect = new Rectangle(10, 250); 
         Rectangle rect2= new Rectangle(10, 250);
         Label estadoMesa= new Label();
-          boolean continuar= true;
+        private TableView table;
+        TableColumn c_Fecha;
+        TableColumn c_Mesa;
+        TableColumn c_Mesero;
+        TableColumn c_Cuenta;
+        TableColumn c_Cliente;
+        TableColumn c_Total;
+        Label  _Finicio;
+        Label _Ffin;
+        TextField inicio;
+        TextField fin;
+        boolean continuar= true;
         VBox infoMesa;
         String estado= " ";
-         String mesero=" ";
-         String valorfac;
-         
+        String mesero=" ";
+        String valorfac;
+        Button buscar;
+        Button postres;
+        Button bebidas;
+        Button salados; 
         
      
        public InterfazAdministrador(){
@@ -77,6 +106,7 @@ public class InterfazAdministrador {
           
            manejoMonitoreo();
            manejoDisenoPlano();
+           manejoGestionMenu();
            //MonitoreoPlano monitoreoPlano= new MonitoreoPlano();
            //Thread t1= new Thread(monitoreoPlano);
            //t1.start();
@@ -125,7 +155,9 @@ public class InterfazAdministrador {
                }
                 if(ev.getSource()==_gestionMenu){
                      _planos.getChildren().clear();
-                     manejoGestionMenu();
+                     _planos.getChildren().add(_SeccionMenu);
+                     
+                  
                }
                 if(ev.getSource()==_reporteVentas){
                      _planos.getChildren().clear();
@@ -252,14 +284,70 @@ public class InterfazAdministrador {
           }
           
            public void manejoGestionMenu(){
-            Label l= new Label("manejar el evento en el flowPane");
-           _planos.getChildren().add(l);
+            postres= new Button("Postres");
+            bebidas= new Button("Bebidas");
+            salados= new Button("Salados");
+            opcionesMenu= new HBox();
+            productosMenu= new FlowPane();
+            opcionesMenu.getChildren().addAll(postres,bebidas,salados);
+            _SeccionMenu.getChildren().addAll(opcionesMenu,productosMenu);
+            //_planos.getChildren().add(_SeccionMenu);
+             EventHandler<MouseEvent> ev2= new EventHandler<MouseEvent>(){
+                @Override
+                public void handle(MouseEvent ev2) {
+                    try{
+                        productosMenu.getChildren().clear();
+                        if(ev2.getSource()==postres){
+                            System.out.println("Dentro");
+                        mostrarPorductos("Postre");
+                    }
+                     if(ev2.getSource()==bebidas){
+                           System.out.println("Dentro1");
+                        mostrarPorductos("Bebida");
+                    
+                    }
+                      if(ev2.getSource()==salados){
+                            System.out.println("Dentro3");
+                       mostrarPorductos("Salado");
+
+                    
+                    }
+                    } catch (FileNotFoundException ex) {
+                        System.out.println(ex.getMessage());                    }
+                    
+                   
+                 
+             }};
+             postres.setOnMouseClicked(ev2);
+             bebidas.setOnMouseClicked(ev2);
+             salados.setOnMouseClicked(ev2);
+             }
+            
+            
+            
+           //_planos.getChildren().add(l);
+           
            //_rootA.getChildren().add(_seccionPlanos);  
                
-         }
+         
           public void manejoReporteVentas(){
-           Label l= new Label("manejar el evento en el flowPane");
-           _planos.getChildren().add(l);
+            Label l= new Label("manejar el evento en el flowPane");
+            _planos.getChildren().add(l);
+            table = new TableView();
+            _Finicio= new Label("F inico");
+            _Ffin= new Label("F inico");
+            inicio= new TextField();
+            fin= new TextField();
+            buscar= new Button("Buscar");
+            c_Fecha = new TableColumn("Fecha");
+            c_Mesa = new TableColumn("Mesa");
+            c_Mesero = new TableColumn("Mesero");
+            c_Cuenta = new TableColumn("# Cuenta");
+            c_Cliente = new TableColumn("Cliente");
+            c_Total = new TableColumn("Total");
+   
+          table.getColumns().addAll(c_Fecha, c_Mesa, c_Mesero,c_Cuenta,c_Cliente,c_Total);
+           
            //_rootA.getChildren().add(_seccionPlanos);
               
          }
@@ -346,69 +434,35 @@ public class InterfazAdministrador {
           
             });
          
-}
-             
-          /*private class MonitoreoPlano implements Runnable{
-            
+        }
           
-            private MonitoreoPlano() {
-
-            }
-
-            @Override
-            public void run() {
-                continuar= true;
-                try{
-                    while(continuar==true){
-                        System.out.println("hilloo");
-                        mesas2=(ArrayList<Mesa>) mesas.clone();
-                        
-                        Platform.runLater(()->{
-                               _seccionMonitoreo.getChildren().clear();
-                               _seccionMonitoreo.getChildren().addAll(rect2,cocina2);});
-                               //_seccionMonitoreo.getChildren().addAll(_seccionPlanos.getChildren());});
-                               
-                        
+       public void mostrarPorductos(String tipo) throws FileNotFoundException{
+        
+                for(Producto p: Programa.productos){
+                    if(p.getTipo().equals(tipo)){
+                        VBox infoProducto= new VBox();
+    
+                    String s= "src/recursos/"+p.getN_imagen();
+                    FileInputStream inputstream = new FileInputStream(s); 
+                    Image img= new Image(inputstream);
+                    ImageView imgview= new ImageView(img);
+                    imgview.setFitHeight(100);
+                    imgview.setFitWidth(100);
+                    Label l1= new Label(p.getNombreProducto());
+                    Label l2= new Label(String.valueOf(p.getPrecio()));
+                    infoProducto.getChildren().addAll(imgview,l1,l2);
+                    productosMenu.getChildren().add(infoProducto);
                     
-                  for (Mesa m: mesas2){
-                      
-                      Mesa m2= new Mesa(m.getRadio(),m.getNumero(),m.getCentrox(),m.getCentroy());   
-                      Label nume_mesa=  new Label(m.getNumero());
-                      Circle c1= m2.getCircle();  
-                       c1.setOnMouseMoved((MouseEvent e)->{
-                               System.out.println("ooo");
-                               _rootA.getChildren().add(new Label("AAA"));
-                               
-                           
-                           });
-                       //if(_seccionMonitoreo.getChildren().contains(c1)==false){
-                           Platform.runLater(()->{
-                               _seccionMonitoreo.getChildren().addAll(c1,nume_mesa);
-                               double posx3=m.getCentrox();
-                               double posy3=m.getCentroy();
-                               c1.setCenterX(posx3);
-                               c1.setCenterY(posy3);
-                               //c1.setLayoutX(m.getCentrox());
-                               //c1.setLayoutY(m.getCentroy());
-                               nume_mesa.setLayoutX(m.getCentrox());
-                               nume_mesa.setLayoutY(m.getCentroy());
-                            });
-                          
-                           
-                       //}
-                  }
-                }Thread.sleep(700000000);
- 
-                }catch(InterruptedException ex){
-                    System.out.println("aaa");
-                    System.out.println(ex.getMessage());
-                    
+                                
                 }
-                  
-                //definir condicion de terminar
-                 
-
-            }}*/}
+              }
+           
+               
+           
+           
+        }
+          
+  }
 
 
 
