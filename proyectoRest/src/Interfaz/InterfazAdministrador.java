@@ -39,6 +39,7 @@ import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 /**
  *
@@ -414,10 +415,15 @@ public class InterfazAdministrador {
            //_rootA.getChildren().add(_seccionPlanos);
               
          }
-          public void manejoAdminSalir(){
-              
-           Label l= new Label("manejar el evento en el flowPane");
-           _planos.getChildren().add(l);
+          public void manejoAdminSalir() {
+            VistaPrograma p = new VistaPrograma();
+            StackPane regreso = p.getRoot();
+            _rootA.getChildren().clear();
+            _rootA.getChildren().add(regreso);
+            //stage.getScene().setRoot();
+            
+           //Label l= new Label("manejar el evento en el flowPane");
+           //_planos.getChildren().add(l);
            //_rootA.getChildren().add(_seccionPlanos);
          }
            
