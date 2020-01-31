@@ -186,6 +186,8 @@ public class InterfazAdministrador {
              Label l_estado= new Label("Estado: "+estado);
              Label MeseroMesa= new Label("Mesero: "+mesero);        
              infoMesa.getChildren().addAll(l_estado,MeseroMesa,l_valor);
+             infoMesa.setLayoutX(100);
+             infoMesa.setLayoutY(300);
              
          
          }       
@@ -260,9 +262,14 @@ public class InterfazAdministrador {
                     //_planos.getChildren().remove(borrarMesa);
 
 
-                    //});
+                    });
+                    
+                    c.setOnMouseEntered((MouseEvent e5)->{  
+                        Mesero r  = m.getMesero();
+                        String mesero = r.toString();
                            
                     });
+                    
                      c2.setOnMouseMoved((MouseEvent e6)->{
                                System.out.println("ooo");
                               
@@ -281,7 +288,7 @@ public class InterfazAdministrador {
                          
                           
            
-          }
+                }
           
     public void manejoGestionMenu() throws FileNotFoundException
     {
@@ -295,60 +302,42 @@ public class InterfazAdministrador {
         _SeccionMenu.getChildren ( ).addAll ( opcionesMenu, productosMenu );
         //_planos.getChildren().add(_SeccionMenu);
             
-        EventHandler < MouseEvent > ev2 = new EventHandler < MouseEvent > ( )
-        {
-            @Override
-            public void handle ( MouseEvent ev2 )
-            {
-                try
-                {
-                    productosMenu.getChildren ( ).clear ( );
-
-                    if ( ev2.getSource ( ) == postres )
-                    {
-                        System.out.println("Dentro");
-                        mostrarPorductos("Postre");
-                    }
-
-                    if ( ev2.getSource ( ) == bebidas )
-                    {
-                        System.out.println("Dentro1");
-                        mostrarPorductos("Bebida");
-                    }
-
-                    if ( ev2.getSource ( ) == salados )
-                    {
-                        System.out.println ( "Dentro3" );
-                        mostrarPorductos ( "Salado" );
-                    }
-
-                    if ( ev2.getSource ( ) == btn_agregar )
-                    {
-                        System.out.println ( "Dentro de Agregar Plato" );
-                        GridPane grilla = new GridPane ( );
-                        grilla.add ( new Label ( "Plato:" ), 0, 0 );
-                        grilla.add ( new TextField (  ), 1, 0 );
-                        grilla.add ( new Label ( "Precio:" ), 0, 1 );
-                        grilla.add ( new TextField (  ), 1, 1 );
-                        grilla.add ( new Label ( "Ruta:" ), 0, 2 );
-                        grilla.add ( new TextField (  ), 1, 2 );
-                        FileChooser fch = new FileChooser ( );
-                        ImageView imgV_seleccionada = new ImageView ( );
-                        imgV_seleccionada.setFitHeight ( 250 );
-                        imgV_seleccionada.setFitWidth ( 250 );
-                        Button btn_explorar = new Button ( "Explorar" );
-                        btn_explorar.setOnAction
-                        ( 
-                            new EventHandler < ActionEvent > ( )
-                            {
-                                @Override
-                                public void handle ( ActionEvent t )
-                                {
+        EventHandler < MouseEvent > ev2 = (MouseEvent ev1) -> {
+            try {
+                productosMenu.getChildren ( ).clear ( );
+                if (ev1.getSource() == postres) {
+                    System.out.println("Dentro");
+                    mostrarPorductos("Postre");
+                }
+                if (ev1.getSource() == bebidas) {
+                    System.out.println("Dentro1");
+                    mostrarPorductos("Bebida");
+                }
+                if (ev1.getSource() == salados) {
+                    System.out.println ( "Dentro3" );
+                    mostrarPorductos ( "Salado" );
+                }
+                if (ev1.getSource() == btn_agregar) {
+                    System.out.println ( "Dentro de Agregar Plato" );
+                    GridPane grilla = new GridPane ( );
+                    grilla.add ( new Label ( "Plato:" ), 0, 0 );
+                    grilla.add ( new TextField (  ), 1, 0 );
+                    grilla.add ( new Label ( "Precio:" ), 0, 1 );
+                    grilla.add ( new TextField (  ), 1, 1 );
+                    grilla.add ( new Label ( "Ruta:" ), 0, 2 );
+                    grilla.add ( new TextField (  ), 1, 2 );
+                    FileChooser fch = new FileChooser ( );
+                    ImageView imgV_seleccionada = new ImageView ( );
+                    imgV_seleccionada.setFitHeight ( 250 );
+                    imgV_seleccionada.setFitWidth ( 250 );
+                    Button btn_explorar = new Button ( "Explorar" );
+                    btn_explorar.setOnAction
+                                ((ActionEvent t) -> {
                                     try
                                     {
                                         File archivo = fch.showOpenDialog ( ventanaMesa );
-                                        if ( archivo.isFile() && ( archivo.getName ( ).contains ( ".jpg" ) || archivo.getName ( ).contains ( ".png" ) || 
-                                                                   archivo.getName ( ).contains ( ".bmp" ) || archivo.getName ( ).contains ( ".gif" ) ) )
+                                        if ( archivo.isFile() && ( archivo.getName ( ).contains ( ".jpg" ) || archivo.getName ( ).contains ( ".png" ) ||
+                                                archivo.getName ( ).contains ( ".bmp" ) || archivo.getName ( ).contains ( ".gif" ) ) )
                                         {
                                             String ruta = archivo.toURI ( ).toURL ( ).toString ( );
                                             Image img = new Image ( ruta );
@@ -359,21 +348,17 @@ public class InterfazAdministrador {
                                     {
                                         System.out.println ( "Error" );
                                     }
-                                }
-                            }
-                        );
-                        grilla.add ( btn_explorar, 2, 2 );
-                        grilla.add ( imgV_seleccionada,  1, 5 );
-                        grilla.setHgap ( 5 );
-                        grilla.setVgap ( 5 );
-                        grilla.setPadding ( new Insets ( 5 ) );
-                        productosMenu.getChildren ( ).add ( grilla );
-                    }
+                    });
+                    grilla.add ( btn_explorar, 2, 2 );
+                    grilla.add ( imgV_seleccionada,  1, 5 );
+                    grilla.setHgap ( 5 );
+                    grilla.setVgap ( 5 );
+                    grilla.setPadding ( new Insets ( 5 ) );
+                    productosMenu.getChildren ( ).add ( grilla );
                 }
-                catch ( FileNotFoundException ex )
-                {
-                    System.out.println(ex.getMessage());
-                }
+            }catch ( FileNotFoundException ex )
+            {
+                System.out.println(ex.getMessage());
             }
         }; 
         postres.setOnMouseClicked ( ev2 );

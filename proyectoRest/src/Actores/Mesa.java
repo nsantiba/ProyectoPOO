@@ -22,6 +22,8 @@ public class Mesa  {
     private double centroy; 
     private String numero;
     private Circle circle;
+    private boolean ocupado;
+    private Mesero mesero;
         
     
     public Mesa(int radio, String numero, double centrox, double centroy){
@@ -30,6 +32,7 @@ public class Mesa  {
      this.radio= radio;
      this.centrox= centrox;
      this.centroy= centroy;
+     this.ocupado = false;
      
      this.circle = new Circle(radio);
      circle.setCenterX(centroy);
@@ -122,7 +125,17 @@ public class Mesa  {
         }
         return true;
     }
+
+    public Mesero getMesero() {
+        return mesero;
+    }
     
+    public boolean getOcupado(){
+        return ocupado;
+    }
     
+    public void setOcupado(boolean ocupado){
+        this.ocupado = ocupado;
+    }
     
 }

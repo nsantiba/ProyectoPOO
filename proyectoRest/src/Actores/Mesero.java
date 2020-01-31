@@ -13,9 +13,14 @@ import java.util.List;
  */
 public class Mesero extends Persona{
     List<Mesa> mesas; 
+    private String nombre;
+    private String apellido;
+    
     
     public Mesero(String correo, String contrasena) {
         super(correo, contrasena);
     }
+    
+    
     
 }

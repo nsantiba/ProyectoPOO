@@ -32,6 +32,8 @@ public class Programa extends Application {
         restaurante= new Restaurante(); 
         Mesero m1= new Mesero("mesero1@gmail.com","mesero1");
         Administrador a1= new Administrador("admin","admin");
+        Administrador test = new Administrador("t","t");
+        restaurante.getPersonas().add(test);
         restaurante.getPersonas().add(a1);
         restaurante.getPersonas().add(m1);
         
