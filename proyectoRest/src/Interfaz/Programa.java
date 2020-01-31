@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Interfaz;
 
 import Actores.Administrador;
@@ -22,12 +17,15 @@ import javafx.stage.Stage;
  *
  * @author Eddy Santibañez J
  */
-public class Programa extends Application {
+public class Programa extends Application
+{
     static  ArrayList<Producto> productos;
     static Restaurante restaurante;
     static Scene sc;
-   @Override
-    public void init(){
+    
+    @Override
+    public void init ( )
+    {
         //lo de los meseros usuarios tambien es en un archivo
         restaurante= new Restaurante(); 
         Mesero m1= new Mesero("mesero1@gmail.com","mesero1");
@@ -55,17 +53,22 @@ public class Programa extends Application {
     }
 
     @Override
-    public void stop(){
-        System.out.println("fin");
+    public void stop ( )
+    {
+        System.out.println ( "Fin de la Ejecución" );
     }
+    
     @Override
-    public void start(Stage primaryStage)  {
-       VistaPrograma p = new VistaPrograma();
-        sc = new Scene(p.getRoot(),675,600);
-       primaryStage.setScene(sc);
-       primaryStage.show();
+    public void start ( Stage primaryStage )
+    {
+        VistaPrograma vistaPrograma = new VistaPrograma();
+        sc = new Scene ( vistaPrograma.getRoot ( ), 675, 700 );
+        primaryStage.setScene ( sc );
+        primaryStage.show ( );
     }
-       public static void main(String[] args) {
-            launch(args);
+    
+    public static void main ( String [ ] args )
+    {
+        launch ( args );
     }
 }
