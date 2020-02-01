@@ -6,8 +6,10 @@ import Actores.Producto;
 import Actores.Restaurante;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -17,6 +19,7 @@ import javafx.stage.Stage;
  *
  * @author Eddy Santibañez J
  */
+
 public class Programa extends Application
 {
     static  ArrayList<Producto> productos;
@@ -41,6 +44,9 @@ public class Programa extends Application
             
             productos = (ArrayList<Producto>)objInputStream.readObject();
             System.out.println(productos);
+            for(Producto p: productos){
+                System.out.println(p.getN_imagen());
+            }
             
         } catch (FileNotFoundException e1) {
             System.out.println("Error no enotrado");
@@ -55,7 +61,22 @@ public class Programa extends Application
     @Override
     public void stop ( )
     {
-        System.out.println ( "Fin de la Ejecución" );
+         System.out.println("fin");
+        
+        String filePath= "src/Archivos/archivoProdcutos";
+         try(ObjectOutputStream objOutputStream = new ObjectOutputStream(
+                    new FileOutputStream(filePath))) {
+            
+            objOutputStream.writeObject(productos);
+            System.out.println(productos);
+            
+        } catch (FileNotFoundException e1) {
+            System.out.println("Error no enotrado");
+            System.out.println(e1.getMessage());
+        } catch (IOException e2) {
+            System.err.println("Error ");
+       
+    }
     }
     
     @Override

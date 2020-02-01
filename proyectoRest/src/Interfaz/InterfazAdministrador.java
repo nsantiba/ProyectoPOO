@@ -34,8 +34,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -292,7 +294,11 @@ public class InterfazAdministrador {
                 }
           
     public void manejoGestionMenu() throws FileNotFoundException
-    {
+    {  ComboBox<String> ctipo= new ComboBox (FXCollections.observableArrayList("Salado","Bebida","Postre"));
+        TextField nombrePlato= new TextField();
+        TextField precioPlato= new TextField();
+        TextField rutaImg= new TextField();
+        Button agregar= new Button("Agregar");
         postres = new Button ( "Postres ", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/postres.png" ) ) ) );
         bebidas = new Button ( "Bebidas", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/bebidas.png" ) ) ) );
         salados = new Button ( "Salados",  new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/salados.png" ) ) ) );
@@ -321,18 +327,20 @@ public class InterfazAdministrador {
                 if (ev1.getSource() == btn_agregar) {
                     System.out.println ( "Dentro de Agregar Plato" );
                     GridPane grilla = new GridPane ( );
-                    grilla.add ( new Label ( "Plato:" ), 0, 0 );
-                    grilla.add ( new TextField (  ), 1, 0 );
-                    grilla.add ( new Label ( "Precio:" ), 0, 1 );
-                    grilla.add ( new TextField (  ), 1, 1 );
-                    grilla.add ( new Label ( "Ruta:" ), 0, 2 );
-                    grilla.add ( new TextField (  ), 1, 2 );
+                        grilla.add ( new Label ( "Nombre plato:" ), 0, 0 );
+                        grilla.add (nombrePlato, 1, 0 );
+                        grilla.add ( new Label ( "Tipo:" ), 0, 1 );
+                        grilla.add ( ctipo, 1, 1 );
+                        grilla.add ( new Label ( "Precio:" ), 0, 2 );
+                        grilla.add ( precioPlato, 1, 2 );
+                        grilla.add ( new Label ( "Ruta:" ), 0, 3 );
+                        grilla.add ( rutaImg, 1, 3 );
                     FileChooser fch = new FileChooser ( );
                     ImageView imgV_seleccionada = new ImageView ( );
                     imgV_seleccionada.setFitHeight ( 250 );
                     imgV_seleccionada.setFitWidth ( 250 );
                     Button btn_explorar = new Button ( "Explorar" );
-                    btn_explorar.setOnAction
+                    /*btn_explorar.setOnAction
                                 ((ActionEvent t) -> {
                                     try
                                     {
@@ -342,16 +350,29 @@ public class InterfazAdministrador {
                                         {
                                             String ruta = archivo.toURI ( ).toURL ( ).toString ( );
                                             Image img = new Image ( ruta );
-                                            imgV_seleccionada.setImage ( img );
-                                        }
+                                            imgV_seleccionada.setImage ( img );*/
+                                            agregar.setOnMouseClicked((MouseEvent e10)->{
+                                               System.out.println("dentro evento");
+                                               String tt= ctipo.getValue();
+                                               //en este constrcutor esoy pasanndo lo qye obtengo del text field no del examinarr
+                                               //por que sale error (corregir)
+                                                Producto pnuevo= new Producto(nombrePlato.getText(),Double.parseDouble(precioPlato.getText()),rutaImg.getText(),tt);
+                                                Programa.productos.add(pnuevo);
+                                             //se deria agregar sola gg
+                                             //eliminar la imagenen del grid
+                                             nombrePlato.setText("");
+                                             precioPlato.setText("");
+                                             rutaImg.setText("");});
+                                        /*}
                                     }
                                     catch ( Exception e )
                                     {
                                         System.out.println ( "Error" );
                                     }
-                    });
+                    });*/
                     grilla.add ( btn_explorar, 2, 2 );
                     grilla.add ( imgV_seleccionada,  1, 5 );
+                    grilla.add ( agregar,  1, 6 );
                     grilla.setHgap ( 5 );
                     grilla.setVgap ( 5 );
                     grilla.setPadding ( new Insets ( 5 ) );
@@ -375,7 +396,7 @@ public class InterfazAdministrador {
             if ( p.getTipo ( ).equals ( tipo ) )
             {
                 VBox infoProducto = new VBox();
-                String s = "src/recursos/" + p.getN_imagen();
+                String s = p.getN_imagen();
                 FileInputStream inputstream = new FileInputStream(s); 
                 Image img = new Image(inputstream);
                 ImageView imgview = new ImageView(img);

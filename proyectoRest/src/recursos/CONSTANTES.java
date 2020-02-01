@@ -10,6 +10,6 @@ package recursos;
  * @author Eddy Santibañez J
  */
 public class CONSTANTES {
-    private String ruta= "src/recursos/";
+    public static String ruta= "src/recursos/";
 
 }
