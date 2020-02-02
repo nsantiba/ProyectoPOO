@@ -4,8 +4,12 @@ import Actores.Administrador;
 import Actores.Mesero;
 import Actores.Persona;
 import static Interfaz.Programa.restaurante;
+import extras.Automatizacion;
+import extras.Validar;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -38,16 +42,21 @@ public class VistaPrograma
         try
         {
             root = new StackPane ( );
+            ArrayList < TextField > lista_campos = new ArrayList < TextField > ( );
             GridPane grilla = new GridPane ( );
             grilla.setAlignment ( Pos.CENTER );
             ImageView fondo = new ImageView ( new Image ( new FileInputStream ( "src/recursos/login1.png" ) ) );
             //fondo.setOpacity ( 0.25 );
             ImageView img = new ImageView ( new Image ( new FileInputStream ( "src/recursos/usuario.png" ) ) );
             Label lbl_login = new Label ( "Iniciar Sesión" );
-            Button btn_ingresar = new Button ( "Ingresar");
+            Button btn_ingresar = new Button ( "Ingresar" );
+            btn_ingresar.setDisable ( true );
             TextField txt_usuario = new TextField ( );
             TextField txt_contrasenia = new TextField ( );
             //btn_ingresar.setDefaultButton ( true );
+            
+            lista_campos.add ( txt_usuario );
+            lista_campos.add ( txt_contrasenia );
             
             grilla.add (img, 0, 0 );
             grilla.add ( lbl_login, 0, 1 );
@@ -101,7 +110,21 @@ public class VistaPrograma
                     }    
                 }
             };
+            
+            EventHandler < MouseEvent > evt_validar_ingreso = new EventHandler < MouseEvent > ( )
+            {
+                @Override
+                public void handle ( MouseEvent ev )
+                {
+                    Validar.ingreso ( lista_campos, btn_ingresar );
+                }
+            };
+            
             btn_ingresar.setOnMouseClicked(ev);
+            //txt_contrasenia.setOnMouseClicked ( evt_validar_ingreso );
+            //txt_usuario.setOnMouseClicked ( evt_validar_ingreso );
+            
+            Automatizacion.eventos ( lista_campos, evt_validar_ingreso );
         }
         catch ( Exception e )
         {
