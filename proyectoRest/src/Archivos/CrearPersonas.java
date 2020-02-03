@@ -60,6 +60,7 @@ public class CrearPersonas {
      */
     public static void main(String[] args) {
         cargarPersonal();
+       
     }
     
 }

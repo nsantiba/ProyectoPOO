@@ -5,6 +5,7 @@
  */
 package Actores;
 
+import java.io.Serializable;
 import java.util.Objects;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -15,30 +16,31 @@ import javafx.scene.shape.Circle;
  *
  * @author Eddy Santibañez J
  */
-public class Mesa  {
-    Color color;
+public class Mesa implements Serializable {
+   
     private int radio;
     private double centrox;
     private double centroy; 
     private String numero;
-    private Circle circle;
+    //transient private  Circle circle;
     private boolean ocupado;
     private Mesero mesero;
         
     
-    public Mesa(int radio, String numero, double centrox, double centroy){
+    public Mesa(int radio, String numero, double centrox, double centroy, boolean ocupado){
      
      this.numero= numero;
      this.radio= radio;
      this.centrox= centrox;
      this.centroy= centroy;
-     this.ocupado = false;
+     this.ocupado = ocupado;
+    
      
-     this.circle = new Circle(radio);
+     /*this.circle = new Circle(radio);
      circle.setCenterX(centroy);
-     circle.setCenterY(centroy);
+     circle.setCenterY(centroy);*/
   
-     circle.setFill(Color.YELLOW);
+
     }
 
     public int getRadio() {
@@ -73,23 +75,16 @@ public class Mesa  {
         this.numero = numero;
     }
     
-    public Circle getCircle() {
-        return circle;
-    }
+    //public Circle getCircle() {
+       // return ;
+    //}
 
-    public void setCircle(Circle circle) {
+   /* public void setCircle(Circle circle) {
         this.circle = circle;
-    }
+    }*/
     
     
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-        circle.setFill(color);
-    }
+  
 
     @Override
     public String toString() {
@@ -137,4 +132,9 @@ public class Mesa  {
     public void setOcupado(boolean ocupado){
         this.ocupado = ocupado;
     }
+
+    public void setMesero(Mesero mesero) {
+        this.mesero = mesero;
+    }
+    
 }

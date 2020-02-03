@@ -5,11 +5,13 @@
  */
 package Actores;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Eddy Santibañez J
  */
-public class Persona {
+public class Persona implements Serializable{
     private String correo; 
     private String contrasena;
 

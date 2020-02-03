@@ -51,7 +51,7 @@ import javafx.stage.FileChooser;
  * @author Eddy Santibañez J
  */
 public class InterfazAdministrador {
-       static ArrayList<Mesa> mesas= new ArrayList<>();
+       //static ArrayList<Mesa> mesas= new ArrayList<>();
        
        VBox _rootA;
        HBox _menu; 
@@ -204,16 +204,19 @@ public class InterfazAdministrador {
                     ventanaMesa.close(); //cierro la ventana
                     double posx= e.getSceneX();
                     double posy= e.getSceneY();
-                    Mesa m= new Mesa(mesa_capacidad,mesa_numero,posx,posy);
-                    Mesa m2= new Mesa(mesa_capacidad,mesa_numero,posx,posy);
-                    mesas.add(m);//agregp cada mesa a mesas 
+                    Mesa m= new Mesa(mesa_capacidad,mesa_numero,posx,posy,false);
+                    Programa.mesas.add(m);//agregp cada mesa a mesas 
                     System.out.println("se agregó");
-                    Circle c=m.getCircle();
-                    Circle c2= m2.getCircle();
+                    
+                    Circle c=new Circle(m.getRadio()*4);//*4 para aumentar el tamaño
+                    Circle c2= new Circle(m.getRadio()*4);
                     Label _numeMesa= new Label(mesa_numero);
                     Label _numeMesa2= new Label(mesa_numero);
                     c.setCenterX(posx);
                     c.setCenterY(posy);
+                    c.setFill(Color.YELLOW);
+                    c2.setFill(Color.YELLOW);
+                    
                     c2.setCenterX(posx);
                     c2.setCenterY(posy);
                     _numeMesa.setLayoutX(posx);
@@ -236,8 +239,7 @@ public class InterfazAdministrador {
                         _numeMesa.setLayoutY(posy2);
                         c2.setCenterX(posx2);
                         c2.setCenterY(posy2);
-                        m2.setCentrox(posx2);
-                        m2.setCentroy(posy2);
+                       
                         _numeMesa2.setLayoutX(posx2);
                         _numeMesa2.setLayoutY(posy2);
                         
@@ -251,7 +253,7 @@ public class InterfazAdministrador {
 
                     _seccionPlanos.getChildren().remove(_numeMesa);
                     _seccionPlanos.getChildren().remove(c);
-                    mesas.remove(m);
+                    Programa.mesas.remove(m);
                     _seccionMonitoreo.getChildren().remove(_numeMesa2);
                     _seccionMonitoreo.getChildren().remove(c2);
                     
@@ -262,9 +264,11 @@ public class InterfazAdministrador {
                     });
                     
                     c.setOnMouseEntered((MouseEvent e5)->{  
+                        /*
                         Mesero r  = m.getMesero();
                         String mesero = r.toString();
-                           
+                           */
+                        System.out.println("uwuu");
                     });
                     
                      c2.setOnMouseMoved((MouseEvent e6)->{
@@ -352,8 +356,7 @@ public class InterfazAdministrador {
                                                //por que sale error (corregir)
                                                 Producto pnuevo= new Producto(nombrePlato.getText(),Double.parseDouble(precioPlato.getText()),rutaImg.getText(),tt);
                                                 Programa.productos.add(pnuevo);
-                                             //se deria agregar sola gg
-                                             //eliminar la imagenen del grid
+                                             
                                              nombrePlato.setText("");
                                              precioPlato.setText("");
                                              rutaImg.setText("");});
@@ -467,9 +470,10 @@ public class InterfazAdministrador {
             sc2= new Scene(rootMesa, 300,300); 
           }
           
-          public ArrayList<Mesa> getMesas(){
+          /*public ArrayList<Mesa> getMesas(){
               return mesas;
-          }
+          }*/
+          
          
           public void crearSeccionPlanosyMonitoreo(){
             cocina= new Label("Cocina");
@@ -483,8 +487,72 @@ public class InterfazAdministrador {
             rect2.setLayoutY(5);
             cocina2.setLayoutX(410);
             cocina2.setLayoutY(35);
-            
-            Mesa m= new Mesa(10,"1",50.0,50.0);
+            _seccionPlanos.getChildren().addAll(cocina,rect);
+            _seccionMonitoreo.getChildren().addAll(cocina2, rect2);
+            for (Mesa m: Programa.mesas){
+                Circle c= new Circle(m.getRadio()*4);//*4 para aumentar el tamaño
+                Circle c2= new Circle(m.getRadio()*4);
+                double x= m.getCentrox();
+                double y= m.getCentroy();
+                String nume= m.getNumero();
+                System.out.println(c);
+                c.setCenterX(x);
+                c.setCenterY(y);
+                if(m.getOcupado()==true){
+                   c.setFill(Color.RED); 
+                   c2.setFill(Color.RED); 
+                }else{
+                    c.setFill(Color.YELLOW); 
+                    c2.setFill(Color.YELLOW); 
+                    
+                }
+                Label _numeMesa= new Label(nume);
+                _numeMesa.setLayoutX(x);
+                _numeMesa.setLayoutY(y);
+                c2.setCenterX(x);
+                c2.setCenterY(y);
+                 
+                Label _numeMesa2= new Label(nume);
+                _numeMesa2.setLayoutX(x);
+                _numeMesa2.setLayoutY(y);
+                _seccionPlanos.getChildren().addAll(c,_numeMesa);
+                _seccionMonitoreo.getChildren().addAll(c2,_numeMesa2);
+                //mesas.add(m);
+                    c.setOnMouseDragged((MouseEvent e3)->{
+                    c.setCenterX(e3.getSceneX());
+                    c.setCenterY(e3.getSceneY());
+                   
+                    _numeMesa.setLayoutX(e3.getSceneX());
+                    _numeMesa.setLayoutY(e3.getSceneY());
+             
+                    c2.setCenterX(e3.getSceneX());
+                    c2.setCenterY(e3.getSceneY());
+                   
+                    _numeMesa2.setLayoutX(e3.getSceneX());
+                    _numeMesa2.setLayoutY(e3.getSceneY());
+                
+                    m.setCentrox(e3.getSceneX());
+                    m.setCentroy(e3.getSceneY());
+            });
+                        
+            c.setOnMouseClicked((MouseEvent e4)->{
+                //_planos.getChildren().add(borrarMesa);
+                //borrarMesa.setOnMouseClicked((MouseEvent e5)->{
+                _seccionPlanos.getChildren().remove(_numeMesa);
+                _seccionPlanos.getChildren().remove(c);
+               // _planos.getChildren().remove(borrarMesa);
+
+
+             // });
+
+            });
+             c2.setOnMouseMoved((MouseEvent e6)->{
+                System.out.println("ooo");
+          
+            });
+         
+            }
+            /*Mesa m= new Mesa(10,"1",50.0,50.0);
             Mesa m2= new Mesa(10,"1",50.0,50.0);
             Circle c= m.getCircle();
             Circle c2= m2.getCircle();
@@ -530,7 +598,7 @@ public class InterfazAdministrador {
              c2.setOnMouseMoved((MouseEvent e6)->{
                 System.out.println("ooo");
           
-            });
+            });*/
          
         }
 }

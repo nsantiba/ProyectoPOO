@@ -30,26 +30,15 @@ public class Programa extends Application
     static ArrayList<Producto> productos;
     static ArrayList<Persona> personas;
     static ArrayList<Mesa> mesas;
-    static ArrayList<Cliente> clientes;
-    static Restaurante restaurante;
+    static ArrayList<Cliente> clientes= new ArrayList<Cliente>();
+    static ArrayList<Mesero> meseros= new ArrayList<Mesero>();
+    //static Restaurante restaurante;
     static Scene sc;
     //static Mesero meseromain;
     
     @Override
     public void init ( )
     {
-        restaurante= new Restaurante(); 
-        
-        Mesero m1= new Mesero("mesero1@gmail.com","mesero1","Cristiano","Ronaldo");
-        Administrador a1= new Administrador("admin","admin");
-        Administrador test = new Administrador("a","a");
-        Mesero test2 = new Mesero("m","m","Chi","Chenol");
-        restaurante.getPersonas().add(test);
-        restaurante.getPersonas().add(a1);
-        restaurante.getPersonas().add(m1);
-        restaurante.getPersonas().add(test2);
-        restaurante.getMeseros().add(test2);
-        
         String filePath= "src/Archivos/archivoProdcutos";
          try(ObjectInputStream objInputStream = new ObjectInputStream(
                     new FileInputStream(filePath))) {
@@ -68,22 +57,17 @@ public class Programa extends Application
         String filePath2= "src/Archivos/archivoPersonas";
          try(ObjectInputStream obj = new ObjectInputStream(
                 new FileInputStream(filePath2))) {
-            
-            //Por alguna razon el arraylist retorna null
+           
             personas = (ArrayList<Persona>)obj.readObject();
             System.out.println(personas);
             
-            //Esta siguiente linea rompe el programa porque el arraylist anterior retorna null NO SE POR QUE
-
-            /*for (Persona p: personas){
-                restaurante.getPersonas().add(p);
+            for (Persona p: personas){
+                
                 if (p instanceof Mesero){
-                    restaurante.getMeseros().add((Mesero) p);
+                    meseros.add((Mesero) p);
                 } 
-            }*/
-            //System.out.println(restaurante.getPersonas());
-            //System.out.println(restaurante.getMeseros());
-                       
+            }
+          
         } catch (FileNotFoundException ex) {
             System.out.println("Error no encontrado");
         } catch (IOException | ClassNotFoundException el) {
@@ -91,7 +75,7 @@ public class Programa extends Application
             System.out.println(el.getMessage());
         } 
 
-        /*String filePath3= "src/Archivos/archivoMesas";
+        String filePath3= "src/Archivos/archivoMesas";
          try(ObjectInputStream objInputStream = new ObjectInputStream(
                     new FileInputStream(filePath3))) {
             
@@ -103,7 +87,7 @@ public class Programa extends Application
             System.out.println(e1.getMessage());
         } catch (IOException | ClassNotFoundException e3) {
             System.err.println("Error al desrializar3");
-        }*/
+        }
          
         //Programa.meseromain = new Mesero("test","test","test","test");
    
@@ -117,9 +101,9 @@ public class Programa extends Application
         String filePath= "src/Archivos/archivoProdcutos";
          try(ObjectOutputStream objOutputStream = new ObjectOutputStream(
                     new FileOutputStream(filePath))) {
-            
-            objOutputStream.writeObject(productos);
-            System.out.println(productos);
+            ArrayList<Producto> productos2=(ArrayList<Producto>)productos.clone();
+            objOutputStream.writeObject(productos2);
+            System.out.println(productos2);
             
         } catch (FileNotFoundException e1) {
             System.out.println("Error no enotrado");
@@ -128,12 +112,27 @@ public class Programa extends Application
             System.err.println("Error ");
        
     }
-        String pathPersonas = "src/Archivos/archivoPersonas";
+       
+       String pathPersonas = "src/Archivos/archivoPersonas";
          try(ObjectOutputStream objOutputStream2 = new ObjectOutputStream(
                     new FileOutputStream(pathPersonas))) {
+            ArrayList<Persona> personas2=(ArrayList<Persona>)personas.clone();
+            objOutputStream2.writeObject(personas2);
+            System.out.println(personas2);
             
-            objOutputStream2.writeObject(personas);
-            System.out.println(personas);
+        } catch (FileNotFoundException e1) {
+            System.out.println("Error 1");
+            System.out.println(e1.getMessage());
+        } catch (IOException e2) {
+            System.err.println("Error 2");
+       
+    }
+          String pathMesas = "src/Archivos/archivoMesas";
+         try(ObjectOutputStream objOutputStream2 = new ObjectOutputStream(
+                    new FileOutputStream(pathMesas))) {
+            ArrayList<Mesa> mesas2=(ArrayList<Mesa>)mesas.clone();
+            objOutputStream2.writeObject(mesas2);
+            System.out.println(mesas2);
             
         } catch (FileNotFoundException e1) {
             System.out.println("Error 1");
@@ -143,6 +142,8 @@ public class Programa extends Application
        
     }
     }
+    
+    
     
     @Override
     public void start ( Stage primaryStage )

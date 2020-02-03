@@ -5,6 +5,7 @@
  */
 package Actores;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,13 +13,15 @@ import java.util.List;
  * @author Eddy Santibañez J
  */
 public class Mesero extends Persona{
-    List<Mesa> mesas; 
+    private List<Mesa> mesas= new ArrayList<Mesa>();
     private String nombre;
     private String apellido;
     
     
     public Mesero(String correo, String contrasena) {
+        
         super(correo, contrasena);
+        
     }
     
     public Mesero(String correo, String contrasena, String nombre, String apellido) {
@@ -47,4 +50,9 @@ public class Mesero extends Persona{
     public String toString(){
         return ("Mesero "+nombre+" "+apellido);
     }  
+
+    public List<Mesa> getMesas() {
+        return mesas;
+    }
+    
 }

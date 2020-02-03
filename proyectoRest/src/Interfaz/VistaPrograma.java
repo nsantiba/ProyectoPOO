@@ -3,7 +3,7 @@ package Interfaz;
 import Actores.Administrador;
 import Actores.Mesero;
 import Actores.Persona;
-import static Interfaz.Programa.restaurante;
+//import  Interfaz.Programa.restaurante;
 import Interfaz.InterfazMesero;
 import Interfaz.Programa;
 import extras.Automatizacion;
@@ -27,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import Interfaz.Programa;
 
 /**
  *
@@ -35,7 +36,7 @@ import javafx.scene.layout.VBox;
 public class VistaPrograma
 {
     private StackPane root;
-    static Mesero meseroprin;
+    //static Mesero meseroprin;
     
     public VistaPrograma ( )
     {
@@ -106,13 +107,15 @@ public class VistaPrograma
                 
                 if ( p_dentro instanceof Mesero )
                 {
-                    Mesero m_dentro = buscarMesero(correo_ingresado, contrasenia_ingresada);
+                    Mesero m= (Mesero)p_dentro;
+                    //El mesero es P_dentro ya lo tienes.
+                    //Mesero m_dentro = buscarMesero(correo_ingresado, contrasenia_ingresada);
                     //System.out.println(m_dentro);
-                    meseroprin = m_dentro; //No se esta cambiando la variable??
+                   // meseroprin = m_dentro; //No se esta cambiando la variable??
                     //System.out.println("Que mesero es? "+meseroprin.toString());
                     root.getChildren().clear();
                   try {
-                      crearInterfazMesero();
+                      crearInterfazMesero(m);
                   } catch (FileNotFoundException ex) {
                       System.out.println("No hay archivo.");
                   }
@@ -144,7 +147,8 @@ public class VistaPrograma
    
     public Persona buscarPersona ( String correo, String contrasena )
     {
-        for ( Persona persona: restaurante.getPersonas ( ) )
+        
+        for ( Persona persona: Programa.personas )
         {
             if ( persona.getContrasena ( ).equals ( contrasena ) && persona.getCorreo ( ).equals ( correo ) )
             {
@@ -155,18 +159,18 @@ public class VistaPrograma
         return null;
     }
     
-    public Mesero buscarMesero(String correo, String contra){
-        for (Mesero mesero: restaurante.getMeseros()){
+    /*public Mesero buscarMesero(String correo, String contra){
+        for (Mesero mesero:Programa.meseros){
             if (mesero.getCorreo().equals(correo) && mesero.getContrasena().equals(contra)){
                 return mesero;
             }
         }
         return null;
-    }
+    }*/
     
-    public void setMesero(Mesero meseroprin){
+    /*public void setMesero(Mesero meseroprin){
         this.meseroprin=meseroprin;
-    }
+    }*/
     
     public void crearInterfazAdmin ( )
     {
@@ -182,8 +186,8 @@ public class VistaPrograma
         }
     }
     
-    public void crearInterfazMesero() throws FileNotFoundException{ 
-        InterfazMesero Interfaz_mesero = new InterfazMesero();
+    public void crearInterfazMesero(Mesero m) throws FileNotFoundException{ 
+        InterfazMesero Interfaz_mesero = new InterfazMesero(m);
         VBox meseroInterf = Interfaz_mesero.getRootM();
         root.getChildren().add(meseroInterf);
     }

@@ -14,6 +14,8 @@ import java.util.ArrayList;
 public class Restaurante {
     private ArrayList<Persona> personas; 
     private ArrayList<Mesero> meseros; 
+  
+    
     //private Mesero meseromain;
 
     public ArrayList<Persona> getPersonas() {
