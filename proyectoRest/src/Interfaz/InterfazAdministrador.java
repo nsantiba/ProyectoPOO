@@ -32,6 +32,9 @@ import Interfaz.Programa;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -48,7 +51,7 @@ import javafx.stage.FileChooser;
  * @author Eddy Santibañez J
  */
 public class InterfazAdministrador {
-       private ArrayList<Mesa> mesas= new ArrayList<>();
+       static ArrayList<Mesa> mesas= new ArrayList<>();
        
        VBox _rootA;
        HBox _menu; 
@@ -220,6 +223,7 @@ public class InterfazAdministrador {
 
                     _seccionPlanos.getChildren().addAll(c,_numeMesa);
                     _seccionMonitoreo.getChildren().addAll(c2,_numeMesa2);
+                    
                     c.setOnMouseDragged((MouseEvent e3)->{
                         double posx2=e3.getSceneX();
                         double posy2=e3.getSceneY();
@@ -431,6 +435,16 @@ public class InterfazAdministrador {
             StackPane regreso = p.getRoot();
             _rootA.getChildren().clear();
             _rootA.getChildren().add(regreso);
+            
+            /*String filepath = "src/Archivos/archivoMesas";
+            try (ObjectOutputStream objOutputStream =  new ObjectOutputStream(new FileOutputStream(filepath))){
+                
+            objOutputStream.writeObject(mesas);
+        } catch (FileNotFoundException e1) {
+            System.out.println(e1.getMessage());
+        } catch (IOException e2) {
+            System.out.println(e2.getMessage());
+        }*/
             //stage.getScene().setRoot();
             
            //Label l= new Label("manejar el evento en el flowPane");
@@ -451,6 +465,10 @@ public class InterfazAdministrador {
             _Tnum= new TextField();
             _aceptar= new Button("Aceptar");
             sc2= new Scene(rootMesa, 300,300); 
+          }
+          
+          public ArrayList<Mesa> getMesas(){
+              return mesas;
           }
          
           public void crearSeccionPlanosyMonitoreo(){

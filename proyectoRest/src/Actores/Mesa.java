@@ -137,5 +137,4 @@ public class Mesa  {
     public void setOcupado(boolean ocupado){
         this.ocupado = ocupado;
     }
-    
 }

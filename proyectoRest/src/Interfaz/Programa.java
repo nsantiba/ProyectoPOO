@@ -1,6 +1,8 @@
 package Interfaz;
 
 import Actores.Administrador;
+import Actores.Cliente;
+import Actores.Mesa;
 import Actores.Mesero;
 import Actores.Persona;
 import Actores.Producto;
@@ -27,6 +29,8 @@ public class Programa extends Application
 {
     static ArrayList<Producto> productos;
     static ArrayList<Persona> personas;
+    static ArrayList<Mesa> mesas;
+    static ArrayList<Cliente> clientes;
     static Restaurante restaurante;
     static Scene sc;
     //static Mesero meseromain;
@@ -57,7 +61,7 @@ public class Programa extends Application
             System.out.println("Error no enotrado");
             System.out.println(e1.getMessage());
         } catch (IOException | ClassNotFoundException e2) {
-            System.err.println("Error al desrializar");
+            System.err.println("Error al deserializar1");
         }
         
        
@@ -83,9 +87,23 @@ public class Programa extends Application
         } catch (FileNotFoundException ex) {
             System.out.println("Error no encontrado");
         } catch (IOException | ClassNotFoundException el) {
-            System.out.println("Error mas grande");
+            System.out.println("Error deserializar2");
             System.out.println(el.getMessage());
         } 
+
+        /*String filePath3= "src/Archivos/archivoMesas";
+         try(ObjectInputStream objInputStream = new ObjectInputStream(
+                    new FileInputStream(filePath3))) {
+            
+            mesas = (ArrayList<Mesa>)objInputStream.readObject();
+            System.out.println(mesas);
+            
+        } catch (FileNotFoundException e1) {
+            System.out.println("Error no enotrado");
+            System.out.println(e1.getMessage());
+        } catch (IOException | ClassNotFoundException e3) {
+            System.err.println("Error al desrializar3");
+        }*/
          
         //Programa.meseromain = new Mesero("test","test","test","test");
    

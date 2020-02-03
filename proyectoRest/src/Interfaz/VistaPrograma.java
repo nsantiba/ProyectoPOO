@@ -12,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -109,7 +111,11 @@ public class VistaPrograma
                     meseroprin = m_dentro; //No se esta cambiando la variable??
                     //System.out.println("Que mesero es? "+meseroprin.toString());
                     root.getChildren().clear();
-                    crearInterfazMesero();
+                  try {
+                      crearInterfazMesero();
+                  } catch (FileNotFoundException ex) {
+                      System.out.println("No hay archivo.");
+                  }
                     
 
                 }
@@ -176,7 +182,7 @@ public class VistaPrograma
         }
     }
     
-    public void crearInterfazMesero(){ 
+    public void crearInterfazMesero() throws FileNotFoundException{ 
         InterfazMesero Interfaz_mesero = new InterfazMesero();
         VBox meseroInterf = Interfaz_mesero.getRootM();
         root.getChildren().add(meseroInterf);
