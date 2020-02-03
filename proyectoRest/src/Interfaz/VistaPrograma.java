@@ -33,6 +33,7 @@ import javafx.scene.layout.VBox;
 public class VistaPrograma
 {
     private StackPane root;
+    static Mesero meseroprin;
     
     public VistaPrograma ( )
     {
@@ -41,6 +42,8 @@ public class VistaPrograma
     
     public void crearInicio ( )
     {
+        //System.out.println("Null? " +meseroprin);
+        
         try
         {
             root = new StackPane ( );
@@ -101,12 +104,12 @@ public class VistaPrograma
                 
                 if ( p_dentro instanceof Mesero )
                 {
+                    Mesero m_dentro = buscarMesero(correo_ingresado, contrasenia_ingresada);
+                    //System.out.println(m_dentro);
+                    meseroprin = m_dentro; //No se esta cambiando la variable??
+                    //System.out.println("Que mesero es? "+meseroprin.toString());
                     root.getChildren().clear();
                     crearInterfazMesero();
-                    Mesero m_dentro = buscarMesero(correo_ingresado, contrasenia_ingresada);
-                    Programa.meseromain = m_dentro; //No se esta cambiando la variable??
-                    System.out.println("Que mesero es?"+Programa.meseromain.toString());
-                    //Programa.meseros.add(meseromain);
                     
 
                 }
@@ -153,6 +156,10 @@ public class VistaPrograma
             }
         }
         return null;
+    }
+    
+    public void setMesero(Mesero meseroprin){
+        this.meseroprin=meseroprin;
     }
     
     public void crearInterfazAdmin ( )

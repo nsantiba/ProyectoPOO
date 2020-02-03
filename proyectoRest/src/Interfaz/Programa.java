@@ -2,6 +2,7 @@ package Interfaz;
 
 import Actores.Administrador;
 import Actores.Mesero;
+import Actores.Persona;
 import Actores.Producto;
 import Actores.Restaurante;
 import java.io.FileInputStream;
@@ -11,6 +12,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -22,17 +25,17 @@ import javafx.stage.Stage;
 
 public class Programa extends Application
 {
-    static  ArrayList<Producto> productos;
-    static ArrayList<Mesero> meseros;
+    static ArrayList<Producto> productos;
+    static ArrayList<Persona> personas;
     static Restaurante restaurante;
     static Scene sc;
-    static Mesero meseromain;
+    //static Mesero meseromain;
     
     @Override
     public void init ( )
     {
-        //lo de los meseros usuarios tambien es en un archivo
         restaurante= new Restaurante(); 
+        
         Mesero m1= new Mesero("mesero1@gmail.com","mesero1","Cristiano","Ronaldo");
         Administrador a1= new Administrador("admin","admin");
         Administrador test = new Administrador("a","a");
@@ -49,20 +52,45 @@ public class Programa extends Application
             
             productos = (ArrayList<Producto>)objInputStream.readObject();
             System.out.println(productos);
-            for(Producto p: productos){
-                System.out.println(p.getN_imagen());
-            }
             
         } catch (FileNotFoundException e1) {
             System.out.println("Error no enotrado");
             System.out.println(e1.getMessage());
-        } catch (IOException e2) {
-            System.err.println("Error al desrializar");
-        } catch (ClassNotFoundException ex){
+        } catch (IOException | ClassNotFoundException e2) {
             System.err.println("Error al desrializar");
         }
-    }
+        
+       
+        String filePath2= "src/Archivos/archivoPersonas";
+         try(ObjectInputStream obj = new ObjectInputStream(
+                new FileInputStream(filePath2))) {
+            
+            //Por alguna razon el arraylist retorna null
+            personas = (ArrayList<Persona>)obj.readObject();
+            System.out.println(personas);
+            
+            //Esta siguiente linea rompe el programa porque el arraylist anterior retorna null NO SE POR QUE
 
+            /*for (Persona p: personas){
+                restaurante.getPersonas().add(p);
+                if (p instanceof Mesero){
+                    restaurante.getMeseros().add((Mesero) p);
+                } 
+            }*/
+            //System.out.println(restaurante.getPersonas());
+            //System.out.println(restaurante.getMeseros());
+                       
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error no encontrado");
+        } catch (IOException | ClassNotFoundException el) {
+            System.out.println("Error mas grande");
+            System.out.println(el.getMessage());
+        } 
+         
+        //Programa.meseromain = new Mesero("test","test","test","test");
+   
+    }
+    
     @Override
     public void stop ( )
     {
@@ -80,6 +108,20 @@ public class Programa extends Application
             System.out.println(e1.getMessage());
         } catch (IOException e2) {
             System.err.println("Error ");
+       
+    }
+        String pathPersonas = "src/Archivos/archivoPersonas";
+         try(ObjectOutputStream objOutputStream2 = new ObjectOutputStream(
+                    new FileOutputStream(pathPersonas))) {
+            
+            objOutputStream2.writeObject(personas);
+            System.out.println(personas);
+            
+        } catch (FileNotFoundException e1) {
+            System.out.println("Error 1");
+            System.out.println(e1.getMessage());
+        } catch (IOException e2) {
+            System.err.println("Error 2");
        
     }
     }

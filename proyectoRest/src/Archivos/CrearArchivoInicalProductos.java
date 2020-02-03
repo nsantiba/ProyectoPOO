@@ -17,8 +17,7 @@ import recursos.CONSTANTES;
  * @author Eddy Santibañez J
  */
 public class CrearArchivoInicalProductos {
-    
-    
+
       public static void cargarProductos(){
               //este metodo no iría aqui si no en aplicacion ??. si no leer un archivo Corregir....
               ArrayList<Producto> pp= new ArrayList<>();
@@ -37,6 +36,8 @@ public class CrearArchivoInicalProductos {
               pp.add(hotDog);
               pp.add(cakeChoco);
               pp.add(gelatina);
+              
+              System.out.println(pp);
 
               
             String filePath= "src/Archivos/archivoProdcutos";
@@ -55,12 +56,8 @@ public class CrearArchivoInicalProductos {
             
           
               
-          }
+}
       
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         cargarProductos();
     }

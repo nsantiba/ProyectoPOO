@@ -10,4 +10,9 @@ public class Administrador extends Persona
     {
         super(correo, contrasena);
     }
+    
+    @Override
+    public String toString(){
+        return ("Administrador");
+    }
 }
