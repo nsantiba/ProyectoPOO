@@ -28,6 +28,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import Interfaz.Programa;
+import extras.CuadroDialogo;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -89,25 +91,22 @@ public class VistaPrograma
             EventHandler < MouseEvent > ev = (MouseEvent ev1) -> {
               String correo_ingresado = txt_usuario.getText ( );
               String contrasenia_ingresada = txt_contrasenia.getText ( );
-              Persona p_dentro = buscarPersona ( correo_ingresado, contrasenia_ingresada );
+              Persona persona = buscarPersona ( correo_ingresado, contrasenia_ingresada );
               
-                if ( p_dentro == null )
+                if ( persona == null )
                 {
-                    Label _noValido= new Label("Credenciales Incorrectas. Vuelva a inetntarlo ");
-                    grilla.getChildren().remove(_noValido);
-                    grilla.add(_noValido, 1, 6);
-                    System.out.println("nooo");
+                    CuadroDialogo.alerta ( "ERROR", null, "Credenciales Incorrectas" );
                 }
                 
-                if ( p_dentro instanceof Administrador )
+                if ( persona instanceof Administrador )
                 {
                     root.getChildren().clear();
                     crearInterfazAdmin();
                 }
                 
-                if ( p_dentro instanceof Mesero )
+                if ( persona instanceof Mesero )
                 {
-                    Mesero m= (Mesero)p_dentro;
+                    Mesero m= (Mesero)persona;
                     //El mesero es P_dentro ya lo tienes.
                     //Mesero m_dentro = buscarMesero(correo_ingresado, contrasenia_ingresada);
                     //System.out.println(m_dentro);
@@ -147,14 +146,10 @@ public class VistaPrograma
    
     public Persona buscarPersona ( String correo, String contrasena )
     {
-        
         for ( Persona persona: Programa.personas )
         {
-            if ( persona.getContrasena ( ).equals ( contrasena ) && persona.getCorreo ( ).equals ( correo ) )
-            {
+            if ( persona.getCorreo ( ).equals ( correo ) && persona.getContrasena ( ).equals ( contrasena ) )
                 return persona;
-            }
-            //verificar que exista la persona gg
         }
         return null;
     }

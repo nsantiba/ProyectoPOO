@@ -29,17 +29,21 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import Interfaz.Programa;
+import extras.CuadroDialogo;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -433,12 +437,15 @@ public class InterfazAdministrador {
            //_rootA.getChildren().add(_seccionPlanos);
               
          }
-          public void manejoAdminSalir() {
-            VistaPrograma p = new VistaPrograma();
-            StackPane regreso = p.getRoot();
-            _rootA.getChildren().clear();
-            _rootA.getChildren().add(regreso);
-            
+        public void manejoAdminSalir ( )
+        {           
+            if ( CuadroDialogo.confirmacion ( "CONFIRMACIÓN", "¿Está seguro que desea cerrar sesión?", null ).get ( ) == ButtonType.OK )
+            {
+                VistaPrograma p = new VistaPrograma();
+                StackPane regreso = p.getRoot();
+                _rootA.getChildren().clear();
+                _rootA.getChildren().add(regreso);
+            }
             /*String filepath = "src/Archivos/archivoMesas";
             try (ObjectOutputStream objOutputStream =  new ObjectOutputStream(new FileOutputStream(filepath))){
                 
@@ -453,7 +460,7 @@ public class InterfazAdministrador {
            //Label l= new Label("manejar el evento en el flowPane");
            //_planos.getChildren().add(l);
            //_rootA.getChildren().add(_seccionPlanos);
-         }
+        }
            
            
           public void crearVentana(){

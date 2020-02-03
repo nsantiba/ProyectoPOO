@@ -54,18 +54,16 @@ public class Programa extends Application
         }
         
        
-        String filePath2= "src/Archivos/archivoPersonas";
-         try(ObjectInputStream obj = new ObjectInputStream(
-                new FileInputStream(filePath2))) {
-           
-            personas = (ArrayList<Persona>)obj.readObject();
-            System.out.println(personas);
+        String filePath2 = "src/Archivos/archivoPersonas";
+        try ( ObjectInputStream obj = new ObjectInputStream ( new FileInputStream ( filePath2 ) ) )
+        {
+            personas = ( ArrayList < Persona > ) obj.readObject ( );
+            System.out.println ( "Leyendo personas" + personas );
             
-            for (Persona p: personas){
-                
-                if (p instanceof Mesero){
-                    meseros.add((Mesero) p);
-                } 
+            for (Persona p: personas)
+            {                
+                if ( p instanceof Mesero )
+                    meseros.add ( ( Mesero ) p ); 
             }
           
         } catch (FileNotFoundException ex) {

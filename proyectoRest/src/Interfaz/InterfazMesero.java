@@ -28,6 +28,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import Interfaz.Programa;
+import extras.CuadroDialogo;
+import javafx.scene.control.ButtonType;
 
 /**
  *
@@ -170,10 +172,14 @@ public class InterfazMesero  {
 
     }    
 
-    private void manejoMeseroSalir() {
-        VistaPrograma p = new VistaPrograma();
+    private void manejoMeseroSalir ( )
+    {
+        if ( CuadroDialogo.confirmacion ( "CONFIRMACIÓN", "¿Está seguro que desea cerrar sesión?", null ).get ( ) == ButtonType.OK )
+        {
+            VistaPrograma p = new VistaPrograma();
             StackPane regreso = p.getRoot();
             _rootM.getChildren().clear();
             _rootM.getChildren().add(regreso);
+        }
     }
 }
