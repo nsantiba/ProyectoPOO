@@ -25,6 +25,7 @@ public class Mesa implements Serializable {
     //transient private  Circle circle;
     private boolean ocupado;
     private Mesero mesero;
+    private Cliente cliente;
         
     
     public Mesa(int radio, String numero, double centrox, double centroy, boolean ocupado){
@@ -34,7 +35,6 @@ public class Mesa implements Serializable {
      this.centrox= centrox;
      this.centroy= centroy;
      this.ocupado = ocupado;
-    
      
      /*this.circle = new Circle(radio);
      circle.setCenterX(centroy);
@@ -74,6 +74,16 @@ public class Mesa implements Serializable {
     public void setNumero(String numero) {
         this.numero = numero;
     }
+    
+    public Cliente getCliente(){
+        return cliente;
+    }
+    
+    public void setCliente(Cliente c){
+        this.cliente = c;
+    }
+   
+    
     
     //public Circle getCircle() {
        // return ;

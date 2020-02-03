@@ -5,19 +5,52 @@
  */
 package Actores;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Objects;
+
 /**
  *
  * @author user
  */
-public class Cliente {
+public class Cliente implements Serializable{
     String info;
+    //ArrayList<Producto> pedidos;
     
     public Cliente(String info){
         this.info = info;
         
     }
-    
+
     public String getInfo(){
         return info;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.info);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Cliente other = (Cliente) obj;
+        if (!Objects.equals(this.info, other.info)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
 }
