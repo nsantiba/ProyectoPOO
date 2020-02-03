@@ -21,6 +21,30 @@ public class Mesero extends Persona{
         super(correo, contrasena);
     }
     
+    public Mesero(String correo, String contrasena, String nombre, String apellido) {
+        super(correo, contrasena);
+        this.nombre = nombre;
+        this.apellido = apellido;
+    }
     
+    public Mesero(String correo, String contrasena, String nombre, String apellido, List<Mesa> mesas) {
+        super(correo, contrasena);
+        this.nombre = nombre;
+        this.apellido = apellido;
+    }
+
+
     
+    public String getNombre(){
+        return nombre;
+    }
+    
+    public String getApellido(){
+        return apellido;
+    }
+    
+    @Override
+    public String toString(){
+        return ("Mesero "+nombre+apellido);
+    }  
 }

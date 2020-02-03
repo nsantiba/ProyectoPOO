@@ -139,39 +139,29 @@ public class InterfazAdministrador {
            _rootA.getChildren().addAll(_menu,_planos);
           
            
-           EventHandler<MouseEvent> ev= new EventHandler<MouseEvent>(){
-           @Override
-           public void handle(MouseEvent ev) {
-    
-               if(ev.getSource()==_monitoreo){
-                    _planos.getChildren().clear();
-                    _planos.getChildren().add(_seccionMonitoreo);
-                    _planos.getChildren().add(infoMesa);
-                    //_rootA.getChildren().add(infoMesa);
-                    
-                    
+           EventHandler<MouseEvent> ev= (MouseEvent ev1) -> {
+               if (ev1.getSource() == _monitoreo) {
+                   _planos.getChildren().clear();
+                   _planos.getChildren().add(_seccionMonitoreo);
+                   _planos.getChildren().add(infoMesa);
+                   //_rootA.getChildren().add(infoMesa);
                }
-                if(ev.getSource()==_disenoPlano){
-                    _planos.getChildren().clear();///
-                    _planos.getChildren().add(_seccionPlanos);
-       
+               if (ev1.getSource() == _disenoPlano) {
+                   _planos.getChildren().clear();///
+                   _planos.getChildren().add(_seccionPlanos);
                }
-                if(ev.getSource()==_gestionMenu){
-                     _planos.getChildren().clear();
-                     _planos.getChildren().add(_SeccionMenu);
-                     
-                  
+               if (ev1.getSource() == _gestionMenu) {
+                   _planos.getChildren().clear();
+                   _planos.getChildren().add(_SeccionMenu);
                }
-                if(ev.getSource()==_reporteVentas){
-                     _planos.getChildren().clear();
-                     manejoReporteVentas();
+               if (ev1.getSource() == _reporteVentas) {
+                   _planos.getChildren().clear();
+                   manejoReporteVentas();
                }
-                if(ev.getSource()==_adminSalir){
-                    
-                manejoAdminSalir();
+               if (ev1.getSource() == _adminSalir) {
+                   manejoAdminSalir();
                }
-               
-          }};
+           };
           _monitoreo.setOnMouseClicked(ev);
           _disenoPlano.setOnMouseClicked(ev);
           _gestionMenu.setOnMouseClicked(ev);

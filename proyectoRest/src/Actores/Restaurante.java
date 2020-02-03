@@ -13,16 +13,21 @@ import java.util.ArrayList;
  */
 public class Restaurante {
     private ArrayList<Persona> personas; 
+    private ArrayList<Mesero> meseros; 
+    //private Mesero meseromain;
 
     public ArrayList<Persona> getPersonas() {
         return personas;
     }
 
+    public ArrayList<Mesero> getMeseros(){
+        return meseros;
+    }
  
 
     public Restaurante() {
         personas = new ArrayList<Persona>();
-        
+        meseros = new ArrayList<Mesero>();
     }
     
     

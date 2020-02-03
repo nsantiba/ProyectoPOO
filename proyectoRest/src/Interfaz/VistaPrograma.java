@@ -4,6 +4,8 @@ import Actores.Administrador;
 import Actores.Mesero;
 import Actores.Persona;
 import static Interfaz.Programa.restaurante;
+import Interfaz.InterfazMesero;
+import Interfaz.Programa;
 import extras.Automatizacion;
 import extras.Validar;
 import java.io.FileInputStream;
@@ -78,36 +80,35 @@ public class VistaPrograma
 
             root.getChildren ( ).addAll ( fondo, grilla );
 
-            EventHandler < MouseEvent > ev = new EventHandler < MouseEvent > ( )
-            {
-                @Override
-                public void handle ( MouseEvent ev )
+            EventHandler < MouseEvent > ev = (MouseEvent ev1) -> {
+              String correo_ingresado = txt_usuario.getText ( );
+              String contrasenia_ingresada = txt_contrasenia.getText ( );
+              Persona p_dentro = buscarPersona ( correo_ingresado, contrasenia_ingresada );
+              
+                if ( p_dentro == null )
                 {
-                    String correo_ingresado = txt_usuario.getText ( );
-                    String contrasenia_ingresada = txt_contrasenia.getText ( );
-                    Persona p_dentro = buscarPersona ( correo_ingresado, contrasenia_ingresada );
+                    Label _noValido= new Label("Credenciales Incorrectas. Vuelva a inetntarlo ");
+                    grilla.getChildren().remove(_noValido);
+                    grilla.add(_noValido, 1, 6);
+                    System.out.println("nooo");
+                }
+                
+                if ( p_dentro instanceof Administrador )
+                {
+                    root.getChildren().clear();
+                    crearInterfazAdmin();
+                }
+                
+                if ( p_dentro instanceof Mesero )
+                {
+                    root.getChildren().clear();
+                    crearInterfazMesero();
+                    Mesero m_dentro = buscarMesero(correo_ingresado, contrasenia_ingresada);
+                    Programa.meseromain = m_dentro; //No se esta cambiando la variable??
+                    System.out.println("Que mesero es?"+Programa.meseromain.toString());
+                    //Programa.meseros.add(meseromain);
+                    
 
-                    if ( p_dentro == null )
-                    {
-                       Label _noValido= new Label("Credenciales Incorrectas. Vuelva a inetntarlo ");
-                       grilla.getChildren().remove(_noValido);
-                       grilla.add(_noValido, 1, 6);
-                       System.out.println("nooo");
-                       //mejorarrr******************************
-                       //indicar que no se existee
-                    }
-
-                    if ( p_dentro instanceof Administrador )
-                    {
-                       root.getChildren().clear();
-                       crearInterfazAdmin();
-                    }
-
-                    if ( p_dentro instanceof Mesero )
-                    {
-                       //interfaz del mesero llamar
-                       System.out.println("wiii");
-                    }    
                 }
             };
             
@@ -145,6 +146,15 @@ public class VistaPrograma
         return null;
     }
     
+    public Mesero buscarMesero(String correo, String contra){
+        for (Mesero mesero: restaurante.getMeseros()){
+            if (mesero.getCorreo().equals(correo) && mesero.getContrasena().equals(contra)){
+                return mesero;
+            }
+        }
+        return null;
+    }
+    
     public void crearInterfazAdmin ( )
     {
         try
@@ -157,6 +167,12 @@ public class VistaPrograma
         {
             System.out.println ( "Archivo no encontrado" );
         }
+    }
+    
+    public void crearInterfazMesero(){ 
+        InterfazMesero Interfaz_mesero = new InterfazMesero();
+        VBox meseroInterf = Interfaz_mesero.getRootM();
+        root.getChildren().add(meseroInterf);
     }
     
     public StackPane getRoot ( )
