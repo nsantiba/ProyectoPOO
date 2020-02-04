@@ -354,35 +354,31 @@ public class InterfazMesero  {
                 String l3 = ("Nombre: "+l1+"\n"+"Precio: "+l2);
                 infoProducto = new Button(l3,imgview);
                  infoProducto.setOnMouseClicked((MouseEvent e20)->{
-                    System.out.println("Dentro para añadir");
+                      o.getProductos_orden().add(p);
+                         System.out.println("Dentro para añadir");
                         precioFinal= new Label();
                         nombreProducto= new Label();
                         cant_Punitario= new Label();
-                    if(o.getProductos_orden().contains(p)==false){
-                        //la primera vez que lo selecciono 
-                         
-                        o.getProductos_orden().add(p);
-                          System.out.println("fijado1");
-                         info_orden= new HBox();
-                        itemOrden_precio= new VBox();
-       
-                        itemOrden_precio.getChildren().addAll(nombreProducto,cant_Punitario);
-                        info_orden.getChildren().addAll(itemOrden_precio,precioFinal);
-                        ordenes.getChildren().add(info_orden);
-                        System.out.println("se añadido orden");
-                    }
-                       
-                    else{
-                        o.getProductos_orden().add(p);
-                         System.out.println("fijado"); 
-                    }
-                     int nuevo= Collections.frequency(o.getProductos_orden(), p);
-                     System.out.println(nuevo);
-                     System.out.println(p.getPrecio());
-                     cant_Punitario.setText("1 unidad(es) a "+p.getPrecio()+"/unidad"); 
-                     precioFinal.setText("$ "+(p.getPrecio()*nuevo));
-                     cant_Punitario.setText(nuevo+ " unidad(es) a "+p.getPrecio()+"/unidad");
-                     nombreProducto.setText(p.getNombreProducto());
+                        ArrayList<Producto> p_unicos= new ArrayList<>();
+                        for (Producto p2: o.getProductos_orden()){
+                            if(p_unicos.contains(p2)==false){
+                             p_unicos.add(p2);
+                        }
+                        }
+                       System.out.println(p_unicos);
+                        ordenes.getChildren().clear();
+                        for (Producto p3: p_unicos){
+                            int nuevo= Collections.frequency(o.getProductos_orden(), p3);
+                            info_orden= new HBox();
+                            itemOrden_precio= new VBox();
+                            precioFinal= new Label("$ "+p3.getPrecio()*nuevo);
+                            nombreProducto= new Label(p3.getNombreProducto());
+                            cant_Punitario= new Label(nuevo+ "unidad(es) a "+p3.getPrecio()+"/unidad");
+                           itemOrden_precio.getChildren().addAll(nombreProducto,cant_Punitario);
+                           info_orden.getChildren().addAll(itemOrden_precio,precioFinal);
+                           ordenes.getChildren().add(info_orden);
+                            }
+                
             });productosMenu.getChildren().add(infoProducto);
         }
     }}
