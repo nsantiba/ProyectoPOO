@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -18,13 +19,13 @@ import java.util.Objects;
  */
 public class Orden implements Serializable {
     private Cliente client;
-    private Map<Producto,Integer> productos_orden= new HashMap<Producto, Integer>();
+    private List<Producto> productos_orden= new ArrayList<Producto>();
     private LocalDate fecha;
     private Mesa mesa_orden;
     private int cuenta;
     private double total;
 
-    public Orden(Cliente client, Map<Producto ,Integer> productos_orden, LocalDate fecha, Mesa mesa_orden, int cuenta, double total) {
+    public Orden(Cliente client, ArrayList<Producto> productos_orden, LocalDate fecha, Mesa mesa_orden, int cuenta, double total) {
         this.client = client;
         this.productos_orden = productos_orden;
         this.fecha = fecha;
@@ -36,8 +37,10 @@ public class Orden implements Serializable {
     public Orden(Cliente infocliente2, LocalDate now, Mesa m, int cuenta2) {
         client=infocliente2;
         fecha= now;
-        cuenta= cuenta2;   
-        productos_orden= new HashMap<Producto, Integer>();
+        cuenta= cuenta2;  
+        mesa_orden= m;
+        //productos_orden= new HashMap<Producto, Integer>();
+        productos_orden= new ArrayList<Producto>();
     }
 
     public Cliente getClient() {
@@ -48,11 +51,11 @@ public class Orden implements Serializable {
         this.client = client;
     }
 
-    public Map<Producto ,Integer> getProductos_orden() {
+    public List<Producto> getProductos_orden() {
         return productos_orden;
     }
 
-    public void setProductos_orden(Map<Producto ,Integer> productos_orden) {
+    public void setProductos_orden(ArrayList<Producto> productos_orden) {
         this.productos_orden = productos_orden;
     }
 
@@ -135,7 +138,7 @@ public class Orden implements Serializable {
 
     @Override
     public String toString() {
-        return "Orden{" + "client=" + client + ", fecha=" + fecha + ", mesa_orden=" + mesa_orden + ", cuenta=" + cuenta + ", total=" + total + '}';
+        return "Orden"+client+" "+mesa_orden;
     }
     
 }

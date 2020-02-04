@@ -130,8 +130,7 @@ public class InterfazAdministrador {
            //MonitoreoPlano monitoreoPlano= new MonitoreoPlano();
            //Thread t1= new Thread(monitoreoPlano);
            //t1.start();
-           
-          
+ 
           
        }
 

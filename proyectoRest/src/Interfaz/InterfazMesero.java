@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 import Interfaz.Programa;
 import extras.CuadroDialogo;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -57,7 +58,7 @@ public class InterfazMesero  {
       Stage nuevaVentana;
       Button salir;
       Circle c;
-      Orden or;
+      //Orden or;
       TextField _nombreCliente;
       Stage nuevaVentanaOrden;
       VBox rootVentanaOrden;
@@ -73,6 +74,11 @@ public class InterfazMesero  {
       FlowPane productosMenu;
       Button infoProducto;
       //ArrayList<Mesa> mesas;
+       HBox info_orden;
+       VBox itemOrden_precio;
+       Label precioFinal;
+       Label nombreProducto;
+       Label cant_Punitario;
       
       public InterfazMesero (Mesero mesero) throws FileNotFoundException{
           crearMenu(mesero);
@@ -138,20 +144,23 @@ public class InterfazMesero  {
                         System.out.println("dentro");
                         
                         if(m.getOcupado()==false){
-                            System.out.println("Amarillo");
+                             System.out.println("Amarillo");
+                             
                             crearVentana();
                             _aceptar.setOnMouseClicked((MouseEvent ev5)->{
-                                 c.setFill(Color.GREEN);
-                            String infocliente = _nombreCliente.getText();
-                            nuevaVentana.close();
-                            int cuenta= Programa.numcuneta+1;
-                                Programa.numcuneta+=1;
-                                System.out.println(cuenta);
-                                Cliente infocliente2 = new Cliente(infocliente);
-                                 or= new Orden(infocliente2,LocalDate.now(),m,cuenta);
-                                 System.out.println(or);
-                               // m.setOrd(or);
-                                Programa.ordenes.add(or);
+                                c.setFill(Color.GREEN);
+                                String infocliente = _nombreCliente.getText();
+                                nuevaVentana.close();
+                                int cuenta= Programa.numcuneta+1;
+                                    Programa.numcuneta+=1;
+                                    System.out.println(cuenta);
+                                    Cliente infocliente2 = new Cliente(infocliente);
+                                    Orden or= new Orden(infocliente2,LocalDate.now(),m,cuenta);
+                                    System.out.println(or);
+                                 //m.setOrd(or);
+                                Programa.ordenes.add(or);//se añade la orden
+                                System.out.println("orden creada");
+                                System.out.println(or);
                                 Programa.clientes.add(infocliente2);
                                 m.setCliente(infocliente2);
                                 m.setOcupado(true);
@@ -169,14 +178,20 @@ public class InterfazMesero  {
                             
                             _labelOrdenHeader= new Label("Mesa: "+m.getNumero()+" - Cliente: "+m.getCliente().getInfo());
                             
-                            crearVentanaOrden(_labelOrdenHeader);
+                            
+                           
                             try {
-                                manejoMenuMesero(or);//akiii
-                               
+                                 for(Orden o: Programa.ordenes){//esto puede ser un metodo a parte
+                                     System.out.println(o);
+                                     System.out.println(o.getMesa_orden());
+                                    if ((o.getMesa_orden().equals(m))&& (o.getClient().equals(m.getCliente()))){
+                                        crearVentanaOrden(_labelOrdenHeader,o);//de una orden
+                                        manejoMenuMesero(o);//akiii
+                                    }
+                                }
                             } catch (FileNotFoundException ex) {
                                 System.out.println("No se encontro archivo");
                             }
-                            
                         }                        
                     
                     });
@@ -206,7 +221,7 @@ public class InterfazMesero  {
 
     }
 
-    public void crearVentanaOrden(Label l){
+    public void crearVentanaOrden(Label l,Orden o){
           nuevaVentanaOrden= new Stage();
           rootVentanaOrden= new VBox();
           
@@ -218,6 +233,26 @@ public class InterfazMesero  {
             
           _seccionOrdenes = new VBox();
            ordenes = new VBox();
+           
+          ArrayList<Producto> p_unicos= new ArrayList<>();
+           for (Producto p: o.getProductos_orden()){
+               if(p_unicos.contains(p)==false){
+                   p_unicos.add(p);
+               }
+           }
+           
+          for (Producto p: p_unicos){
+                int nuevo= Collections.frequency(o.getProductos_orden(), p);
+                 info_orden= new HBox();
+                 itemOrden_precio= new VBox();
+                 precioFinal= new Label("$ "+p.getPrecio()*nuevo);
+                 nombreProducto= new Label(p.getNombreProducto());
+                 cant_Punitario= new Label(nuevo+ "unidad(es) a "+p.getPrecio()+"/unidad");
+                itemOrden_precio.getChildren().addAll(nombreProducto,cant_Punitario);
+                info_orden.getChildren().addAll(itemOrden_precio,precioFinal);
+                ordenes.getChildren().add(info_orden);
+               
+           }
           _finalizarOrden= new Button("Finalizar Orden");
           _regresar = new Button("Regresar");
           
@@ -289,11 +324,39 @@ public class InterfazMesero  {
                 String l2= String.valueOf(p.getPrecio());
                 String l3 = ("Nombre: "+l1+"\n"+"Precio: "+l2);
                 infoProducto = new Button(l3,imgview);
-                
-                productosMenu.getChildren().add(infoProducto);
-            }
+                 infoProducto.setOnMouseClicked((MouseEvent e20)->{
+                    System.out.println("Dentro para añadir");
+                        precioFinal= new Label();
+                        nombreProducto= new Label();
+                        cant_Punitario= new Label();
+                    if(o.getProductos_orden().contains(p)==false){
+                        //la primera vez que lo selecciono 
+                         
+                        o.getProductos_orden().add(p);
+                          System.out.println("fijado1");
+                         info_orden= new HBox();
+                        itemOrden_precio= new VBox();
+       
+                        itemOrden_precio.getChildren().addAll(nombreProducto,cant_Punitario);
+                        info_orden.getChildren().addAll(itemOrden_precio,precioFinal);
+                        ordenes.getChildren().add(info_orden);
+                        System.out.println("se añadido orden");
+                    }
+                       
+                    else{
+                        o.getProductos_orden().add(p);
+                         System.out.println("fijado"); 
+                    }
+                     int nuevo= Collections.frequency(o.getProductos_orden(), p);
+                     System.out.println(nuevo);
+                     System.out.println(p.getPrecio());
+                     cant_Punitario.setText("1 unidad(es) a "+p.getPrecio()+"/unidad"); 
+                     precioFinal.setText("$ "+(p.getPrecio()*nuevo));
+                     cant_Punitario.setText(nuevo+ " unidad(es) a "+p.getPrecio()+"/unidad");
+                     nombreProducto.setText(p.getNombreProducto());
+            });productosMenu.getChildren().add(infoProducto);
         }
-    }
+    }}
     private void manejoMeseroSalir ( )
     {
         if ( CuadroDialogo.confirmacion ( "CONFIRMACIÓN", "¿Está seguro que desea cerrar sesión?", null ).get ( ) == ButtonType.OK )

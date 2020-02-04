@@ -13,6 +13,6 @@ public class Administrador extends Persona
     
     @Override
     public String toString(){
-        return ("Administrador");
+        return ("Administrador"+super.getCorreo());
     }
 }

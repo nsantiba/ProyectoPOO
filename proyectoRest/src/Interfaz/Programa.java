@@ -7,7 +7,7 @@ import Actores.Mesero;
 import Actores.Orden;
 import Actores.Persona;
 import Actores.Producto;
-import Actores.Restaurante;
+//import Actores.Restaurante;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -34,10 +34,9 @@ public class Programa extends Application
     static ArrayList<Orden> ordenes;
     static ArrayList<Cliente> clientes= new ArrayList<Cliente>();
     static ArrayList<Mesero> meseros= new ArrayList<Mesero>();
-        static int numcuneta=0;
-    //static Restaurante restaurante;
+    static int numcuneta=0;
     static Scene sc;
-    //static Mesero meseromain;
+    
     
     @Override
     public void init ( )
@@ -90,6 +89,26 @@ public class Programa extends Application
             System.err.println("Error al desrializar3");
         }
          
+            String filePath4= "src/Archivos/archivoOrdenes";
+         try(ObjectInputStream objInputStream2 = new ObjectInputStream(
+                    new FileInputStream(filePath4))) {
+            
+            ordenes = (ArrayList<Orden>)objInputStream2.readObject();
+            for (Orden o: ordenes){
+                System.out.println(o);
+                System.out.println("aja");
+            }
+            System.out.println(ordenes);
+             System.out.println("ordenes");
+         
+            
+        } catch (FileNotFoundException e1) {
+            System.out.println("Error no enotrado");
+            System.out.println(e1.getMessage());
+        } catch (IOException | ClassNotFoundException e3) {
+            System.err.println("Error al desrializar3");
+        }
+         
         //Programa.meseromain = new Mesero("test","test","test","test");
    
     }
@@ -134,6 +153,21 @@ public class Programa extends Application
             ArrayList<Mesa> mesas2=(ArrayList<Mesa>)mesas.clone();
             objOutputStream2.writeObject(mesas2);
             System.out.println(mesas2);
+            
+        } catch (FileNotFoundException e1) {
+            System.out.println("Error 1");
+            System.out.println(e1.getMessage());
+        } catch (IOException e2) {
+            System.err.println("Error 2");
+       
+    }
+         
+         String pathOrdenes = "src/Archivos/archivoOrdenes";
+         try(ObjectOutputStream objOutputStream3 = new ObjectOutputStream(
+                    new FileOutputStream(pathOrdenes))) {
+            ArrayList<Orden> ordenes2=(ArrayList<Orden>)ordenes.clone();
+            objOutputStream3.writeObject(ordenes2);
+            System.out.println(ordenes2);
             
         } catch (FileNotFoundException e1) {
             System.out.println("Error 1");

@@ -5,11 +5,15 @@
  */
 package Archivos;
 
+import Actores.Cliente;
 import Actores.Mesa;
+import Actores.Orden;
+import Actores.Producto;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -20,22 +24,21 @@ public class CrearOrdenes {
      /** 
      * @param args the command line arguments
      */
-        /**public static void cargarMesas(){
+        public static void CrearOrden(){
     
-              ArrayList<Mesa> mes= new ArrayList<>();
+              ArrayList<Orden> ord= new ArrayList<Orden>();
+
+              Orden o= new Orden(new Cliente("Juan Perez"),new ArrayList<Producto>(),LocalDate.now(),new Mesa(5,"1",0.50,0.50,true),0,0);
+            
+              ord.add(o);
              
-              
-              Mesa mesa1= new Mesa(10,"1",50.0,50.0,false);
-              //Mesa mesa2= new Mesa(5,"2",70.0,30.0, "yellow");
-              mes.add(mesa1);
-              //mes.add(mesa2);
-              System.out.println(mes);
+              System.out.println(ord);
               
               
-            String filePath= "src/Archivos/archivoMesas";
+            String filePath= "src/Archivos/archivoOrdenes";
             try (ObjectOutputStream objOutputStream =  new ObjectOutputStream(new FileOutputStream(filePath))){
                 
-            objOutputStream.writeObject(mes);             
+            objOutputStream.writeObject(ord);             
             
         } catch (FileNotFoundException e1) {
             System.out.println(e1.getMessage());
@@ -43,10 +46,10 @@ public class CrearOrdenes {
             System.out.println(e2.getMessage());
         }
                      
-}  */
+}  
     public static void main(String[] args) {
         // TODO code application logic here
-        //crearOrdenes();
+        CrearOrden();
     }
     
 }
