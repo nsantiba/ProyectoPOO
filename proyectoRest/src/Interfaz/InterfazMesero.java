@@ -82,6 +82,8 @@ public class InterfazMesero  {
        Label cant_Punitario;
        TextField buscar;
        String busqueda;
+       Label valorTotal;
+       double valorFinalO;
       
       public InterfazMesero (Mesero mesero) throws FileNotFoundException{
           crearMenu(mesero);
@@ -180,8 +182,6 @@ public class InterfazMesero  {
                             System.out.println("Verde");
                             
                             _labelOrdenHeader= new Label("Mesa: "+m.getNumero()+" - Cliente: "+m.getCliente().getInfo());
-                            
-                            
                            
                             try {
                                  for(Orden o: Programa.ordenes){//esto puede ser un metodo a parte
@@ -190,6 +190,20 @@ public class InterfazMesero  {
                                     if ((o.getMesa_orden().equals(m))&& (o.getClient().equals(m.getCliente()))){
                                         crearVentanaOrden(_labelOrdenHeader,o);//de una orden
                                         manejoMenuMesero(o);//akiii
+                                        _finalizarOrden.setOnMouseClicked((MouseEvent ev5)->{
+                                            nuevaVentanaOrden.close();
+                                            c.setFill(Color.YELLOW);
+                                            m.setOcupado(false);
+                                            
+                                            
+                                        });
+                                        
+                                        _regresar.setOnMouseClicked((MouseEvent ev6)->{
+                                            nuevaVentanaOrden.close();
+                                            
+                                        });
+                                        
+                                        
                                     }
                                 }
                             } catch (FileNotFoundException ex) {
@@ -244,6 +258,7 @@ public class InterfazMesero  {
                }
            }
            
+          
           for (Producto p: p_unicos){
                 int nuevo= Collections.frequency(o.getProductos_orden(), p);
                  info_orden= new HBox();
@@ -251,18 +266,25 @@ public class InterfazMesero  {
                  precioFinal= new Label("$ "+p.getPrecio()*nuevo);
                  nombreProducto= new Label(p.getNombreProducto());
                  cant_Punitario= new Label(nuevo+ "unidad(es) a "+p.getPrecio()+"/unidad");
-                itemOrden_precio.getChildren().addAll(nombreProducto,cant_Punitario);
-                info_orden.getChildren().addAll(itemOrden_precio,precioFinal);
-                ordenes.getChildren().add(info_orden);
+                 //valorFinalO = valorFinalO + (p.getPrecio()*nuevo);
+                 //System.out.println("El valor final es CREARVENT: "+valorFinalO);
+                 
+                 itemOrden_precio.getChildren().addAll(nombreProducto,cant_Punitario);
+                 info_orden.getChildren().addAll(itemOrden_precio,precioFinal);
+                 ordenes.getChildren().add(info_orden);
+                 
                
            }
+          
+          
+          
           _finalizarOrden= new Button("Finalizar Orden");
           _regresar = new Button("Regresar");
           
           _seccionMenu = new VBox();
           _menu = new VBox();
           
-          sc3= new Scene(rootVentanaOrden, 600,600); 
+          sc3= new Scene(rootVentanaOrden, 800,600); 
           
           _seccionOrdenes.getChildren().addAll(ordenes,_finalizarOrden,_regresar);
           _seccionMenu.getChildren().addAll(_menu);
@@ -275,6 +297,10 @@ public class InterfazMesero  {
         }    
 
     public void manejoMenuMesero(Orden o) throws FileNotFoundException{
+        
+         valorTotal = new Label("Total: $ "+o.getTotal());
+         info_orden.getChildren().add(valorTotal);
+        
         ComboBox<String> ctipo= new ComboBox (FXCollections.observableArrayList("Salado","Bebida","Postre","Todos"));
           Button postres = new Button ( "Postres ", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/postres.png" ) ) ) );
           Button bebidas = new Button ( "Bebidas", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/bebidas.png" ) ) ) );
@@ -367,6 +393,7 @@ public class InterfazMesero  {
                         }
                        System.out.println(p_unicos);
                         ordenes.getChildren().clear();
+                        valorFinalO = 0;
                         for (Producto p3: p_unicos){
                             int nuevo= Collections.frequency(o.getProductos_orden(), p3);
                             info_orden= new HBox();
@@ -374,11 +401,16 @@ public class InterfazMesero  {
                             precioFinal= new Label("$ "+p3.getPrecio()*nuevo);
                             nombreProducto= new Label(p3.getNombreProducto());
                             cant_Punitario= new Label(nuevo+ "unidad(es) a "+p3.getPrecio()+"/unidad");
-                           itemOrden_precio.getChildren().addAll(nombreProducto,cant_Punitario);
-                           info_orden.getChildren().addAll(itemOrden_precio,precioFinal);
+                            valorFinalO = valorFinalO + (p3.getPrecio()*nuevo);
+                            System.out.println("El valor final es MOSTRARPROD: "+valorFinalO);
+                            itemOrden_precio.getChildren().addAll(nombreProducto,cant_Punitario);
+                            info_orden.getChildren().add(itemOrden_precio);
+                           
                            ordenes.getChildren().add(info_orden);
                             }
-                
+                o.setTotal(valorFinalO);       
+                valorTotal = new Label("Total: $ "+valorFinalO);
+                info_orden.getChildren().add(valorTotal);
             });productosMenu.getChildren().add(infoProducto);
         }
     }}
