@@ -38,6 +38,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 
 /**
@@ -79,6 +80,8 @@ public class InterfazMesero  {
        Label precioFinal;
        Label nombreProducto;
        Label cant_Punitario;
+       TextField buscar;
+       String busqueda;
       
       public InterfazMesero (Mesero mesero) throws FileNotFoundException{
           crearMenu(mesero);
@@ -272,15 +275,21 @@ public class InterfazMesero  {
         }    
 
     public void manejoMenuMesero(Orden o) throws FileNotFoundException{
-        ComboBox<String> ctipo= new ComboBox (FXCollections.observableArrayList("Salado","Bebida","Postre"));
+        ComboBox<String> ctipo= new ComboBox (FXCollections.observableArrayList("Salado","Bebida","Postre","Todos"));
           Button postres = new Button ( "Postres ", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/postres.png" ) ) ) );
           Button bebidas = new Button ( "Bebidas", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/bebidas.png" ) ) ) );
           Button salados = new Button ( "Salados",  new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/salados.png" ) ) ) );
+          Button todos = new Button ( "Todos" );
+          
+          
+          buscar = new TextField();
+          
+          
+          
           HBox opcionesMenu = new HBox();
           productosMenu = new FlowPane();
-          opcionesMenu.getChildren ( ).addAll ( postres, bebidas, salados ) ;
+          opcionesMenu.getChildren ( ).addAll ( postres, bebidas, salados, todos, buscar ) ;
           _menu.getChildren ( ).addAll ( opcionesMenu, productosMenu );
-        
         
             EventHandler < MouseEvent > ev2 = (MouseEvent ev1) -> {
                 try{
@@ -297,6 +306,12 @@ public class InterfazMesero  {
                         System.out.println ( "Dentro3" );
                         mostrarPorductos ( "Salado",o );
                     }
+                    if (ev1.getSource()== todos) {
+                        System.out.println("Dentro4");
+                        mostrarPorductos("Postre",o);
+                        mostrarPorductos("Bebida",o);
+                        mostrarPorductos ( "Salado",o );
+                    }
                     }catch ( FileNotFoundException ex )
                             {
                                 System.out.println(ex.getMessage());
@@ -305,7 +320,21 @@ public class InterfazMesero  {
             postres.setOnMouseClicked ( ev2 );
             bebidas.setOnMouseClicked ( ev2 );
             salados.setOnMouseClicked ( ev2 );
+            todos.setOnMouseClicked(ev2);
+            
+            
+            buscar.setOnKeyReleased((KeyEvent k)->{
+            try {
+                busqueda = buscar.getText();
+                mostrarBusqueda(busqueda);
+            } catch (FileNotFoundException ex) {
+                System.out.println("Archivo no encontrado");
+            }
+                
+            });
+            
     }
+    
     
     public void mostrarPorductos ( String tipo, Orden o ) throws FileNotFoundException
     {
@@ -357,6 +386,30 @@ public class InterfazMesero  {
             });productosMenu.getChildren().add(infoProducto);
         }
     }}
+        
+    public void mostrarBusqueda(String busqueda) throws FileNotFoundException{
+        productosMenu.getChildren ( ).clear ( );
+        for (Producto p:Programa.productos){
+            System.out.println("Nombre: " +p.getNombreProducto());
+            System.out.println("Producto a buscar: "+busqueda);
+              if (p.getNombreProducto().toLowerCase().contains(busqueda.toLowerCase())){
+                String s = p.getN_imagen();
+                FileInputStream inputstream = new FileInputStream(s); 
+                Image img = new Image(inputstream);
+                ImageView imgview = new ImageView(img);
+                imgview.setFitHeight(50);
+                imgview.setFitWidth(50);
+                String l1= p.getNombreProducto();
+                String l2= String.valueOf(p.getPrecio());
+                String l3 = ("Nombre: "+l1+"\n"+"Precio: "+l2);
+                infoProducto = new Button(l3,imgview);
+                
+                productosMenu.getChildren().add(infoProducto);
+            }
+          }
+    }
+    
+    
     private void manejoMeseroSalir ( )
     {
         if ( CuadroDialogo.confirmacion ( "CONFIRMACIÓN", "¿Está seguro que desea cerrar sesión?", null ).get ( ) == ButtonType.OK )
