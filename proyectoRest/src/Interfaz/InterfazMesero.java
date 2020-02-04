@@ -8,6 +8,7 @@ package Interfaz;
 import Actores.Cliente;
 import Actores.Mesa;
 import Actores.Mesero;
+import Actores.Orden;
 import Actores.Producto;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,6 +31,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import Interfaz.Programa;
 import extras.CuadroDialogo;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -43,6 +45,7 @@ import javafx.scene.layout.FlowPane;
  */
 public class InterfazMesero  {
     
+     
       VBox _rootM;
       Label _nombre; 
       Pane _seccionPlanoM = new Pane();
@@ -54,6 +57,7 @@ public class InterfazMesero  {
       Stage nuevaVentana;
       Button salir;
       Circle c;
+      Orden or;
       TextField _nombreCliente;
       Stage nuevaVentanaOrden;
       VBox rootVentanaOrden;
@@ -109,12 +113,7 @@ public class InterfazMesero  {
             cocina.setLayoutX(410);
             cocina.setLayoutY(35);
         _seccionPlanoM.getChildren().addAll(cocina, rect);
-        
-        
-        //mesas = InterfazAdministrador.mesas;
-        //System.out.println("Check mesas: " +mesas);
-        
-            for (Mesa m: Programa.mesas){
+          for (Mesa m: Programa.mesas){
                 //c = m.getCircle();
                 c= new Circle(m.getRadio()*4);//*4 para aumentar tamaño
                 Label _numero = new Label(m.getNumero());
@@ -138,25 +137,32 @@ public class InterfazMesero  {
                 c.setOnMouseClicked((MouseEvent e4)->{
                         System.out.println("dentro");
                         
-                        
                         if(m.getOcupado()==false){
                             System.out.println("Amarillo");
                             crearVentana();
                             _aceptar.setOnMouseClicked((MouseEvent ev5)->{
+                                 c.setFill(Color.GREEN);
                             String infocliente = _nombreCliente.getText();
                             nuevaVentana.close();
-                            Cliente infocliente2 = new Cliente(infocliente);
-                            Programa.clientes.add(infocliente2);
-                            m.setCliente(infocliente2);
-                            m.setOcupado(true);
-                            c.setFill(Color.GREEN);
-                            mesero.getMesas().add(m);
-                            System.out.println(m.getCliente().getInfo());
+                            int cuenta= Programa.numcuneta+1;
+                                Programa.numcuneta+=1;
+                                System.out.println(cuenta);
+                                Cliente infocliente2 = new Cliente(infocliente);
+                                 or= new Orden(infocliente2,LocalDate.now(),m,cuenta);
+                                 System.out.println(or);
+                               // m.setOrd(or);
+                                Programa.ordenes.add(or);
+                                Programa.clientes.add(infocliente2);
+                                m.setCliente(infocliente2);
+                                m.setOcupado(true);
+                                mesero.getMesas().add(m);
+                               
+                                System.out.println(m.getCliente().getInfo());
                             });}
                         
                         if((m.getOcupado()==true)&& (mesero.getMesas().contains(m)==false)){
-                         System.out.println("Esta ocupada (Rojo)");
-                    }
+                                System.out.println("Esta ocupada (Rojo)");
+                                }
                         
                         if((m.getOcupado()==true) && (mesero.getMesas().contains(m)==true)){
                             System.out.println("Verde");
@@ -165,7 +171,8 @@ public class InterfazMesero  {
                             
                             crearVentanaOrden(_labelOrdenHeader);
                             try {
-                                manejoMenuMesero();
+                                manejoMenuMesero(or);//akiii
+                               
                             } catch (FileNotFoundException ex) {
                                 System.out.println("No se encontro archivo");
                             }
@@ -176,18 +183,13 @@ public class InterfazMesero  {
                 _seccionPlanoM.getChildren().addAll(c, _numero);
             
        
+      
+    }
         
+        //mesas = InterfazAdministrador.mesas;
+        //System.out.println("Check mesas: " +mesas);
         
-        /*c.setOnMouseClicked((MouseEvent e4)->{
-            if(m.get)
-        });*/
-        
-        
-        /*EventHandler<MouseEvent> ev = (MouseEvent ev1) -> {
-              if(ev1.getSceneX()==radio){
-              }
-          };    */
-    }}
+         }
     
     
     public void crearVentana(){
@@ -234,7 +236,7 @@ public class InterfazMesero  {
 
         }    
 
-    public void manejoMenuMesero() throws FileNotFoundException{
+    public void manejoMenuMesero(Orden o) throws FileNotFoundException{
         ComboBox<String> ctipo= new ComboBox (FXCollections.observableArrayList("Salado","Bebida","Postre"));
           Button postres = new Button ( "Postres ", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/postres.png" ) ) ) );
           Button bebidas = new Button ( "Bebidas", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/bebidas.png" ) ) ) );
@@ -250,15 +252,15 @@ public class InterfazMesero  {
                     productosMenu.getChildren ( ).clear ( );
                     if (ev1.getSource() == postres) {
                         System.out.println("Dentro");
-                        mostrarPorductos("Postre");
+                        mostrarPorductos("Postre",o);
                     }
                     if (ev1.getSource() == bebidas) {
                         System.out.println("Dentro1");
-                        mostrarPorductos("Bebida");
+                        mostrarPorductos("Bebida",o);
                     }
                     if (ev1.getSource() == salados) {
                         System.out.println ( "Dentro3" );
-                        mostrarPorductos ( "Salado" );
+                        mostrarPorductos ( "Salado",o );
                     }
                     }catch ( FileNotFoundException ex )
                             {
@@ -270,7 +272,7 @@ public class InterfazMesero  {
             salados.setOnMouseClicked ( ev2 );
     }
     
-    public void mostrarPorductos ( String tipo ) throws FileNotFoundException
+    public void mostrarPorductos ( String tipo, Orden o ) throws FileNotFoundException
     {
         for ( Producto p: Programa.productos )
         {

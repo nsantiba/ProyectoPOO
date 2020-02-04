@@ -4,6 +4,7 @@ import Actores.Administrador;
 import Actores.Cliente;
 import Actores.Mesa;
 import Actores.Mesero;
+import Actores.Orden;
 import Actores.Persona;
 import Actores.Producto;
 import Actores.Restaurante;
@@ -30,8 +31,10 @@ public class Programa extends Application
     static ArrayList<Producto> productos;
     static ArrayList<Persona> personas;
     static ArrayList<Mesa> mesas;
+    static ArrayList<Orden> ordenes;
     static ArrayList<Cliente> clientes= new ArrayList<Cliente>();
     static ArrayList<Mesero> meseros= new ArrayList<Mesero>();
+        static int numcuneta=0;
     //static Restaurante restaurante;
     static Scene sc;
     //static Mesero meseromain;
