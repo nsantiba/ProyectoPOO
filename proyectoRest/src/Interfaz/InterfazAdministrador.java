@@ -108,12 +108,22 @@ public class InterfazAdministrador {
         Button postres;
         Button bebidas;
         Button salados; 
+        Stage ventana_editarMenu;
+        VBox rootV_editarMenu;
+        Button editar;
+        Button eliminar;
+        HBox a_editar;
+        Label l;
+        ComboBox<String> combo_editar;
+        TextField nuevo;
+        Button listo;
+              
         
      
        public InterfazAdministrador() throws FileNotFoundException{
            crearMenu();
            crearSeccionPlanosyMonitoreo();
-          
+           ventanaEditarMenu();
            manejoMonitoreo();
            manejoDisenoPlano();
            manejoGestionMenu();
@@ -266,15 +276,7 @@ public class InterfazAdministrador {
 
 
                     });
-                    
-                    c.setOnMouseEntered((MouseEvent e5)->{  
-                        /*
-                        Mesero r  = m.getMesero();
-                        String mesero = r.toString();
-                           */
-                        System.out.println("uwuu");
-                    });
-                    
+                       
                      c2.setOnMouseMoved((MouseEvent e6)->{
                                System.out.println("ooo");
                               
@@ -406,6 +408,68 @@ public class InterfazAdministrador {
                 Label l1= new Label(p.getNombreProducto());
                 Label l2= new Label(String.valueOf(p.getPrecio()));
                 infoProducto.getChildren().addAll(imgview,l1,l2);
+                infoProducto.setOnMouseClicked((MouseEvent e13)->{
+                    rootV_editarMenu.getChildren().clear();
+                    rootV_editarMenu.getChildren().addAll(editar,eliminar);
+                    ventana_editarMenu.show(); });
+                    editar.setOnMouseClicked((MouseEvent e14)->{
+                        rootV_editarMenu.getChildren().clear();
+                        rootV_editarMenu.getChildren().add(a_editar);   
+                        
+                    });
+                    combo_editar.setOnAction((ActionEvent e15)->{
+                        ///rootV_editarMenu.getChildren().clear();
+                        nuevo.setText("");
+                        String atributo= combo_editar.getValue();
+                        Label label_info;
+                        if(atributo.equals("Nombre")){
+                            label_info= new Label("Ingrese nuevo nombre");
+                        }
+                        if(atributo.equals("Precio")){
+                            label_info= new Label("Ingrese nuevo precio");
+                        } if(atributo.equals("Imagen")){
+                            label_info= new Label("Ingrese nueva ruta de imagen");
+                        }
+                        rootV_editarMenu.getChildren().addAll(nuevo,listo); 
+                      
+                    });
+                    listo.setOnMouseClicked((MouseEvent e17)->{
+                        
+                        String atributo= combo_editar.getValue();
+                        String nueva_info= nuevo.getText();
+                        if(atributo.equals("Nombre")){
+                            p.setNombreProducto(nueva_info);
+                            l1.setText(nueva_info);
+                            
+                        }
+                        if(atributo.equals("Precio")){
+                            p.setPrecio(Double.parseDouble(nueva_info));
+                            l2.setText(nueva_info);
+                        }
+                         if(atributo.equals("Imagen")){
+                             p.setN_imagen((nueva_info));
+                             FileInputStream inputstream2; 
+                            try {
+                                inputstream2 = new FileInputStream(nueva_info);
+                                Image img2 = new Image(inputstream2);
+                                imgview.setImage(img2);
+                                
+                            } catch (FileNotFoundException ex) {
+                                System.out.println("error con imagen");
+                            }
+                             
+                        }ventana_editarMenu.close();
+                        
+                           
+                    });
+                    
+                    eliminar.setOnMouseClicked((MouseEvent e19)->{
+                        Programa.productos.remove(p);
+                        productosMenu.getChildren().remove(infoProducto);
+                        ventana_editarMenu.close();
+                    });
+                
+               
                 productosMenu.getChildren().add(infoProducto);
             }
         }
@@ -446,20 +510,7 @@ public class InterfazAdministrador {
                 _rootA.getChildren().clear();
                 _rootA.getChildren().add(regreso);
             }
-            /*String filepath = "src/Archivos/archivoMesas";
-            try (ObjectOutputStream objOutputStream =  new ObjectOutputStream(new FileOutputStream(filepath))){
-                
-            objOutputStream.writeObject(mesas);
-        } catch (FileNotFoundException e1) {
-            System.out.println(e1.getMessage());
-        } catch (IOException e2) {
-            System.out.println(e2.getMessage());
-        }*/
-            //stage.getScene().setRoot();
-            
-           //Label l= new Label("manejar el evento en el flowPane");
-           //_planos.getChildren().add(l);
-           //_rootA.getChildren().add(_seccionPlanos);
+           
         }
            
            
@@ -477,10 +528,22 @@ public class InterfazAdministrador {
             sc2= new Scene(rootMesa, 300,300); 
           }
           
-          /*public ArrayList<Mesa> getMesas(){
-              return mesas;
-          }*/
-          
+          public void ventanaEditarMenu(){
+             combo_editar= new ComboBox<String>(FXCollections.observableArrayList("Nombre","Precio","Imagen"));
+              a_editar= new HBox();
+             ventana_editarMenu= new Stage();
+             rootV_editarMenu= new VBox();
+             listo= new Button("Continuar");
+              editar= new Button("Editar");
+             eliminar= new Button("Eliminar");
+             
+             Scene sc4= new Scene(rootV_editarMenu,200,200);
+             ventana_editarMenu.setScene(sc4);
+             Label l= new Label("¿Que desea Editar?");
+             nuevo= new TextField();
+             a_editar.getChildren().addAll(l,combo_editar);
+             
+          }
          
           public void crearSeccionPlanosyMonitoreo(){
             cocina= new Label("Cocina");
@@ -559,53 +622,7 @@ public class InterfazAdministrador {
             });
          
             }
-            /*Mesa m= new Mesa(10,"1",50.0,50.0);
-            Mesa m2= new Mesa(10,"1",50.0,50.0);
-            Circle c= m.getCircle();
-            Circle c2= m2.getCircle();
-            c.setCenterX(50.0);
-            c.setCenterY(50.0);
-            Label _numeMesa= new Label("1");
-            _numeMesa.setLayoutX(50.0);
-            _numeMesa.setLayoutY(50.0);
-            c2.setCenterX(50.0);
-            c2.setCenterY(50.0);
-            Label _numeMesa2= new Label("1");
-            _numeMesa2.setLayoutX(50.0);
-            _numeMesa2.setLayoutY(50.0);
-            _seccionPlanos.getChildren().addAll(cocina, rect,c,_numeMesa);
-            _seccionMonitoreo.getChildren().addAll(cocina2, rect2,c2,_numeMesa2);
-            mesas.add(m);
-            c.setOnMouseDragged((MouseEvent e3)->{
-                c.setCenterX(e3.getSceneX());
-                c.setCenterY(e3.getSceneY());
-                _numeMesa.setLayoutX(e3.getSceneX());
-                _numeMesa.setLayoutY(e3.getSceneY());
-                m.setCentrox(e3.getSceneX());
-                m.setCentroy(e3.getSceneY());
-                c2.setCenterX(e3.getSceneX());
-                c2.setCenterY(e3.getSceneY());
-                _numeMesa2.setLayoutX(e3.getSceneX());
-                _numeMesa2.setLayoutY(e3.getSceneY());
-                m2.setCentrox(e3.getSceneX());
-                m2.setCentroy(e3.getSceneY());
-            });
-                        
-            c.setOnMouseClicked((MouseEvent e4)->{
-                //_planos.getChildren().add(borrarMesa);
-                //borrarMesa.setOnMouseClicked((MouseEvent e5)->{
-                _seccionPlanos.getChildren().remove(_numeMesa);
-                _seccionPlanos.getChildren().remove(c);
-               // _planos.getChildren().remove(borrarMesa);
-
-
-             // });
-
-            });
-             c2.setOnMouseMoved((MouseEvent e6)->{
-                System.out.println("ooo");
-          
-            });*/
+            
          
         }
 }

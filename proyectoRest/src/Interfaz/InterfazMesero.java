@@ -92,9 +92,7 @@ public class InterfazMesero  {
           _nombre = new Label(mesero.toString());
           salir = new Button ( "Salir", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/salir.png" ) ) ) );
           EventHandler<MouseEvent> ev = (MouseEvent ev1) -> {
-              if(ev1.getSource()==salir){
                   manejoMeseroSalir();
-              }
           };
           salir.setOnMouseClicked(ev);
           
@@ -128,16 +126,14 @@ public class InterfazMesero  {
                 if((m.getOcupado()==true)&& (mesero.getMesas().contains(m)==false)){
                     System.out.println("no es mia");
                     c.setFill(Color.RED);
-                    System.out.println(mesero.getMesas().contains(m));
-                    //m.setColor("red");
+                    System.out.println(mesero.getMesas().contains(m)); 
                 }
                 if((m.getOcupado()==true) &&(mesero.getMesas().contains(m)==true)){
                      System.out.println("es mia");
                      c.setFill(Color.GREEN);
-                     //m.setColor("green");
+                    
                 }if(m.getOcupado()==false){
                     c.setFill(Color.YELLOW);
-                    //m.setColor("yellow");
                 }
                 c.setOnMouseClicked((MouseEvent e4)->{
                         System.out.println("dentro");
@@ -153,14 +149,13 @@ public class InterfazMesero  {
                             Programa.clientes.add(infocliente2);
                             m.setCliente(infocliente2);
                             m.setOcupado(true);
-                            //m.setColor("green");
                             c.setFill(Color.GREEN);
                             mesero.getMesas().add(m);
                             System.out.println(m.getCliente().getInfo());
+                            });}
                         
-                    });}
                         if((m.getOcupado()==true)&& (mesero.getMesas().contains(m)==false)){
-                        System.out.println("Esta ocupada (Rojo)");
+                         System.out.println("Esta ocupada (Rojo)");
                     }
                         
                         if((m.getOcupado()==true) && (mesero.getMesas().contains(m)==true)){
@@ -241,13 +236,13 @@ public class InterfazMesero  {
 
     public void manejoMenuMesero() throws FileNotFoundException{
         ComboBox<String> ctipo= new ComboBox (FXCollections.observableArrayList("Salado","Bebida","Postre"));
-        Button postres = new Button ( "Postres ", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/postres.png" ) ) ) );
+          Button postres = new Button ( "Postres ", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/postres.png" ) ) ) );
           Button bebidas = new Button ( "Bebidas", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/bebidas.png" ) ) ) );
           Button salados = new Button ( "Salados",  new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/salados.png" ) ) ) );
           HBox opcionesMenu = new HBox();
           productosMenu = new FlowPane();
-        opcionesMenu.getChildren ( ).addAll ( postres, bebidas, salados ) ;
-        _menu.getChildren ( ).addAll ( opcionesMenu, productosMenu );
+          opcionesMenu.getChildren ( ).addAll ( postres, bebidas, salados ) ;
+          _menu.getChildren ( ).addAll ( opcionesMenu, productosMenu );
         
         
             EventHandler < MouseEvent > ev2 = (MouseEvent ev1) -> {
@@ -292,6 +287,7 @@ public class InterfazMesero  {
                 String l2= String.valueOf(p.getPrecio());
                 String l3 = ("Nombre: "+l1+"\n"+"Precio: "+l2);
                 infoProducto = new Button(l3,imgview);
+                
                 productosMenu.getChildren().add(infoProducto);
             }
         }
