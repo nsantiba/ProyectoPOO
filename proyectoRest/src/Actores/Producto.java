@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- *
+ * Clase para manejo en ambos interfaces, objetos producto a ser usados en menu
  * @author Eddy Santibañez J
  */
 public class Producto implements Serializable  {

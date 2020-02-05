@@ -32,7 +32,7 @@ import extras.CuadroDialogo;
 import javafx.scene.control.Alert;
 
 /**
- *
+ * Clase de inicio sesion.
  * @author Eddy Santibañez J
  */
 public class VistaPrograma
@@ -44,6 +44,10 @@ public class VistaPrograma
     {
         crearInicio ( );
     }
+    
+    /**
+     * Base de la aplicacion, se crea el inicio para ingresar usuario, se verifica si el usuario existe o no y si es instancia de mesero o admin. Se fija variable mesero.
+     */
     
     public void crearInicio ( )
     {
@@ -144,6 +148,12 @@ public class VistaPrograma
         }
     }
    
+    /**
+     * Metodo busqueda de persona para comparar con el arraylist y retornar usuario.
+     * @param correo : Correo del usuario.
+     * @param contrasena : Pwd del usuario.
+     * @return : devuelve persona del array.
+     */
     public Persona buscarPersona ( String correo, String contrasena )
     {
         for ( Persona persona: Programa.personas )
@@ -167,6 +177,10 @@ public class VistaPrograma
         this.meseroprin=meseroprin;
     }*/
     
+    /**
+     * Creacion de interfaz admin para ejecucion.
+     */
+    
     public void crearInterfazAdmin ( )
     {
         try
@@ -180,6 +194,12 @@ public class VistaPrograma
             System.out.println ( "Archivo no encontrado" );
         }
     }
+    
+    /**
+     * Creacion de interfaz mesero con variable m para identificacion de mesero a cargo.
+     * @param m : Mesero a cargo.
+     * @throws FileNotFoundException 
+     */
     
     public void crearInterfazMesero(Mesero m) throws FileNotFoundException{ 
         InterfazMesero Interfaz_mesero = new InterfazMesero(m);

@@ -13,13 +13,13 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import recursos.CONSTANTES;
 /**
- *
+ * Metodo para crear archivo de productos inicial.
  * @author Eddy Santibañez J
  */
 public class CrearArchivoInicalProductos {
 
       public static void cargarProductos(){
-              //este metodo no iría aqui si no en aplicacion ??. si no leer un archivo Corregir....
+          
               ArrayList<Producto> pp= new ArrayList<>();
               String r= "src/recursos/";
               Producto agua= new Producto("Agua",0.5,r+"agua.jpg","Bebida");

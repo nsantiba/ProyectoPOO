@@ -5,6 +5,7 @@
  */
 package Actores;
 
+import extras.Randomizer;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- *
+ * Clase orden(serializable) para usar en interfazMesero e info de tablas. Constructores de acuerdo a lo necesitado. Getters, setters y toString
  * @author Eddy Santibañez J
  */
 public class Orden implements Serializable {
@@ -22,7 +23,7 @@ public class Orden implements Serializable {
     private List<Producto> productos_orden= new ArrayList<Producto>();
     private LocalDate fecha;
     private Mesa mesa_orden;
-    private int cuenta;
+    private int cuenta ;
     private double total;
     private Mesero mesero_orden;
 

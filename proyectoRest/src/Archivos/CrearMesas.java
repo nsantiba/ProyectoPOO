@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import javafx.scene.paint.Color;
 
 /**
- *
+ * Metodo para crear mesas iniciales.
  * @author Eddy Santibañez J
  */
 public class CrearMesas {

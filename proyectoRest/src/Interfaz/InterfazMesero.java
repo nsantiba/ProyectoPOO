@@ -31,6 +31,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import Interfaz.Programa;
 import extras.CuadroDialogo;
+import extras.CuadroSalirOrden;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.logging.Level;
@@ -115,6 +116,13 @@ public class InterfazMesero  {
           
           
       }
+      
+      /**
+       * Seccion principal. Recibe un mesero para referenciar y se encarga de la creacion de mesas en el interfazMesero y su manipulacion en base a color.
+       * Crea y termina ordenes guardando info en arraylist ordenes.
+       * Funcionalidad de botones de finalizar orden y regresar, regresa las mesas a su color y habilita nuevos pedidos y clientes.
+       * @param mesero: Se consiguio de la eleccion anterior en eventhandler de vistaPrograma.
+       */
     
     public void _seccionPlanoM(Mesero mesero){
         Label cocina= new Label("Cocina");
@@ -156,8 +164,8 @@ public class InterfazMesero  {
                                 c.setFill(Color.GREEN);
                                 String infocliente = _nombreCliente.getText();
                                 nuevaVentana.close();
-                                int cuenta= Programa.numcuneta+1;
-                                    Programa.numcuneta+=1;
+                                int cuenta = Programa.numcuneta + 1;
+                                    Programa.numcuneta+= 1;
                                     System.out.println(cuenta);
                                     Cliente infocliente2 = new Cliente(infocliente);
                                     Orden or= new Orden(infocliente2,LocalDate.now(),m,cuenta,mesero);
@@ -193,10 +201,12 @@ public class InterfazMesero  {
                                         crearVentanaOrden(_labelOrdenHeader,o);//de una orden
                                         manejoMenuMesero(o);//akiii
                                         _finalizarOrden.setOnMouseClicked((MouseEvent ev5)->{
-                                            nuevaVentanaOrden.close();
-                                            c.setFill(Color.YELLOW);
-                                            m.setOcupado(false);
-                                            double valorTotal= 0;
+                                            if ( CuadroSalirOrden.confirmacion ( "CONFIRMACIÓN", "Cerrar orden?", null ).get ( ) == ButtonType.OK ){
+                                                nuevaVentanaOrden.close();
+                                                c.setFill(Color.YELLOW);
+                                                m.setOcupado(false);
+                                                double valorTotal= 0;
+                                            }
                                            /* for (Producto p2: o.getProductos_orden()){
                                                 valorTotal= valorTotal+p2.getPrecio();
                                                 
@@ -233,6 +243,10 @@ public class InterfazMesero  {
          }
     
     
+    /**
+     * Creacion de ventana para el manejo de crearOrden e ingresar cliente nuevo.
+     */
+    
     public void crearVentana(){
       nuevaVentana= new Stage();
       rootVentana= new VBox();
@@ -246,6 +260,13 @@ public class InterfazMesero  {
       nuevaVentana.show();
 
     }
+    
+    /**
+     * Manejo interior que crea ventana de eleccion de productos y contiene el display del arraylist que muestra cantidad y total de orden.
+     * Al otro lado contiene el menu con la funcion de busqueda en menu, y 4 categorias. Define el total de la orden.
+     * @param l: Label de header para titulo de ventana.
+     * @param o: Orden sobre la que se trabaja.
+     */
 
     public void crearVentanaOrden(Label l,Orden o){
           nuevaVentanaOrden= new Stage();
@@ -304,6 +325,13 @@ public class InterfazMesero  {
           nuevaVentanaOrden.show();
 
         }    
+    
+    /**
+     * Metodo que crea el menu de igual manera que el de administrador, pero sin la funcionalidad de agregar ordenes, y todos los items son botones para poder ser accionados.
+     * Contiene TextField para buscar y evento.
+     * @param o: Orden a trabajar.
+     * @throws FileNotFoundException : Lo arroja por el manejo de FileInputStream.
+     */
 
     public void manejoMenuMesero(Orden o) throws FileNotFoundException{
         
@@ -370,6 +398,12 @@ public class InterfazMesero  {
             
     }
     
+    /**
+     * Metodo de muestra de productos en base a eleccion.
+     * @param tipo: String de tipo de producto.
+     * @param o: Orden a trabajar.
+     * @throws FileNotFoundException : Se arroja por manejo de FileInputStream.
+     */
     
     public void mostrarPorductos ( String tipo, Orden o ) throws FileNotFoundException
     {
@@ -423,6 +457,12 @@ public class InterfazMesero  {
             });productosMenu.getChildren().add(infoProducto);
         }
     }}
+    
+    /**
+     * Metodo para retornar y displayear el producto de string busqueda.
+     * @param busqueda : String del textfield.
+     * @throws FileNotFoundException : Por manejo de FileInputStream.
+     */
         
     public void mostrarBusqueda(String busqueda) throws FileNotFoundException{
         productosMenu.getChildren ( ).clear ( );
@@ -446,6 +486,9 @@ public class InterfazMesero  {
           }
     }
     
+    /**
+     * Salida de interfazMesero.
+     */
     
     private void manejoMeseroSalir ( )
     {

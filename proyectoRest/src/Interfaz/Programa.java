@@ -27,6 +27,10 @@ import javafx.stage.Stage;
  */
 
 public class Programa extends Application
+        
+        /**
+         * Principal contenido de arrays de datos de toda la aplicacion.
+         */
 {
     static ArrayList<Producto> productos;
     static ArrayList<Persona> personas;
@@ -37,6 +41,10 @@ public class Programa extends Application
     static int numcuneta=0;
     static Scene sc;
     
+    
+    /**
+     * Metodo init, lee los archivos binarios que fueron creados y guardados. 
+     */
     
     @Override
     public void init ( )
@@ -108,11 +116,24 @@ public class Programa extends Application
         } catch (IOException | ClassNotFoundException e3) {
             System.err.println("Error al desrializar3");
         }
+         /*
+         String filePath5 = "src/Archivos/archivoNroCuenta";
+         try(ObjectInputStream objInputStream3 = new ObjectInputStream(
+                    new FileInputStream(filePath5))) {
+             numcuneta = objInputStream3.readInt();
+         } catch (FileNotFoundException ex) {
+            Logger.getLogger(Programa.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Programa.class.getName()).log(Level.SEVERE, null, ex);
+        }
          
         //Programa.meseromain = new Mesero("test","test","test","test");
-   
+   */
     }
     
+    /**
+     * Escribe archivos de productos, ordenes, mesas y personas.
+     */
     @Override
     public void stop ( )
     {
@@ -176,6 +197,16 @@ public class Programa extends Application
             System.err.println("Error 2");
        
     }
+         /*
+         String pathNroCuenta = "src/Archivos/archivoNroCuenta";
+         try(ObjectOutputStream objOutputStream4 = new ObjectOutputStream(
+                    new FileOutputStream(pathNroCuenta))) {
+             
+             objOutputStream4.write(numcuneta);
+         } catch (IOException ex) {
+            System.out.println("Error");
+        }
+*/
     }
     
     

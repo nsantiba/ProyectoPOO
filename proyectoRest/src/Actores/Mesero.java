@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Clase mesero para manejo de interfazMesero, con constructores dependiendo de lo que se necesite. Getters, setters, toString
  * @author Eddy Santibañez J
  */
 public class Mesero extends Persona{
@@ -35,7 +35,6 @@ public class Mesero extends Persona{
         this.nombre = nombre;
         this.apellido = apellido;
     }
-
 
     
     public String getNombre(){

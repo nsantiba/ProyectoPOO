@@ -12,7 +12,7 @@ import java.util.Objects;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
- *
+ * Clase para uso en tabla
  * @author Eddy Santibañez J
  */
 public class OrdenTabla {

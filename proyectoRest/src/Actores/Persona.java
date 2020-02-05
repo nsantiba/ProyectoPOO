@@ -11,10 +11,16 @@ import java.io.Serializable;
  *
  * @author Eddy Santibañez J
  */
+
+// Creacion de clase serializable persona, que va a contener usuarios del programa.
+
 public class Persona implements Serializable{
     private String correo; 
     private String contrasena;
 
+    
+    //Constructor, getters y setters.
+    
     public String getCorreo() {
         return correo;
     }

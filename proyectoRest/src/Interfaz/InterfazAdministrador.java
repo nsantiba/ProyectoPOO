@@ -57,7 +57,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 /**
- *
+ * Desarrollo manejo administrador
  * @author Eddy Santibañez J
  */
 public class InterfazAdministrador {
@@ -147,7 +147,10 @@ public class InterfazAdministrador {
             return _rootA;
         }
 
-    
+    /**
+     * Creacion principal de menu admin, se plantea el root, los botones iniciales y se fijan los eventos correspondientes, y el plano a usar en manejomonitoreo y diseno.
+     * @throws FileNotFoundException 
+     */
        
        
        public void crearMenu() throws FileNotFoundException{
@@ -206,6 +209,10 @@ public class InterfazAdministrador {
 
          }       
        
+         /**
+          * Metodo que implementa el diseno del plano, permite crear mesas, moverlas y guarda info de estas mismas. Incluye manejo monitoreo con labels para se actualizados en base a mesa escogida.
+          */
+         
           public void manejoDisenoPlano(){
                    
             _seccionPlanos.setOnMouseClicked((MouseEvent e)->{  
@@ -320,6 +327,11 @@ public class InterfazAdministrador {
                           
            
                 }
+    
+    /**
+     * Manejo del menu, se divide en 3 categorias(botones), y posee un boton para agregar nuevos productos al array de productos.
+     * @throws FileNotFoundException 
+     */      
           
     public void manejoGestionMenu() throws FileNotFoundException
     {  ComboBox<String> ctipo= new ComboBox (FXCollections.observableArrayList("Salado","Bebida","Postre"));
@@ -416,6 +428,13 @@ public class InterfazAdministrador {
         btn_agregar.setOnMouseClicked ( ev2 );
     }
     
+    
+    /**
+     * Recibe el string de categoria y muestra todos los productos en pantalla de esa categoria.
+     * @param tipo
+     * @throws FileNotFoundException 
+     */
+    
     public void mostrarPorductos ( String tipo ) throws FileNotFoundException
     {
         for ( Producto p: Programa.productos )
@@ -502,7 +521,9 @@ public class InterfazAdministrador {
            //_planos.getChildren().add(l);
            
            //_rootA.getChildren().add(_seccionPlanos);  
-               
+    /**
+     * Creacion de tabla para el manejo del reporte. Se crean los elementos graficos y se anaden junto con la info de la tabla.
+     */           
          
           public void manejoReporteVentas(){
             Label l= new Label("manejar el evento en el flowPane");
@@ -559,6 +580,10 @@ public class InterfazAdministrador {
              table.setItems(torden2);
             _planos.getChildren().add(table);
          }
+        
+        /**
+         * Manejo de salida del programa a menu inicio.
+         */
           
         public void manejoAdminSalir ( )
         {           
@@ -571,7 +596,10 @@ public class InterfazAdministrador {
             }
            
         }
-           
+        
+        /**
+         * Metodo que crea la ventana para anadir las mesas.
+         */
            
           public void crearVentana(){
             ventanaMesa= new Stage();
@@ -586,6 +614,10 @@ public class InterfazAdministrador {
             _aceptar= new Button("Aceptar");
             sc2= new Scene(rootMesa, 300,300); 
           }
+          
+          /**
+           * Metodo para editar o eliminar productos.
+           */
           
           public void ventanaEditarMenu(){
              combo_editar= new ComboBox<String>(FXCollections.observableArrayList("Nombre","Precio","Imagen"));
@@ -604,6 +636,10 @@ public class InterfazAdministrador {
              
           }
          
+          /**
+           * Metodo que crea un objeto de tipo mesa en seccion monitoreo y planos respectivamente para probar.
+           */
+          
           public void crearSeccionPlanosyMonitoreo(){
           
             cocina= new Label("Cocina");

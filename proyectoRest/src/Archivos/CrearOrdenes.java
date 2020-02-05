@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- *
+ * Creacion de archivo de ordenes inicial.
  * @author Eddy Santibañez J
  */
 public class CrearOrdenes {

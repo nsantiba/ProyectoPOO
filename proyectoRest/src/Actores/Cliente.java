@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- *
+ *Clase cliente para manejo de informacion en ordenes
  * @author user
  */
+
+
 public class Cliente implements Serializable{
     String info;
     //ArrayList<Producto> pedidos;

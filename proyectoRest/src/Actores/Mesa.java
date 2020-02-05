@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
- *
+ * Clase para manejo tanto interfazAdmin como interfazMesero
  * @author Eddy Santibañez J
  */
 public class Mesa implements Serializable {

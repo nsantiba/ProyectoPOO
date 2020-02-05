@@ -15,7 +15,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 /**
- *
+ * Creacion de personas.
  * @author user
  */
 public class CrearPersonas {
