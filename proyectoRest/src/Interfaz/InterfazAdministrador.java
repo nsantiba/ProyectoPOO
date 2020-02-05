@@ -801,16 +801,17 @@ public class InterfazAdministrador {
         @Override
         public void run() {
             try {
-                for(Mesa m:Programa.mesas){
-               
-                    if(m.getOcupado()==true){
-                        
-                        m.getCircle().setFill(Color.RED);
-                    }
-                    if(m.getOcupado()==false){
-                        m.getCircle().setFill(Color.YELLOW);
-                    }
-                } Thread.sleep(120000);
+                Platform.runLater(()->{
+                    for(Mesa m:Programa.mesas){
+
+                        if(m.getOcupado()==true){
+
+                            m.getCircle().setFill(Color.RED);
+                        }
+                        if(m.getOcupado()==false){
+                            m.getCircle().setFill(Color.YELLOW);
+                        }
+                }}); Thread.sleep(120000);
             } catch (InterruptedException ex) {
                 System.out.println("Se interrumpio");
             }
