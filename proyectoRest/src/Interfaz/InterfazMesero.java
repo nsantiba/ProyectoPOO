@@ -170,6 +170,7 @@ public class InterfazMesero  {
                                 m.setCliente(infocliente2);
                                 m.setOcupado(true);
                                 mesero.getMesas().add(m);
+                                m.setMesero(mesero);
                                
                                 System.out.println(m.getCliente().getInfo());
                             });}
@@ -186,6 +187,7 @@ public class InterfazMesero  {
                             try {
                                  for(Orden o: Programa.ordenes){//esto puede ser un metodo a parte
                                      System.out.println(o);
+                                     System.out.println("aja");
                                      System.out.println(o.getMesa_orden());
                                     if ((o.getMesa_orden().equals(m))&& (o.getClient().equals(m.getCliente()))){
                                         crearVentanaOrden(_labelOrdenHeader,o);//de una orden
@@ -194,6 +196,13 @@ public class InterfazMesero  {
                                             nuevaVentanaOrden.close();
                                             c.setFill(Color.YELLOW);
                                             m.setOcupado(false);
+                                            double valorTotal= 0;
+                                           /* for (Producto p2: o.getProductos_orden()){
+                                                valorTotal= valorTotal+p2.getPrecio();
+                                                
+                                            }
+                                            o.setTotal(valorTotal);*/
+                                            //se debe finalizar la ordenn
                                             
                                             
                                         });
@@ -298,8 +307,8 @@ public class InterfazMesero  {
 
     public void manejoMenuMesero(Orden o) throws FileNotFoundException{
         
-         valorTotal = new Label("Total: $ "+o.getTotal());
-         info_orden.getChildren().add(valorTotal);
+         //valorTotal = new Label("Total: $ "+o.getTotal());
+         //info_orden.getChildren().add(valorTotal);
         
         ComboBox<String> ctipo= new ComboBox (FXCollections.observableArrayList("Salado","Bebida","Postre","Todos"));
           Button postres = new Button ( "Postres ", new ImageView ( new Image ( new FileInputStream ( "src/recursos/botones/postres.png" ) ) ) );

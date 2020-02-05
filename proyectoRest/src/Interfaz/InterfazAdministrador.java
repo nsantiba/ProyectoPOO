@@ -117,6 +117,9 @@ public class InterfazAdministrador {
         ComboBox<String> combo_editar;
         TextField nuevo;
         Button listo;
+        Label l_valor;
+        Label l_estado;
+        Label MeseroMesa;
               
         
      
@@ -191,14 +194,13 @@ public class InterfazAdministrador {
          public void manejoMonitoreo(){
          
              infoMesa= new VBox(); 
-             Label l_valor= new Label("Valor facturado"+valorfac);
-             Label l_estado= new Label("Estado: "+estado);
-             Label MeseroMesa= new Label("Mesero: "+mesero);        
-             infoMesa.getChildren().addAll(l_estado,MeseroMesa,l_valor);
+             /*l_valor= new Label("Valor facturado"+valorfac);
+             l_estado= new Label("Estado: "+estado);
+             MeseroMesa= new Label("Mesero: "+mesero); */       
+             //infoMesa.getChildren().addAll(l_estado,MeseroMesa,l_valor);
              infoMesa.setLayoutX(100);
              infoMesa.setLayoutY(300);
-             
-         
+
          }       
        
           public void manejoDisenoPlano(){
@@ -273,16 +275,36 @@ public class InterfazAdministrador {
 
                     //_planos.getChildren().remove(borrarMesa);
 
-
                     });
                        
-                     c2.setOnMouseMoved((MouseEvent e6)->{
-                               System.out.println("ooo");
-                              
-                               
-                           
-                           });
-                     
+                        c2.setOnMouseEntered((MouseEvent e6)->{
+                             System.out.println("kkk");
+                             System.out.println(m.getOcupado());
+                            System.out.println(m.getMesero());
+                            System.out.println("ooo");
+                            System.out.println("aaa");
+                            infoMesa= new VBox(); 
+                            l_valor= new Label("Valor facturado: ");
+                            l_estado= new Label("Estado: "+m.getOcupado());
+                            MeseroMesa= new Label("Mesero: "+m.getMesero());
+                            infoMesa.getChildren().addAll(l_estado,MeseroMesa,l_valor);
+                            for(Mesa mes: Programa.mesas){
+                                 if(mes.getMesero()!=null && mes.getMesero().equals(mes)&& mes.getOcupado()==true){
+                                    c2.setFill(Color.GREEN);
+                            }
+                        }
+                                });
+                        c2.setOnMouseExited((MouseEvent e6)->{
+                        
+            
+                         for (Mesa mes: Programa.mesas){
+                             if(mes.getOcupado()==true){
+                                 c2.setFill(Color.RED);
+                             }
+                         }
+
+                          });
+
        
                     });
                      _capacidad.getChildren().addAll(_capa,_Tcapa);
@@ -545,6 +567,7 @@ public class InterfazAdministrador {
           }
          
           public void crearSeccionPlanosyMonitoreo(){
+          
             cocina= new Label("Cocina");
             cocina2= new Label("Cocina");
             rect.setLayoutX(400);
@@ -615,10 +638,42 @@ public class InterfazAdministrador {
              // });
 
             });
-             c2.setOnMouseMoved((MouseEvent e6)->{
-                System.out.println("ooo");
-          
-            });
+                c2.setOnMouseEntered((MouseEvent e6)->{
+                    String ocupado;
+                        if(m.getOcupado()==true){
+                            ocupado= "Ocupada";
+                        }else{
+                           ocupado= "Libre" ;
+                        }
+                        l_valor= new Label("Valor facturado: ");
+                        l_estado= new Label("Estado: "+ocupado);
+                        MeseroMesa= new Label("Mesero: "+m.getMesero());
+                        infoMesa.getChildren().addAll(l_estado,MeseroMesa,l_valor);
+                        System.out.println("es"+m);
+                        for(Mesa mes: Programa.mesas){
+                            System.out.println(mes);
+                              if(mes.getMesero()!=null && mes.toString().equals(mes.toString())&& mes.getOcupado()==true){
+                                  //Circle c3= new Circle();
+                                System.out.println("hola");
+                                c2.setFill(Color.GREEN);//corrregrir solo se pinta lasobre la que hago clcik siempre asi no se de la condicion
+                                
+                            }
+                        }
+
+                           
+                 });
+                 
+                
+                c2.setOnMouseExited((MouseEvent e6)->{
+                        infoMesa.getChildren().clear();
+            
+                         for (Mesa mes: Programa.mesas){
+                             if(mes.getOcupado()==true){
+                                  c2.setFill(Color.RED);// lo mismo no ocuurre y si entro se cambia 
+                             }
+                         }
+
+                          });
          
             }
             
