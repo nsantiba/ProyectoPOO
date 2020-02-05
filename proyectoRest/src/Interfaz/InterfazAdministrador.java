@@ -38,6 +38,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -682,11 +683,18 @@ public class InterfazAdministrador {
                         }else{
                            ocupado= "Libre" ;
                         }
-                        l_valor= new Label("Valor facturado: ");
+                        double total_facturado=0;
+                        for(Orden o3: Programa.ordenes){
+                            if(o3.getFecha().equals(LocalDate.now())){//el valor facturado en el dia 
+                              total_facturado= total_facturado+o3.getTotal();
+                                
+                            }
+                        }
+                        l_valor= new Label("Valor facturado: "+total_facturado);
                         l_estado= new Label("Estado: "+ocupado);
                         MeseroMesa= new Label("Mesero: "+m.getMesero());
                         infoMesa.getChildren().addAll(l_estado,MeseroMesa,l_valor);
-                        System.out.println("es"+m);
+                     
                         for(Mesa mes: Programa.mesas){
                             System.out.println(mes);
                               if(mes.getMesero()!=null && mes.toString().equals(mes.toString())&& mes.getOcupado()==true){
