@@ -136,6 +136,10 @@ public class InterfazAdministrador {
            manejoMonitoreo();
            manejoDisenoPlano();
            manejoGestionMenu();
+           
+           HiloMonitoreo h1 = new HiloMonitoreo();
+           Thread t1 = new Thread(h1);
+           t1.start();
            //MonitoreoPlano monitoreoPlano= new MonitoreoPlano();
            //Thread t1= new Thread(monitoreoPlano);
            //t1.start();
@@ -788,4 +792,26 @@ public class InterfazAdministrador {
          
         
         }
-}
+          
+    public class HiloMonitoreo implements Runnable{
+
+        @Override
+        public void run() {
+            try {
+                for(Mesa m:Programa.mesas){
+                    Circle c = m.getCircle();
+                    if(m.getOcupado()==true){
+                        
+                        c.setFill(Color.RED);
+                    }
+                    if(m.getOcupado()==false){
+                        c.setFill(Color.YELLOW);
+                    }
+                } Thread.sleep(120000);
+            } catch (InterruptedException ex) {
+                System.out.println("Se interrumpio");
+            }
+            }
+        }
+        
+   }
