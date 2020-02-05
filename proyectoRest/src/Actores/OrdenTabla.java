@@ -29,7 +29,7 @@ public class OrdenTabla {
         this.mesa_orden =new SimpleStringProperty(mesa_orden) ;
         this.cuenta = new SimpleStringProperty(cuenta);
         this.total = new SimpleStringProperty(total);
-        this.mesero= new SimpleStringProperty();
+        this.mesero= new SimpleStringProperty(mesero);
     }
 
     public String getCliente() {

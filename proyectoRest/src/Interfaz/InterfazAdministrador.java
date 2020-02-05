@@ -513,15 +513,32 @@ public class InterfazAdministrador {
             fin= new TextField();
             buscar= new Button("Buscar");
             c_Fecha = new TableColumn("Fecha");
+              c_Fecha.setCellValueFactory(
+           new PropertyValueFactory<OrdenTabla,String>("fecha"));
             //c_Fecha.setMaxWidth(5);
             c_Mesa = new TableColumn("Mesa");
+              c_Mesa.setCellValueFactory(
+           new PropertyValueFactory<OrdenTabla,String>("mesa_orden"));
+              
             c_Mesero = new TableColumn("Mesero");
+          c_Mesero.setCellValueFactory(
+           new PropertyValueFactory<OrdenTabla,String>("mesero"));
+          
             c_Cuenta = new TableColumn("# Cuenta");
+             c_Cuenta.setCellValueFactory(
+           new PropertyValueFactory<OrdenTabla,String>("cuenta"));
+             
             c_Cliente = new TableColumn("Cliente");
+          c_Cliente.setCellValueFactory(
+           new PropertyValueFactory<OrdenTabla,String>("cliente"));
+          
             c_Total = new TableColumn("Total");
+          c_Total.setCellValueFactory(
+           new PropertyValueFactory<OrdenTabla,String>("total"));
+        
    
           table.getColumns().addAll(c_Fecha, c_Mesa, c_Mesero,c_Cuenta,c_Cliente,c_Total);
-          table.setEditable(true);
+          //table.setEditable(true);
        
            //_rootA.getChildren().add(_seccionPlanos);
            ArrayList<OrdenTabla> torden= new ArrayList<OrdenTabla>();
@@ -529,30 +546,17 @@ public class InterfazAdministrador {
            for (Orden o:Programa.ordenes){
                String cuenta= String.valueOf(o.getCuenta());
                String total_o= String.valueOf(o.getTotal());
-               System.out.println(total_o);
                if(o.getTotal()!=0 &&o.getMesero_orden()!=null){//si es igual a 0.0 la cuenta no ha sido cerrada aun
-                    System.out.println(o.getMesero_orden().toString());
+                    System.out.println(o.getMesero_orden().toString());//no salen los meseros en la tabla idk
                     OrdenTabla ot= new OrdenTabla(o.getClient().getInfo(),o.getFecha().toString(),o.getMesa_orden().getNumero(),cuenta,total_o,o.getMesero_orden().toString());
                     torden.add(ot);
                }
             
            }
            ObservableList<OrdenTabla> torden2= FXCollections.observableArrayList(torden);
-            c_Fecha.setCellValueFactory(
-           new PropertyValueFactory<OrdenTabla,String>("fecha"));
-          c_Mesa.setCellValueFactory(
-           new PropertyValueFactory<OrdenTabla,String>("mesa_orden"));
-          c_Mesero.setCellValueFactory(
-           new PropertyValueFactory<OrdenTabla,String>("mesero"));
-          c_Cuenta.setCellValueFactory(
-           new PropertyValueFactory<OrdenTabla,String>("cuenta"));
-          c_Cliente.setCellValueFactory(
-           new PropertyValueFactory<OrdenTabla,String>("cliente"));
-          c_Total.setCellValueFactory(
-           new PropertyValueFactory<OrdenTabla,String>("total"));
-           table.setItems(torden2);
-
-                    _planos.getChildren().add(table);
+          
+             table.setItems(torden2);
+            _planos.getChildren().add(table);
          }
           
         public void manejoAdminSalir ( )
