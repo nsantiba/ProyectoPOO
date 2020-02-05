@@ -48,7 +48,6 @@ import javafx.scene.layout.FlowPane;
  */
 public class InterfazMesero  {
     
-     
       VBox _rootM;
       Label _nombre; 
       Pane _seccionPlanoM = new Pane();
@@ -135,6 +134,7 @@ public class InterfazMesero  {
           for (Mesa m: Programa.mesas){
                 //c = m.getCircle();
                 c= new Circle(m.getRadio()*4);//*4 para aumentar tamaño
+                m.setCircle(c);
                 Label _numero = new Label(m.getNumero());
                 c.setCenterX(m.getCentrox());
                 c.setCenterY(m.getCentroy());
@@ -161,7 +161,7 @@ public class InterfazMesero  {
                              
                             crearVentana();
                             _aceptar.setOnMouseClicked((MouseEvent ev5)->{
-                                c.setFill(Color.GREEN);
+                                m.getCircle().setFill(Color.GREEN);
                                 String infocliente = _nombreCliente.getText();
                                 nuevaVentana.close();
                                 int cuenta = Programa.numcuneta + 1;
@@ -204,7 +204,7 @@ public class InterfazMesero  {
                                         _finalizarOrden.setOnMouseClicked((MouseEvent ev5)->{
                                             if ( CuadroSalirOrden.confirmacion ( "CONFIRMACIÓN", "Cerrar orden?", null ).get ( ) == ButtonType.OK ){
                                                 nuevaVentanaOrden.close();
-                                                c.setFill(Color.YELLOW);
+                                                m.getCircle().setFill(Color.YELLOW);
                                                 m.setOcupado(false);
                                                 double valorTotal= 0;
                                             }
@@ -390,7 +390,7 @@ public class InterfazMesero  {
             buscar.setOnKeyReleased((KeyEvent k)->{
             try {
                 busqueda = buscar.getText();
-                mostrarBusqueda(busqueda);
+                mostrarBusqueda(busqueda,o);
             } catch (FileNotFoundException ex) {
                 System.out.println("Archivo no encontrado");
             }
@@ -423,6 +423,7 @@ public class InterfazMesero  {
                 String l2= String.valueOf(p.getPrecio());
                 String l3 = ("Nombre: "+l1+"\n"+"Precio: "+l2);
                 infoProducto = new Button(l3,imgview);
+                //manejo de info producto
                  infoProducto.setOnMouseClicked((MouseEvent e20)->{
                       o.getProductos_orden().add(p);
                          System.out.println("Dentro para añadir");
@@ -465,7 +466,7 @@ public class InterfazMesero  {
      * @throws FileNotFoundException : Por manejo de FileInputStream.
      */
         
-    public void mostrarBusqueda(String busqueda) throws FileNotFoundException{
+    public void mostrarBusqueda(String busqueda, Orden o) throws FileNotFoundException{
         productosMenu.getChildren ( ).clear ( );
         for (Producto p:Programa.productos){
             System.out.println("Nombre: " +p.getNombreProducto());
@@ -481,6 +482,39 @@ public class InterfazMesero  {
                 String l2= String.valueOf(p.getPrecio());
                 String l3 = ("Nombre: "+l1+"\n"+"Precio: "+l2);
                 infoProducto = new Button(l3,imgview);
+                 infoProducto.setOnMouseClicked((MouseEvent e20)->{
+                      o.getProductos_orden().add(p);
+                         System.out.println("Dentro para añadir");
+                        precioFinal= new Label();
+                        nombreProducto= new Label();
+                        cant_Punitario= new Label();
+                        ArrayList<Producto> p_unicos= new ArrayList<>();
+                        for (Producto p2: o.getProductos_orden()){
+                            if(p_unicos.contains(p2)==false){
+                             p_unicos.add(p2);
+                        }
+                        }
+                       System.out.println(p_unicos);
+                        ordenes.getChildren().clear();
+                        valorFinalO = 0;
+                        for (Producto p3: p_unicos){
+                            int nuevo= Collections.frequency(o.getProductos_orden(), p3);
+                            info_orden= new HBox();
+                            itemOrden_precio= new VBox();
+                            precioFinal= new Label("$ "+p3.getPrecio()*nuevo);
+                            nombreProducto= new Label(p3.getNombreProducto());
+                            cant_Punitario= new Label(nuevo+ "unidad(es) a "+p3.getPrecio()+"/unidad");
+                            valorFinalO = valorFinalO + (p3.getPrecio()*nuevo);
+                            System.out.println("El valor final es MOSTRARPROD: "+valorFinalO);
+                            itemOrden_precio.getChildren().addAll(nombreProducto,cant_Punitario);
+                            info_orden.getChildren().add(itemOrden_precio);
+                           
+                           ordenes.getChildren().add(info_orden);
+                            }
+                o.setTotal(valorFinalO);       
+                valorTotal = new Label("Total: $ "+valorFinalO);
+                info_orden.getChildren().add(valorTotal);
+            });
                 
                 productosMenu.getChildren().add(infoProducto);
             }
@@ -501,4 +535,6 @@ public class InterfazMesero  {
             _rootM.getChildren().add(regreso);
         }
     }
+
+
 }

@@ -792,6 +792,9 @@ public class InterfazAdministrador {
          
         
         }
+          /**
+           * Hilo que permite actualzsr la infomracion de seccion monitoreo cada 2 minutos
+           */
           
     public class HiloMonitoreo implements Runnable{
 
@@ -799,13 +802,13 @@ public class InterfazAdministrador {
         public void run() {
             try {
                 for(Mesa m:Programa.mesas){
-                    Circle c = m.getCircle();
+               
                     if(m.getOcupado()==true){
                         
-                        c.setFill(Color.RED);
+                        m.getCircle().setFill(Color.RED);
                     }
                     if(m.getOcupado()==false){
-                        c.setFill(Color.YELLOW);
+                        m.getCircle().setFill(Color.YELLOW);
                     }
                 } Thread.sleep(120000);
             } catch (InterruptedException ex) {
