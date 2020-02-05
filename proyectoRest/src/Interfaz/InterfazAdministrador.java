@@ -3,6 +3,8 @@ package Interfaz;
 import Actores.Administrador;
 import Actores.Mesa;
 import Actores.Mesero;
+import Actores.Orden;
+import Actores.OrdenTabla;
 import Actores.Persona;
 import Actores.Producto;
 import javafx.event.EventHandler;
@@ -39,12 +41,15 @@ import java.io.ObjectOutputStream;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -194,10 +199,7 @@ public class InterfazAdministrador {
          public void manejoMonitoreo(){
          
              infoMesa= new VBox(); 
-             /*l_valor= new Label("Valor facturado"+valorfac);
-             l_estado= new Label("Estado: "+estado);
-             MeseroMesa= new Label("Mesero: "+mesero); */       
-             //infoMesa.getChildren().addAll(l_estado,MeseroMesa,l_valor);
+        
              infoMesa.setLayoutX(100);
              infoMesa.setLayoutY(300);
 
@@ -511,6 +513,7 @@ public class InterfazAdministrador {
             fin= new TextField();
             buscar= new Button("Buscar");
             c_Fecha = new TableColumn("Fecha");
+            //c_Fecha.setMaxWidth(5);
             c_Mesa = new TableColumn("Mesa");
             c_Mesero = new TableColumn("Mesero");
             c_Cuenta = new TableColumn("# Cuenta");
@@ -518,10 +521,40 @@ public class InterfazAdministrador {
             c_Total = new TableColumn("Total");
    
           table.getColumns().addAll(c_Fecha, c_Mesa, c_Mesero,c_Cuenta,c_Cliente,c_Total);
-          _planos.getChildren().add(table);
+          table.setEditable(true);
+       
            //_rootA.getChildren().add(_seccionPlanos);
-              
+           ArrayList<OrdenTabla> torden= new ArrayList<OrdenTabla>();
+           
+           for (Orden o:Programa.ordenes){
+               String cuenta= String.valueOf(o.getCuenta());
+               String total_o= String.valueOf(o.getTotal());
+               System.out.println(total_o);
+               if(o.getTotal()!=0 &&o.getMesero_orden()!=null){//si es igual a 0.0 la cuenta no ha sido cerrada aun
+                    System.out.println(o.getMesero_orden().toString());
+                    OrdenTabla ot= new OrdenTabla(o.getClient().getInfo(),o.getFecha().toString(),o.getMesa_orden().getNumero(),cuenta,total_o,o.getMesero_orden().toString());
+                    torden.add(ot);
+               }
+            
+           }
+           ObservableList<OrdenTabla> torden2= FXCollections.observableArrayList(torden);
+            c_Fecha.setCellValueFactory(
+           new PropertyValueFactory<OrdenTabla,String>("fecha"));
+          c_Mesa.setCellValueFactory(
+           new PropertyValueFactory<OrdenTabla,String>("mesa_orden"));
+          c_Mesero.setCellValueFactory(
+           new PropertyValueFactory<OrdenTabla,String>("mesero"));
+          c_Cuenta.setCellValueFactory(
+           new PropertyValueFactory<OrdenTabla,String>("cuenta"));
+          c_Cliente.setCellValueFactory(
+           new PropertyValueFactory<OrdenTabla,String>("cliente"));
+          c_Total.setCellValueFactory(
+           new PropertyValueFactory<OrdenTabla,String>("total"));
+           table.setItems(torden2);
+
+                    _planos.getChildren().add(table);
          }
+          
         public void manejoAdminSalir ( )
         {           
             if ( CuadroDialogo.confirmacion ( "CONFIRMACIÓN", "¿Está seguro que desea cerrar sesión?", null ).get ( ) == ButtonType.OK )

@@ -7,6 +7,7 @@ package Archivos;
 
 import Actores.Cliente;
 import Actores.Mesa;
+import Actores.Mesero;
 import Actores.Orden;
 import Actores.Producto;
 import java.io.FileNotFoundException;
@@ -28,7 +29,7 @@ public class CrearOrdenes {
     
               ArrayList<Orden> ord= new ArrayList<Orden>();
 
-              Orden o= new Orden(new Cliente("Juan Perez"),new ArrayList<Producto>(),LocalDate.now(),new Mesa(5,"1",0.50,0.50,true),0,0);
+              Orden o= new Orden(new Cliente("Juan Perez"),new ArrayList<Producto>(),LocalDate.now(),new Mesa(5,"1",0.50,0.50,true),0,0,new Mesero("Jesu","Cristo"));
             
               ord.add(o);
              

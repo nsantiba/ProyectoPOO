@@ -48,7 +48,7 @@ public class Mesero extends Persona{
     
     @Override
     public String toString(){
-        return ("Mesero "+nombre+" "+apellido);
+        return (nombre+" "+apellido);
     }  
 
     public List<Mesa> getMesas() {

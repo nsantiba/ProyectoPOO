@@ -160,7 +160,7 @@ public class InterfazMesero  {
                                     Programa.numcuneta+=1;
                                     System.out.println(cuenta);
                                     Cliente infocliente2 = new Cliente(infocliente);
-                                    Orden or= new Orden(infocliente2,LocalDate.now(),m,cuenta);
+                                    Orden or= new Orden(infocliente2,LocalDate.now(),m,cuenta,mesero);
                                     System.out.println(or);
                                  //m.setOrd(or);
                                 Programa.ordenes.add(or);//se añade la orden

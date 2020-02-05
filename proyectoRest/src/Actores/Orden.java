@@ -24,23 +24,34 @@ public class Orden implements Serializable {
     private Mesa mesa_orden;
     private int cuenta;
     private double total;
+    private Mesero mesero_orden;
 
-    public Orden(Cliente client, ArrayList<Producto> productos_orden, LocalDate fecha, Mesa mesa_orden, int cuenta, double total) {
+    public Orden(Cliente client, ArrayList<Producto> productos_orden, LocalDate fecha, Mesa mesa_orden, int cuenta, double total, Mesero mesero_o) {
         this.client = client;
         this.productos_orden = productos_orden;
         this.fecha = fecha;
         this.mesa_orden = mesa_orden;
         this.cuenta = cuenta;
         this.total = total;
+        this.mesero_orden= mesero_o;
     }
 
-    public Orden(Cliente infocliente2, LocalDate now, Mesa m, int cuenta2) {
+    public Orden(Cliente infocliente2, LocalDate now, Mesa m, int cuenta2, Mesero mesero_o) {
         client=infocliente2;
         fecha= now;
         cuenta= cuenta2;  
         mesa_orden= m;
         //productos_orden= new HashMap<Producto, Integer>();
         productos_orden= new ArrayList<Producto>();
+        mesero_orden= mesero_o;
+    }
+
+    public Mesero getMesero_orden() {
+        return mesero_orden;
+    }
+
+    public void setMesero_orden(Mesero mesero_orden) {
+        this.mesero_orden = mesero_orden;
     }
 
     public Cliente getClient() {
@@ -138,7 +149,10 @@ public class Orden implements Serializable {
 
     @Override
     public String toString() {
-        return "Orden"+client+" "+mesa_orden;
+        return "Orden{" + "client=" + client + ", productos_orden=" + productos_orden + ", fecha=" + fecha + ", mesa_orden=" + mesa_orden + ", cuenta=" + cuenta + ", total=" + total + ", mesero_orden=" + mesero_orden + '}';
     }
-    
+
+   
+
+ 
 }
