@@ -173,13 +173,14 @@ public class InterfazMesero  {
                                  //m.setOrd(or);
                                 Programa.ordenes.add(or);//se añade la orden
                                 System.out.println("orden creada");
+                                
                                 System.out.println(or);
                                 Programa.clientes.add(infocliente2);
                                 m.setCliente(infocliente2);
                                 m.setOcupado(true);
                                 mesero.getMesas().add(m);
                                 m.setMesero(mesero);
-                               
+                                
                                 System.out.println(m.getCliente().getInfo());
                             });}
                         

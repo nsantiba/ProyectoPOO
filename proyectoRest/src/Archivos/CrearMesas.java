@@ -22,7 +22,7 @@ import javafx.scene.paint.Color;
  */
 public class CrearMesas {
 
-    /**
+     /**
      * @param args the command line arguments
      */
     public static void cargarMesas(){

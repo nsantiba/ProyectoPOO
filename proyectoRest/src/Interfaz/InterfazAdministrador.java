@@ -231,9 +231,9 @@ public class InterfazAdministrador {
                     double posy= e.getSceneY();
                     Mesa m= new Mesa(mesa_capacidad,mesa_numero,posx,posy,false);
                     Programa.mesas.add(m);//agregp cada mesa a mesas 
-                    System.out.println("se agregó");
+                    System.out.println("se agregÃ³");
                     
-                    Circle c=new Circle(m.getRadio()*4);//*4 para aumentar el tamaño
+                    Circle c=new Circle(m.getRadio()*4);//*4 para aumentar el tamaÃ±o
                     Circle c2= new Circle(m.getRadio()*4);
                     Label _numeMesa= new Label(mesa_numero);
                     Label _numeMesa2= new Label(mesa_numero);
@@ -248,7 +248,7 @@ public class InterfazAdministrador {
                     _numeMesa.setLayoutY(posy);
                     _numeMesa2.setLayoutX(posx);
                     _numeMesa2.setLayoutY(posy);
-
+                    m.setCircle(c2);
                     _seccionPlanos.getChildren().addAll(c,_numeMesa);
                     _seccionMonitoreo.getChildren().addAll(c2,_numeMesa2);
                     
@@ -288,32 +288,53 @@ public class InterfazAdministrador {
                     });
                        
                         c2.setOnMouseEntered((MouseEvent e6)->{
-                             System.out.println("kkk");
-                             System.out.println(m.getOcupado());
-                            System.out.println(m.getMesero());
-                            System.out.println("ooo");
-                            System.out.println("aaa");
-                            infoMesa= new VBox(); 
-                            l_valor= new Label("Valor facturado: ");
-                            l_estado= new Label("Estado: "+m.getOcupado());
-                            MeseroMesa= new Label("Mesero: "+m.getMesero());
-                            infoMesa.getChildren().addAll(l_estado,MeseroMesa,l_valor);
-                            for(Mesa mes: Programa.mesas){
-                                 if(mes.getMesero()!=null && mes.getMesero().equals(mes)&& mes.getOcupado()==true){
-                                    c2.setFill(Color.GREEN);
+                            String ocupado;
+                        if(m.getOcupado()==true){
+                            ocupado= "Ocupada";
+                        }else{
+                           ocupado= "Libre" ;
+                           
+                        }
+                        double total_facturado=0;
+                        for(Orden o3: Programa.ordenes){
+                            System.out.println("dentro");
+                            System.out.println(o3.getMesa_orden().toString());
+                            System.out.println(m.toString());
+                            System.out.println((o3.getMesa_orden().toString().equals(m.toString())));
+                            if(o3.getFecha().equals(LocalDate.now())&&(o3.getMesa_orden().toString().equals(m.toString()))){//el valor facturado en el dia 
+                              total_facturado= total_facturado+o3.getTotal();
+                                System.out.println("agg");
+                                
                             }
                         }
-                                });
-                        c2.setOnMouseExited((MouseEvent e6)->{
-                        
-            
-                         for (Mesa mes: Programa.mesas){
-                             if(mes.getOcupado()==true){
-                                 c2.setFill(Color.RED);
-                             }
-                         }
+                        l_valor= new Label("Valor facturado: "+total_facturado);
+                        l_estado= new Label("Estado: "+ocupado);
+                        MeseroMesa= new Label("Mesero: "+m.getMesero());
+                        infoMesa.getChildren().addAll(l_estado,MeseroMesa,l_valor);
+                     
+                        for(Mesa mes: Programa.mesas){
+                            //System.out.println(mes);
+                          
+                              if(mes.getMesero()!=null &&m.getMesero()!=null && m.getMesero().toString().equals(mes.getMesero().toString())&& mes.getOcupado()==true){
+                                  //Circle c3= new Circle
+                                mes.getCircle().setFill(Color.GREEN);//corrregrir solo se pinta lasobre la que hago clcik siempre asi no se de la condicion
+                                
+                            }
+                        }
+
 
                           });
+                        c2.setOnMouseExited((e22)->{
+                          infoMesa.getChildren().clear();
+            
+                         for (Mesa mes: Programa.mesas){
+                             if(mes.getOcupado()==true && mes.getCircle().getFill()!= Color.YELLOW){
+                                  mes.getCircle().setFill(Color.RED);// lo mismo no ocuurre y si entro se cambia 
+                             }
+                         }
+                        
+                        
+                        });
 
        
                     });
@@ -323,6 +344,7 @@ public class InterfazAdministrador {
                      ventanaMesa.show();
               
                     }) ;     
+                          
                          
                           
            
@@ -641,7 +663,6 @@ public class InterfazAdministrador {
            */
           
           public void crearSeccionPlanosyMonitoreo(){
-          
             cocina= new Label("Cocina");
             cocina2= new Label("Cocina");
             rect.setLayoutX(400);
@@ -656,7 +677,7 @@ public class InterfazAdministrador {
             _seccionPlanos.getChildren().addAll(cocina,rect);
             _seccionMonitoreo.getChildren().addAll(cocina2, rect2);
             for (Mesa m: Programa.mesas){
-                Circle c= new Circle(m.getRadio()*4);//*4 para aumentar el tamaño
+                Circle c= new Circle(m.getRadio()*4);//*4 para aumentar el tamaÃ±o
                 Circle c2= new Circle(m.getRadio()*4);
                 double x= m.getCentrox();
                 double y= m.getCentroy();
@@ -672,12 +693,14 @@ public class InterfazAdministrador {
                     c2.setFill(Color.YELLOW); 
                     
                 }
+        
                 Label _numeMesa= new Label(nume);
                 _numeMesa.setLayoutX(x);
                 _numeMesa.setLayoutY(y);
                 c2.setCenterX(x);
                 c2.setCenterY(y);
-                 
+                         
+                m.setCircle(c2);
                 Label _numeMesa2= new Label(nume);
                 _numeMesa2.setLayoutX(x);
                 _numeMesa2.setLayoutY(y);
@@ -718,25 +741,29 @@ public class InterfazAdministrador {
                             ocupado= "Ocupada";
                         }else{
                            ocupado= "Libre" ;
+                           
                         }
-                        double total_facturado=0;
+                     
+                         double total_facturado=0;
                         for(Orden o3: Programa.ordenes){
-                            if(o3.getFecha().equals(LocalDate.now())){//el valor facturado en el dia 
+                            System.out.println("dentro");
+                            System.out.println(o3.getMesa_orden().toString());
+                            System.out.println(m.toString());
+                            System.out.println((o3.getMesa_orden().toString().equals(m.toString())));
+                            if(o3.getFecha().equals(LocalDate.now())&&(o3.getMesa_orden().toString().equals(m.toString()))){//el valor facturado en el dia 
                               total_facturado= total_facturado+o3.getTotal();
-                                
-                            }
-                        }
+                                System.out.println("agg");}}
                         l_valor= new Label("Valor facturado: "+total_facturado);
                         l_estado= new Label("Estado: "+ocupado);
                         MeseroMesa= new Label("Mesero: "+m.getMesero());
                         infoMesa.getChildren().addAll(l_estado,MeseroMesa,l_valor);
                      
                         for(Mesa mes: Programa.mesas){
-                            System.out.println(mes);
-                              if(mes.getMesero()!=null && mes.toString().equals(mes.toString())&& mes.getOcupado()==true){
-                                  //Circle c3= new Circle();
-                                System.out.println("hola");
-                                c2.setFill(Color.GREEN);//corrregrir solo se pinta lasobre la que hago clcik siempre asi no se de la condicion
+                            //System.out.println(mes);
+                          
+                              if(mes.getMesero()!=null &&m.getMesero()!=null && m.getMesero().toString().equals(mes.getMesero().toString())&& mes.getOcupado()==true){
+                                  //Circle c3= new Circle
+                                mes.getCircle().setFill(Color.GREEN);//corrregrir solo se pinta lasobre la que hago clcik siempre asi no se de la condicion
                                 
                             }
                         }
@@ -749,8 +776,8 @@ public class InterfazAdministrador {
                         infoMesa.getChildren().clear();
             
                          for (Mesa mes: Programa.mesas){
-                             if(mes.getOcupado()==true){
-                                  c2.setFill(Color.RED);// lo mismo no ocuurre y si entro se cambia 
+                             if(mes.getOcupado()==true && mes.getCircle().getFill()!= Color.YELLOW){
+                                  mes.getCircle().setFill(Color.RED);// lo mismo no ocuurre y si entro se cambia 
                              }
                          }
 
@@ -759,5 +786,6 @@ public class InterfazAdministrador {
             }
             
          
+        
         }
 }

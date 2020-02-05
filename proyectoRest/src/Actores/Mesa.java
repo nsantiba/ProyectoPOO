@@ -17,12 +17,11 @@ import javafx.scene.shape.Circle;
  * @author Eddy Santibañez J
  */
 public class Mesa implements Serializable {
-   
     private int radio;
     private double centrox;
     private double centroy; 
     private String numero;
-    //transient private  Circle circle;
+    transient private  Circle circle;
     private boolean ocupado;
     private Mesero mesero;
     private Cliente cliente;
@@ -85,13 +84,13 @@ public class Mesa implements Serializable {
    
     
     
-    //public Circle getCircle() {
-       // return ;
-    //}
+    public Circle getCircle() {
+       return circle;
+   }
 
-   /* public void setCircle(Circle circle) {
+   public void setCircle(Circle circle) {
         this.circle = circle;
-    }*/
+    }
     
     
   
@@ -146,5 +145,4 @@ public class Mesa implements Serializable {
     public void setMesero(Mesero mesero) {
         this.mesero = mesero;
     }
-    
 }
